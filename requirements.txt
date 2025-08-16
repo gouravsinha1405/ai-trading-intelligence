@@ -4,8 +4,9 @@ pandas>=2.2.0
 numpy>=1.26.0
 plotly>=5.15.0
 
-# Market Data - Use yfinance as primary, jugaad-data as optional
+# Market Data - Use yfinance as primary, jugaad-data for historical replay
 yfinance>=0.2.0
+jugaad-data>=0.20  # For historical data replay feature
 
 # AI/ML Libraries  
 groq>=0.4.0
@@ -29,4 +30,4 @@ python-dotenv>=1.0.0
 # secrets, hmac, hashlib are built-in Python modules - no installation needed
 
 # Optional packages for enhanced functionality
-# jugaad-data>=0.20  # Commented out due to Python 3.13 compatibility issues
+# Enabled for historical data replay feature

@@ -129,72 +129,96 @@ def get_replay_data(symbols, replay_date, current_time_index=0):
         Dict with live-like data for the replay timestamp
     """
     try:
-        from src.data.jugaad_client import JugaadDataClient
+        # Import the correct jugaad-data function
+        from jugaad_data.nse import stock_df
+        from datetime import date
         
-        client = JugaadDataClient()
         replay_data = {}
         
-        # Convert date to datetime for API calls
-        start_date = datetime.combine(replay_date, datetime.min.time())
-        end_date = start_date + timedelta(days=1)
+        # Convert datetime.date to date object if needed
+        if isinstance(replay_date, datetime):
+            replay_date = replay_date.date()
         
         for symbol in symbols:
             try:
-                # Get historical data for the specific date
-                df = client.get_historical_data(symbol, start_date, end_date)
+                # Use the correct jugaad-data API
+                # Get historical data for the specific date (single day)
+                df = stock_df(
+                    symbol=symbol, 
+                    from_date=replay_date,
+                    to_date=replay_date,
+                    series="EQ"
+                )
                 
                 if df is not None and not df.empty:
-                    # If we have intraday data, use it
-                    if len(df) > 1:
-                        # Get data point based on current_time_index
-                        if current_time_index < len(df):
-                            row = df.iloc[current_time_index]
-                        else:
-                            row = df.iloc[-1]  # Use last available data
-                        
-                        # Calculate change from previous close or open
-                        prev_close = df.iloc[0]['OPEN'] if current_time_index == 0 else df.iloc[current_time_index-1]['CLOSE']
-                        current_price = row['CLOSE']
-                        change = current_price - prev_close
-                        pchange = (change / prev_close * 100) if prev_close != 0 else 0
-                        
-                        replay_data[symbol] = {
-                            "symbol": symbol,
-                            "price": float(current_price),
-                            "change": float(change),
-                            "pChange": float(pchange),
-                            "open": float(row['OPEN']),
-                            "high": float(row['HIGH']),
-                            "low": float(row['LOW']),
-                            "volume": int(row.get('VOLUME', 0)),
-                            "timestamp": row.name if hasattr(row, 'name') else datetime.now(),
-                        }
+                    # jugaad-data returns columns: DATE, SERIES, OPEN, HIGH, LOW, PREV. CLOSE, LTP, CLOSE, VWAP, etc.
+                    row = df.iloc[0]  # Get the single day's data
+                    
+                    # Extract the actual price values
+                    open_price = float(row['OPEN'])
+                    high_price = float(row['HIGH']) 
+                    low_price = float(row['LOW'])
+                    close_price = float(row['CLOSE'])
+                    prev_close = float(row['PREV. CLOSE'])
+                    volume = int(row.get('VOLUME', 0))
+                    
+                    # Simulate intraday progression based on time_index (0-100)
+                    progress = current_time_index / 100.0
+                    
+                    # Simulate realistic intraday price movement
+                    if progress == 0:
+                        # Market open
+                        current_price = open_price
+                    elif progress >= 1.0:
+                        # Market close
+                        current_price = close_price
                     else:
-                        # Single day data - treat as end-of-day
-                        row = df.iloc[0]
-                        change = row['CLOSE'] - row['OPEN']
-                        pchange = (change / row['OPEN'] * 100) if row['OPEN'] != 0 else 0
+                        # Interpolate between open and close with some randomness
+                        base_progression = open_price + (close_price - open_price) * progress
                         
-                        replay_data[symbol] = {
-                            "symbol": symbol,
-                            "price": float(row['CLOSE']),
-                            "change": float(change),
-                            "pChange": float(pchange),
-                            "open": float(row['OPEN']),
-                            "high": float(row['HIGH']),
-                            "low": float(row['LOW']),
-                            "volume": int(row.get('VOLUME', 0)),
-                            "timestamp": datetime.combine(replay_date, datetime.min.time()),
-                        }
+                        # Add some intraday volatility (within high-low range)
+                        volatility_range = high_price - low_price
+                        random_factor = (np.random.random() - 0.5) * 0.3  # ±15% of daily range
+                        volatility_adjustment = volatility_range * random_factor
+                        
+                        current_price = base_progression + volatility_adjustment
+                        # Ensure price stays within high-low bounds
+                        current_price = max(low_price, min(high_price, current_price))
+                    
+                    # Calculate change from previous close
+                    change = current_price - prev_close
+                    pchange = (change / prev_close * 100) if prev_close != 0 else 0
+                    
+                    # Simulate realistic volume progression
+                    simulated_volume = int(volume * (progress + 0.1))  # Volume builds throughout day
+                    
+                    replay_data[symbol] = {
+                        "symbol": symbol,
+                        "price": float(current_price),
+                        "change": float(change),
+                        "pChange": float(pchange),
+                        "open": float(open_price),
+                        "high": float(high_price),
+                        "low": float(low_price),
+                        "volume": simulated_volume,
+                        "timestamp": datetime.combine(replay_date, datetime.min.time()),
+                        "prev_close": float(prev_close),
+                        "close": float(close_price),  # End-of-day close price
+                    }
+                    
+                    print(f"✅ Replay data loaded for {symbol}: ₹{current_price:.2f} ({replay_date})")
                 
             except Exception as e:
-                print(f"Error getting replay data for {symbol}: {e}")
+                print(f"⚠️ Error getting replay data for {symbol}: {e}")
                 continue
         
         return replay_data if replay_data else None
         
+    except ImportError as e:
+        print(f"❌ jugaad-data not available: {e}")
+        return None
     except Exception as e:
-        print(f"Error in replay system: {e}")
+        print(f"❌ Error in replay system: {e}")
         return None
 
 
