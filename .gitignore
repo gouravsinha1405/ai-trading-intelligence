@@ -31,10 +31,12 @@ Thumbs.db
 # Logs
 *.log
 logs/
+optimization.log
 
 # Sensitive files
 ADMIN_CREDENTIALS.md
 admin_access_secret.py
+*_secret_*.py
 
 # Data files
 *.csv
@@ -62,3 +64,20 @@ wheels/
 .installed.cfg
 *.egg
 MANIFEST
+
+# Backup files
+*.backup
+*.bak
+*.tmp
+
+# Test files
+test_*.py
+*_test.py
+
+# Documentation clutter
+*.md
+!README.md
+!LICENSE
+
+# Development containers
+.devcontainer/
