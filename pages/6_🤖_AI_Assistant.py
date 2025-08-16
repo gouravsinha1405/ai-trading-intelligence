@@ -20,6 +20,9 @@ from auth.auth_ui import require_auth
 require_auth()
 
 # Set up comprehensive logging
+import os
+os.makedirs('logs', exist_ok=True)  # Create logs directory if it doesn't exist
+
 logging.basicConfig(
     level=logging.INFO,
     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
