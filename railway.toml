@@ -3,7 +3,7 @@
 builder = "NIXPACKS"
 
 [deploy]
-startCommand = "streamlit run main.py --server.port $PORT --server.address 0.0.0.0"
+startCommand = "streamlit run main.py --server.port=${PORT:-8080} --server.address=0.0.0.0 --server.headless=true"
 healthcheckPath = "/"
 healthcheckTimeout = 60
 restartPolicyType = "ON_FAILURE"
@@ -13,7 +13,6 @@ restartPolicyMaxRetries = 3
 # Streamlit configuration
 STREAMLIT_SHARING = "true"
 STREAMLIT_SERVER_HEADLESS = "true"
-STREAMLIT_SERVER_PORT = "$PORT"
 STREAMLIT_SERVER_ADDRESS = "0.0.0.0"
 STREAMLIT_BROWSER_GATHER_USAGE_STATS = "false"
 
