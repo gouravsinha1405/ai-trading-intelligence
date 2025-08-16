@@ -9,6 +9,11 @@ on:
     branches: [ main, master ]
   workflow_dispatch:
 
+permissions:
+  actions: read
+  contents: read
+  security-events: write
+
 jobs:
   security-scan:
     name: 🛡️ Security Analysis
@@ -57,7 +62,7 @@ jobs:
 
       - name: 📊 Upload Security Scan Results
         uses: github/codeql-action/upload-sarif@v3
-        if: always()
+        if: always() && github.event_name != 'pull_request'
         with:
           sarif_file: |
             trivy-docker-results.sarif
@@ -132,6 +137,12 @@ jobs:
   code-analysis:
     name: 🔬 Static Code Analysis
     runs-on: ubuntu-latest
+    if: github.event_name != 'pull_request' || github.repository_owner == github.actor
+    
+    permissions:
+      actions: read
+      contents: read
+      security-events: write
     
     steps:
       - name: 📥 Checkout Code
@@ -149,3 +160,5 @@ jobs:
 
       - name: 🔍 Perform CodeQL Analysis
         uses: github/codeql-action/analyze@v3
+        with:
+          category: "/language:python"
