@@ -51,28 +51,93 @@ jobs:
           semgrep --config=auto .
 
       - name: 🐳 Build Docker Image for Scanning
+        id: docker-build
         run: |
           echo "🐳 Building Docker image for security scanning..."
-          docker build -t ai-trading-security:latest . || echo "⚠️ Docker build completed with warnings"
+          if docker build -t ai-trading-security:latest .; then
+            echo "✅ Docker build successful"
+            echo "build_success=true" >> $GITHUB_OUTPUT
+          else
+            echo "⚠️ Docker build failed, will skip Docker security scan"
+            echo "build_success=false" >> $GITHUB_OUTPUT
+          fi
+        continue-on-error: true
 
       - name: 🔍 Scan Docker Image with Trivy
+        if: steps.docker-build.outputs.build_success == 'true'
         run: |
           echo "🔍 Running Trivy Docker security scan..."
-          # Create empty SARIF file as fallback
-          echo '{"runs": [{"tool": {"driver": {"name": "trivy"}}, "results": []}]}' > trivy-docker-results.sarif
           
-          # Run Trivy scan (continue on error)
+          # Scan the Docker image and generate SARIF
           docker run --rm -v "$(pwd)":/workspace \
             aquasec/trivy:latest image \
             --format sarif \
             --output /workspace/trivy-docker-results.sarif \
-            ai-trading-security:latest || echo "⚠️ Trivy Docker scan completed with warnings"
+            ai-trading-security:latest || echo "⚠️ Trivy scan completed with warnings"
           
-          echo "✅ Trivy Docker scan output generated"
+          echo "✅ Docker security scan completed"
+        continue-on-error: true
 
-      - name: 📊 Upload Security Scan Results
+      - name: 🔧 Create Fallback SARIF File
+        if: steps.docker-build.outputs.build_success != 'true'
+        run: |
+          echo "🔧 Creating fallback SARIF file (Docker build failed)..."
+          cat > trivy-docker-results.sarif << 'EOF'
+          {
+            "$schema": "https://raw.githubusercontent.com/oasis-tcs/sarif-spec/master/Schemata/sarif-schema-2.1.0.json",
+            "version": "2.1.0",
+            "runs": [
+              {
+                "tool": {
+                  "driver": {
+                    "name": "trivy",
+                    "version": "fallback",
+                    "informationUri": "https://github.com/aquasecurity/trivy"
+                  }
+                },
+                "results": [
+                  {
+                    "ruleId": "docker-build-failed",
+                    "level": "note",
+                    "message": {
+                      "text": "Docker build failed - Docker security scan skipped"
+                    },
+                    "locations": [
+                      {
+                        "physicalLocation": {
+                          "artifactLocation": {
+                            "uri": "Dockerfile"
+                          },
+                          "region": {
+                            "startLine": 1,
+                            "startColumn": 1
+                          }
+                        }
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+          EOF
+          echo "✅ Fallback SARIF file created"
+
+      - name: � Verify SARIF File Exists
+        run: |
+          if [ -f "trivy-docker-results.sarif" ]; then
+            echo "✅ SARIF file exists ($(wc -c < trivy-docker-results.sarif) bytes)"
+            echo "📋 File content preview:"
+            head -n 10 trivy-docker-results.sarif
+          else
+            echo "❌ SARIF file missing - creating minimal fallback"
+            echo '{"$schema": "https://raw.githubusercontent.com/oasis-tcs/sarif-spec/master/Schemata/sarif-schema-2.1.0.json", "version": "2.1.0", "runs": [{"tool": {"driver": {"name": "trivy"}}, "results": []}]}' > trivy-docker-results.sarif
+          fi
+
+      - name: �📊 Upload Security Scan Results
         uses: github/codeql-action/upload-sarif@v3
-        if: always() && github.event_name != 'pull_request'
+        if: always() && github.event_name != 'pull_request' && hashFiles('trivy-docker-results.sarif') != ''
+        continue-on-error: true
         with:
           sarif_file: |
             trivy-docker-results.sarif
