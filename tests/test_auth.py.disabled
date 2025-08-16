@@ -1,0 +1,131 @@
+"""
+Unit tests for authentication system
+"""
+import os
+import sys
+import unittest
+from unittest.mock import MagicMock, Mock, patch
+
+# Add src to path
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "src"))
+
+# Mock streamlit before importing anything that uses it
+sys.modules["streamlit"] = MagicMock()
+
+
+class TestAuthManager(unittest.TestCase):
+    """Test authentication manager functionality"""
+
+    def setUp(self):
+        """Set up test environment"""
+        from src.auth.auth_manager import AuthManager
+
+        # Mock users data
+        self.mock_users = {
+            'admin': {
+                'password_hash': '5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8',  # 'password'
+                'role': 'admin',
+                'created_at': '2024-01-01'
+            },
+            'user': {
+                'password_hash': '5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8',  # 'password'
+                'role': 'user',
+                'created_at': '2024-01-01'
+            }
+        }
+
+        with patch.object(AuthManager, '_load_users', return_value=self.mock_users):
+            self.auth_manager = AuthManager()
+
+    def test_hash_password(self):
+        """Test password hashing"""
+        password = "test_password"
+        hashed = self.auth_manager._hash_password(password)
+
+        self.assertIsInstance(hashed, str)
+        self.assertNotEqual(password, hashed)
+        self.assertEqual(len(hashed), 64)  # SHA-256 hex digest length
+
+    def test_verify_password_correct(self):
+        """Test password verification with correct password"""
+        password = "password"
+        stored_hash = "5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8"
+
+        result = self.auth_manager._verify_password(password, stored_hash)
+        self.assertTrue(result)
+
+    def test_verify_password_incorrect(self):
+        """Test password verification with incorrect password"""
+        password = "wrong_password"
+        stored_hash = "5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8"
+
+        result = self.auth_manager._verify_password(password, stored_hash)
+        self.assertFalse(result)
+
+    @patch('streamlit.session_state', {})
+    def test_login_success(self):
+        """Test successful login"""
+        result = self.auth_manager.login('admin', 'password')
+        self.assertTrue(result)
+
+    @patch('streamlit.session_state', {})
+    def test_login_failure(self):
+        """Test failed login"""
+        result = self.auth_manager.login('admin', 'wrong_password')
+        self.assertFalse(result)
+
+    @patch('streamlit.session_state', {})
+    def test_login_nonexistent_user(self):
+        """Test login with non-existent user"""
+        result = self.auth_manager.login('nonexistent', 'password')
+        self.assertFalse(result)
+
+    @patch('streamlit.session_state', {'authenticated': True, 'username': 'admin'})
+    def test_is_authenticated_true(self):
+        """Test authentication check when authenticated"""
+        result = self.auth_manager.is_authenticated()
+        self.assertTrue(result)
+
+    @patch('streamlit.session_state', {})
+    def test_is_authenticated_false(self):
+        """Test authentication check when not authenticated"""
+        result = self.auth_manager.is_authenticated()
+        self.assertFalse(result)
+
+    @patch('streamlit.session_state', {'authenticated': True, 'username': 'admin'})
+    def test_get_current_user(self):
+        """Test getting current user"""
+        user = self.auth_manager.get_current_user()
+        self.assertEqual(user['username'], 'admin')
+        self.assertEqual(user['role'], 'admin')
+
+    @patch('streamlit.session_state', {})
+    def test_get_current_user_none(self):
+        """Test getting current user when not authenticated"""
+        user = self.auth_manager.get_current_user()
+        self.assertIsNone(user)
+
+    @patch('streamlit.session_state', {'authenticated': True, 'username': 'admin'})
+    def test_is_admin_true(self):
+        """Test admin check for admin user"""
+        result = self.auth_manager.is_admin()
+        self.assertTrue(result)
+
+    @patch('streamlit.session_state', {'authenticated': True, 'username': 'user'})
+    def test_is_admin_false(self):
+        """Test admin check for regular user"""
+        result = self.auth_manager.is_admin()
+        self.assertFalse(result)
+
+    @patch('streamlit.session_state', {'authenticated': True, 'username': 'admin'})
+    def test_logout(self):
+        """Test logout functionality"""
+        import streamlit as st
+
+        self.auth_manager.logout()
+        self.assertNotIn('authenticated', st.session_state)
+        self.assertNotIn('username', st.session_state)
+
+
+if __name__ == '__main__':
+    unittest.main()

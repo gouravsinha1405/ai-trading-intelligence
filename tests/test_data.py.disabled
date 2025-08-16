@@ -1,0 +1,167 @@
+"""
+Unit tests for data fetching functionality
+"""
+import os
+import sys
+import unittest
+from unittest.mock import MagicMock, Mock, patch
+
+import numpy as np
+import pandas as pd
+
+# Add src to path
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "src"))
+
+# Mock streamlit before importing anything that uses it
+sys.modules["streamlit"] = MagicMock()
+
+
+class TestJugaadClient(unittest.TestCase):
+    """Test Jugaad data client functionality"""
+
+    def setUp(self):
+        """Set up test environment"""
+        from src.data.jugaad_client import JugaadClient
+        self.client = JugaadClient()
+
+    def create_sample_data(self, days=100):
+        """Create sample market data for testing"""
+        dates = pd.date_range('2024-01-01', periods=days, freq='D')
+        data = pd.DataFrame({
+            'Date': dates,
+            'Open': 100 + np.random.randn(days).cumsum() * 0.1,
+            'High': 102 + np.random.randn(days).cumsum() * 0.1,
+            'Low': 98 + np.random.randn(days).cumsum() * 0.1,
+            'Close': 101 + np.random.randn(days).cumsum() * 0.1,
+            'Volume': np.random.randint(1000, 10000, days)
+        })
+        return data
+
+    @patch('src.data.jugaad_client.history')
+    def test_get_historical_data_success(self, mock_history):
+        """Test successful historical data fetching"""
+        # Mock jugaad-data response
+        sample_data = self.create_sample_data()
+        mock_history.return_value = sample_data
+
+        result = self.client.get_historical_data(
+            symbol='RELIANCE',
+            from_date='2024-01-01',
+            to_date='2024-01-31',
+            interval='1d'
+        )
+
+        self.assertIsInstance(result, pd.DataFrame)
+        self.assertGreater(len(result), 0)
+        mock_history.assert_called_once()
+
+    @patch('src.data.jugaad_client.history')
+    def test_get_historical_data_failure(self, mock_history):
+        """Test handling of data fetching failures"""
+        mock_history.side_effect = Exception("API Error")
+
+        result = self.client.get_historical_data(
+            symbol='INVALID',
+            from_date='2024-01-01',
+            to_date='2024-01-31'
+        )
+
+        self.assertIsNone(result)
+
+    def test_clean_data(self):
+        """Test data cleaning functionality"""
+        # Create data with some issues
+        dirty_data = pd.DataFrame({
+            'Date': pd.date_range('2024-01-01', periods=5),
+            'Open': [100, np.nan, 102, 103, 104],
+            'High': [105, 106, np.nan, 108, 109],
+            'Low': [95, 96, 97, np.nan, 99],
+            'Close': [101, 102, 103, 104, np.nan],
+            'Volume': [1000, 1100, 1200, 1300, 1400]
+        })
+
+        cleaned = self.client.clean_data(dirty_data)
+
+        # Check that NaN values are handled
+        self.assertFalse(cleaned.isnull().any().any())
+        self.assertEqual(len(cleaned), len(dirty_data))
+
+    def test_validate_symbol(self):
+        """Test symbol validation"""
+        # Valid symbols
+        self.assertTrue(self.client.validate_symbol('RELIANCE'))
+        self.assertTrue(self.client.validate_symbol('TCS'))
+        self.assertTrue(self.client.validate_symbol('INFY'))
+
+        # Invalid symbols
+        self.assertFalse(self.client.validate_symbol(''))
+        self.assertFalse(self.client.validate_symbol(None))
+        self.assertFalse(self.client.validate_symbol('123'))
+
+    def test_format_symbol(self):
+        """Test symbol formatting"""
+        self.assertEqual(self.client.format_symbol('reliance'), 'RELIANCE')
+        self.assertEqual(self.client.format_symbol('  TCS  '), 'TCS')
+        self.assertEqual(self.client.format_symbol('infy.ns'), 'INFY')
+
+
+class TestDataCleaner(unittest.TestCase):
+    """Test data cleaning functionality"""
+
+    def setUp(self):
+        """Set up test environment"""
+        from src.data.data_cleaner import DataCleaner
+        self.cleaner = DataCleaner()
+
+    def test_remove_outliers(self):
+        """Test outlier removal"""
+        # Create data with outliers
+        data = pd.DataFrame({
+            'price': [100, 101, 102, 500, 103, 104, 105]  # 500 is an outlier
+        })
+
+        cleaned = self.cleaner.remove_outliers(data, 'price')
+
+        # Outlier should be removed or adjusted
+        self.assertLess(cleaned['price'].max(), 500)
+
+    def test_fill_missing_values(self):
+        """Test missing value handling"""
+        data = pd.DataFrame({
+            'price': [100, np.nan, 102, np.nan, 104],
+            'volume': [1000, 1100, np.nan, 1300, 1400]
+        })
+
+        filled = self.cleaner.fill_missing_values(data)
+
+        # No missing values should remain
+        self.assertFalse(filled.isnull().any().any())
+
+    def test_validate_data_quality(self):
+        """Test data quality validation"""
+        # Good quality data
+        good_data = pd.DataFrame({
+            'Date': pd.date_range('2024-01-01', periods=10),
+            'Open': np.random.randn(10) + 100,
+            'High': np.random.randn(10) + 105,
+            'Low': np.random.randn(10) + 95,
+            'Close': np.random.randn(10) + 100,
+            'Volume': np.random.randint(1000, 5000, 10)
+        })
+
+        # Ensure High >= Low and other basic validations
+        good_data['High'] = np.maximum(good_data['High'], good_data['Low'] + 1)
+
+        quality_score = self.cleaner.validate_data_quality(good_data)
+        self.assertGreaterEqual(quality_score, 0.8)
+
+        # Poor quality data (lots of missing values)
+        poor_data = good_data.copy()
+        poor_data.iloc[::2] = np.nan  # Make every other row NaN
+
+        quality_score = self.cleaner.validate_data_quality(poor_data)
+        self.assertLess(quality_score, 0.5)
+
+
+if __name__ == '__main__':
+    unittest.main()
