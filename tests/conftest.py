@@ -4,7 +4,7 @@ Test configuration and fixtures for AI Trading Platform
 
 import os
 import sys
-from unittest.mock import Mock, MagicMock, patch
+from unittest.mock import MagicMock, Mock, patch
 
 import pytest
 
