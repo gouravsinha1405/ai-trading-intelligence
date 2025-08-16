@@ -4,12 +4,15 @@ Test configuration and fixtures for AI Trading Platform
 
 import os
 import sys
-from unittest.mock import Mock, patch
+from unittest.mock import Mock, MagicMock, patch
 
 import pytest
 
 # Add src to Python path
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "src"))
+
+# Mock streamlit globally for all tests
+sys.modules["streamlit"] = MagicMock()
 
 
 @pytest.fixture
