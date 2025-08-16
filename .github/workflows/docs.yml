@@ -1,0 +1,93 @@
+name: 📚 Documentation
+
+on:
+  push:
+    branches: [ main, master ]
+    paths:
+      - 'README.md'
+      - 'docs/**'
+      - 'src/**/*.py'
+  workflow_dispatch:
+
+jobs:
+  docs-check:
+    name: 📝 Documentation Check
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: 📥 Checkout Code
+        uses: actions/checkout@v4
+
+      - name: 🐍 Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+
+      - name: 📦 Install documentation tools
+        run: |
+          python -m pip install --upgrade pip
+          pip install sphinx sphinx-rtd-theme pydocstyle
+          pip install -r requirements.txt
+
+      - name: 📝 Check docstring style
+        run: |
+          pydocstyle src/ --convention=google
+
+      - name: 📊 Generate API documentation
+        run: |
+          sphinx-quickstart -q -p "AI Trading Platform" -a "AI Trading Team" -v "1.0" --ext-autodoc --ext-viewcode docs
+          sphinx-apidoc -o docs/source src
+          cd docs && make html
+
+      - name: 🔍 Check README completeness
+        run: |
+          python -c "
+          import re
+          
+          with open('README.md', 'r') as f:
+              content = f.read()
+          
+          # Check for required sections
+          required_sections = [
+              'Features', 'Installation', 'Usage', 'API', 'Contributing', 'License'
+          ]
+          
+          missing_sections = []
+          for section in required_sections:
+              if not re.search(f'#{1,6}\s+{section}', content, re.IGNORECASE):
+                  missing_sections.append(section)
+          
+          if missing_sections:
+              print(f'❌ Missing README sections: {missing_sections}')
+              exit(1)
+          else:
+              print('✅ README documentation is complete')
+          "
+
+      - name: 📤 Upload documentation artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: documentation
+          path: docs/_build/html
+
+  deploy-docs:
+    name: 🚀 Deploy Documentation
+    runs-on: ubuntu-latest
+    needs: docs-check
+    if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master'
+    
+    steps:
+      - name: 📥 Checkout Code
+        uses: actions/checkout@v4
+
+      - name: 📥 Download documentation
+        uses: actions/download-artifact@v3
+        with:
+          name: documentation
+          path: docs
+
+      - name: 🚀 Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./docs

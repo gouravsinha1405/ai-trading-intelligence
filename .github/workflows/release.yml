@@ -1,0 +1,138 @@
+name: 🏷️ Release Management
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Release version (e.g., v1.0.0)'
+        required: true
+      release_notes:
+        description: 'Release notes'
+        required: false
+        default: 'Automated release'
+
+jobs:
+  create-release:
+    name: 🎉 Create Release
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: 📥 Checkout Code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: 📋 Generate Changelog
+        id: changelog
+        run: |
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            VERSION="${{ github.event.inputs.version }}"
+            NOTES="${{ github.event.inputs.release_notes }}"
+          else
+            VERSION="${GITHUB_REF#refs/tags/}"
+            NOTES="Automated release from tag push"
+          fi
+          
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+          
+          # Generate changelog from git commits
+          CHANGELOG=$(git log --oneline --pretty=format:"- %s" $(git describe --tags --abbrev=0 HEAD^)..HEAD 2>/dev/null || git log --oneline --pretty=format:"- %s" -10)
+          
+          cat << EOF > release-notes.md
+          ## 🚀 What's New in $VERSION
+          
+          $NOTES
+          
+          ### 📝 Commits in this Release
+          $CHANGELOG
+          
+          ### 🔧 Features
+          - 📊 Real-time market data analysis
+          - 🤖 AI-powered trading strategies
+          - 📈 Advanced backtesting engine
+          - 🔒 Secure authentication system
+          - 📱 Responsive web interface
+          
+          ### 🛠️ Technical Improvements
+          - Enhanced performance and stability
+          - Improved error handling
+          - Better user experience
+          - Security updates
+          
+          ### 📦 Deployment
+          - Ready for Railway deployment
+          - Docker containerized
+          - CI/CD pipeline integrated
+          
+          ---
+          
+          **Full Changelog**: https://github.com/${{ github.repository }}/compare/$(git describe --tags --abbrev=0 HEAD^ 2>/dev/null || echo "initial")...$VERSION
+          EOF
+
+      - name: 🏷️ Create GitHub Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ steps.changelog.outputs.version }}
+          release_name: 🚀 AI Trading Platform ${{ steps.changelog.outputs.version }}
+          body_path: release-notes.md
+          draft: false
+          prerelease: false
+
+      - name: 📦 Build Release Assets
+        run: |
+          # Create deployment package
+          mkdir -p release-assets
+          
+          # Create source code archive
+          git archive --format=zip --prefix=ai-trading-platform/ HEAD > release-assets/ai-trading-platform-source.zip
+          
+          # Create deployment scripts package
+          cd deploy
+          zip -r ../release-assets/deployment-scripts.zip .
+          cd ..
+          
+          # Create documentation package
+          cp README.md release-assets/
+          cp LICENSE release-assets/
+          
+          echo "📦 Release assets created:"
+          ls -la release-assets/
+
+      - name: 🚀 Upload Release Assets
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: release-assets/ai-trading-platform-source.zip
+          asset_name: ai-trading-platform-${{ steps.changelog.outputs.version }}-source.zip
+          asset_content_type: application/zip
+
+      - name: 📋 Upload Deployment Scripts
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: release-assets/deployment-scripts.zip
+          asset_name: deployment-scripts-${{ steps.changelog.outputs.version }}.zip
+          asset_content_type: application/zip
+
+      - name: 🎉 Release Notification
+        uses: 8398a7/action-slack@v3
+        if: always()
+        with:
+          status: ${{ job.status }}
+          text: |
+            🎉 **New Release Created!**
+            🏷️ Version: ${{ steps.changelog.outputs.version }}
+            📝 Notes: ${{ github.event.inputs.release_notes || 'Automated release' }}
+            🔗 View: https://github.com/${{ github.repository }}/releases/tag/${{ steps.changelog.outputs.version }}
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}

@@ -1,0 +1,151 @@
+name: 🔒 Security Scanning
+
+on:
+  schedule:
+    - cron: '0 2 * * 1'  # Weekly security scan on Mondays at 2 AM
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+  workflow_dispatch:
+
+jobs:
+  security-scan:
+    name: 🛡️ Security Analysis
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: 📥 Checkout Code
+        uses: actions/checkout@v4
+
+      - name: 🐍 Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+
+      - name: 🔧 Install security tools
+        run: |
+          python -m pip install --upgrade pip
+          pip install bandit safety semgrep
+          pip install -r requirements.txt
+
+      - name: 🔍 Run Bandit Security Scan
+        run: |
+          bandit -r . -f json -o bandit-results.json
+          bandit -r . -f txt
+
+      - name: 🔒 Check for Known Vulnerabilities
+        run: |
+          safety check --json --output safety-results.json
+          safety check
+
+      - name: 🧪 Run Semgrep Security Analysis
+        run: |
+          semgrep --config=auto --json --output=semgrep-results.json .
+          semgrep --config=auto .
+
+      - name: 🐳 Build Docker Image for Scanning
+        run: |
+          docker build -t ai-trading-security:latest .
+
+      - name: 🔍 Scan Docker Image with Trivy
+        uses: aquasecurity/trivy-action@master
+        with:
+          image-ref: 'ai-trading-security:latest'
+          format: 'sarif'
+          output: 'trivy-docker-results.sarif'
+
+      - name: 📊 Upload Security Scan Results
+        uses: github/codeql-action/upload-sarif@v2
+        if: always()
+        with:
+          sarif_file: |
+            trivy-docker-results.sarif
+
+      - name: 📤 Upload Artifacts
+        uses: actions/upload-artifact@v3
+        if: always()
+        with:
+          name: security-scan-results
+          path: |
+            bandit-results.json
+            safety-results.json
+            semgrep-results.json
+            trivy-docker-results.sarif
+
+      - name: 🚨 Security Notifications
+        if: failure()
+        uses: 8398a7/action-slack@v3
+        with:
+          status: failure
+          text: |
+            🚨 **Security Scan Failed!**
+            🔍 Repository: ${{ github.repository }}
+            📝 Commit: ${{ github.sha }}
+            🔗 View Results: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+
+  dependency-check:
+    name: 📦 Dependency Vulnerability Check
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: 📥 Checkout Code
+        uses: actions/checkout@v4
+
+      - name: 🔍 Run OWASP Dependency Check
+        uses: dependency-check/Dependency-Check_Action@main
+        with:
+          project: 'AI Trading Platform'
+          path: '.'
+          format: 'ALL'
+
+      - name: 📤 Upload Dependency Check Results
+        uses: actions/upload-artifact@v3
+        with:
+          name: dependency-check-results
+          path: reports/
+
+  secret-scan:
+    name: 🔐 Secret Detection
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: 📥 Checkout Code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: 🔍 Run GitLeaks
+        uses: gitleaks/gitleaks-action@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: 🔐 Run TruffleHog
+        uses: trufflesecurity/trufflehog@main
+        with:
+          path: ./
+          base: main
+          head: HEAD
+
+  code-analysis:
+    name: 🔬 Static Code Analysis
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: 📥 Checkout Code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: 🔬 Initialize CodeQL
+        uses: github/codeql-action/init@v2
+        with:
+          languages: python
+
+      - name: 🏗️ Autobuild
+        uses: github/codeql-action/autobuild@v2
+
+      - name: 🔍 Perform CodeQL Analysis
+        uses: github/codeql-action/analyze@v2

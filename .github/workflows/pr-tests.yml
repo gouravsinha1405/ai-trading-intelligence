@@ -1,0 +1,54 @@
+name: 🧪 Pull Request Tests
+
+on:
+  pull_request:
+    branches: [ main, master, develop ]
+
+jobs:
+  quick-tests:
+    name: 🚀 Quick Tests
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: 📥 Checkout Code
+        uses: actions/checkout@v4
+
+      - name: 🐍 Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+
+      - name: 📦 Cache dependencies
+        uses: actions/cache@v3
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
+
+      - name: 🔧 Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install black flake8 pytest streamlit
+          pip install -r requirements.txt
+
+      - name: 🎨 Code formatting check
+        run: black --check .
+
+      - name: 🔍 Lint check
+        run: flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
+
+      - name: 🧪 Quick tests
+        run: |
+          python -c "import streamlit; print('✅ Streamlit imports successfully')"
+          python -c "from src.auth.auth_manager import AuthManager; print('✅ Auth system imports successfully')"
+          python -c "from src.data.jugaad_client import JugaadClient; print('✅ Data client imports successfully')"
+
+      - name: 📝 PR Summary Comment
+        uses: actions/github-script@v6
+        with:
+          script: |
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: '🚀 **Quick Tests Passed!** ✅ Code formatting ✅ Lint checks ✅ Import tests'
+            })
