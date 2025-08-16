@@ -172,7 +172,6 @@ jobs:
 
       - name: 🚀 Deploy to Railway Staging
         run: |
-          railway login --token ${{ secrets.RAILWAY_TOKEN }}
           railway link ${{ secrets.RAILWAY_STAGING_PROJECT_ID }}
           railway up --service ${{ secrets.RAILWAY_STAGING_SERVICE }}
         env:
@@ -218,9 +217,10 @@ jobs:
 
       - name: 🌟 Deploy to Railway Production
         run: |
-          railway login --token ${{ secrets.RAILWAY_TOKEN }}
-          railway link ${{ secrets.RAILWAY_PROJECT_ID }}
-          railway up --service ${{ secrets.RAILWAY_SERVICE }}
+          echo "🚂 Linking to Railway project..."
+          railway link ${{ secrets.RAILWAY_PROJECT_ID }} || railway link --environment production
+          echo "🚀 Deploying to Railway..."
+          railway up --service ${{ secrets.RAILWAY_SERVICE }} || railway up
         env:
           RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
 
