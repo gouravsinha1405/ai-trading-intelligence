@@ -1,0 +1,24 @@
+# Example terraform.tfvars file
+# Copy this to terraform.tfvars and fill in your values
+
+# Required: Generate a 32+ character secret key
+auth_secret_key = "your-super-secret-32-character-key-here-change-this"
+
+# Required: Set your admin credentials  
+admin_username = "youradmin"
+admin_password = "YourSecurePassword123!"
+
+# Required: Your Groq API key
+groq_api_key = "gsk_your_groq_api_key_here"
+
+# Optional: Additional API keys
+alpha_vantage_api_key = ""
+news_api_key = ""
+
+# Optional: Custom domain (leave empty for Railway subdomain)
+custom_domain = ""
+
+# Project configuration
+project_name = "ai-trading-platform"
+github_repo = "gouravsinha1405/ai-trading-intelligence"
+branch = "master"
