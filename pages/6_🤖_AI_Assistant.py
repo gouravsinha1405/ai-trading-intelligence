@@ -11,6 +11,14 @@ import logging
 import traceback
 import time
 
+# Add src to path for imports
+sys.path.append(str(Path(__file__).parent.parent / "src"))
+
+from auth.auth_ui import require_auth
+
+# Require authentication
+require_auth()
+
 # Set up comprehensive logging
 logging.basicConfig(
     level=logging.INFO,

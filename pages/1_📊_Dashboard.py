@@ -10,7 +10,12 @@ import streamlit as st
 ROOT = Path(__file__).resolve().parent
 sys.path.append(str(ROOT.parent / "src"))
 
+from auth.auth_ui import require_auth
+
 st.set_page_config(page_title="Dashboard", page_icon="📊", layout="wide")
+
+# Require authentication
+require_auth()
 
 # ---------- Data helpers ----------
 

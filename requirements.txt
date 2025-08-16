@@ -1,4 +1,4 @@
-# Core Dependencies - Python 3.13 Compatible
+# Core Dependencies - Python 3.11+ Compatible
 streamlit>=1.35.0
 pandas>=2.2.0
 numpy>=1.26.0
@@ -19,6 +19,11 @@ beautifulsoup4>=4.9.0
 
 # Utilities
 python-dotenv>=1.0.0
+
+# Authentication & Security
+secrets>=1.0.0  # For secure token generation
+hmac  # Built-in, for password verification
+hashlib  # Built-in, for password hashing
 
 # Optional packages for enhanced functionality
 # jugaad-data>=0.20  # Commented out due to Python 3.13 compatibility issues
