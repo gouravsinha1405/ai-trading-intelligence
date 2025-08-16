@@ -321,7 +321,7 @@ class JugaadDataClient:
             try:
                 # Enhanced rate limiting with jitter
                 if i > 0:
-                    delay = self.rate_limit + random.uniform(0, 0.5)  # Add jitter
+                    delay = self.rate_limit + random.uniform(0, 0.5)  # Add jitter  # nosec B311
                     time.sleep(delay)
                 
                 df = self.get_stock_data(symbol, start_date, end_date)

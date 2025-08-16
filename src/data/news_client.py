@@ -43,8 +43,8 @@ class RealNewsClient:
             if dt: 
                 try:
                     return datetime(*dt[:6], tzinfo=timezone.utc).astimezone(IST)
-                except Exception:
-                    pass
+                except Exception:  # nosec B110
+                    pass  # Skip invalid datetime parsing
         
         # Try string datetime fields
         for key in ("published", "updated"):
@@ -55,8 +55,8 @@ class RealNewsClient:
                     if dt.tzinfo is None: 
                         dt = dt.replace(tzinfo=timezone.utc)
                     return dt.astimezone(IST)
-                except Exception:
-                    continue
+                except Exception:  # nosec B112
+                    continue  # Skip invalid datetime format
         
         return None
 

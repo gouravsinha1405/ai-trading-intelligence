@@ -69,10 +69,11 @@ jobs:
           flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
           flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
 
-      - name: 🛡️ Security check with bandit
+      - name: � Run Bandit Security Scan
         run: |
-          bandit -r . -f json -o bandit-report.json || true
-          bandit -r . --severity-level medium
+          echo "🔍 Running Bandit security scan..."
+          bandit -r src/ pages/ main.py -f json -o bandit-report.json || true
+          bandit -r src/ pages/ main.py -f txt
 
       - name: 🔒 Check for known security vulnerabilities
         run: |

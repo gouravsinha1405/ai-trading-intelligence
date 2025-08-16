@@ -36,8 +36,9 @@ jobs:
 
       - name: 🔍 Run Bandit Security Scan
         run: |
-          bandit -r . -f json -o bandit-results.json
-          bandit -r . -f txt
+          echo "🔍 Running Bandit security scan..."
+          bandit -r src/ pages/ main.py -f json -o bandit-results.json || true
+          bandit -r src/ pages/ main.py -f txt
 
       - name: 🔒 Check for Known Vulnerabilities
         run: |

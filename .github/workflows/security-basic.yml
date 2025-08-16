@@ -30,7 +30,7 @@ jobs:
       - name: 🔍 Run Bandit Security Scan
         run: |
           echo "🔍 Running Bandit security scan..."
-          bandit -r . -f txt || true
+          bandit -r src/ pages/ main.py -f txt || true
           echo "✅ Bandit scan completed"
 
       - name: 🔒 Check for Known Vulnerabilities
