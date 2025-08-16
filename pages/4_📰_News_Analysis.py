@@ -81,7 +81,7 @@ def human_ago(dt: datetime) -> str:
 def fetch_news(max_per_source=8):
     try:
         # consistent import since you've added /src to sys.path
-        from src.data.news_client import RealNewsClient
+        from data.news_client import RealNewsClient
         client = RealNewsClient()
         raw = client.get_latest_market_news(max_per_source=max_per_source) or []
         norm = [normalize_article(a) for a in raw if a]

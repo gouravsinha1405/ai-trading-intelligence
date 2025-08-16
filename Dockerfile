@@ -26,7 +26,7 @@ RUN mkdir -p .streamlit data logs
 RUN chmod 755 data
 
 # Set environment variables
-ENV PYTHONPATH=/app/src
+ENV PYTHONPATH=/app
 ENV STREAMLIT_SERVER_HEADLESS=true
 ENV STREAMLIT_SERVER_PORT=${PORT:-8501}
 ENV STREAMLIT_SERVER_ADDRESS=0.0.0.0

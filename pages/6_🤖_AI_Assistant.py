@@ -24,7 +24,7 @@ logging.basicConfig(
     level=logging.INFO,
     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
     handlers=[
-        logging.FileHandler('/home/gourav/ai/optimization.log'),
+        logging.FileHandler('logs/optimization.log'),
         logging.StreamHandler()
     ]
 )
