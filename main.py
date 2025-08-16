@@ -19,6 +19,18 @@ st.set_page_config(
 def main():
     """Main application entry point"""
     
+    # Legal disclaimer in sidebar
+    st.sidebar.warning("""
+    ⚠️ **Educational Purpose Only**
+    
+    This platform is for educational and demonstration purposes only. 
+    - Not financial advice
+    - Paper trading simulation only  
+    - No real money involved
+    - Trade at your own risk
+    """)
+    st.sidebar.markdown("---")
+    
     # Load configuration
     config = load_config()
     
