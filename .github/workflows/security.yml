@@ -43,7 +43,7 @@ jobs:
       - name: 🔒 Check for Known Vulnerabilities
         run: |
           echo "🔒 Running Safety vulnerability check..."
-          safety check --json > safety-results.json || echo "⚠️ Safety check completed with warnings"
+          safety check --output json > safety-results.json || echo "⚠️ Safety check completed with warnings"
           safety check
 
       - name: 🧪 Run Semgrep Security Analysis

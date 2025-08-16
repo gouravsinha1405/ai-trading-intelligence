@@ -78,7 +78,7 @@ jobs:
       - name: 🔒 Check for known security vulnerabilities
         run: |
           echo "🔒 Running Safety vulnerability check..."
-          safety check --json > safety-report.json || echo "⚠️ Safety check completed with warnings"
+          safety check --output json > safety-report.json || echo "⚠️ Safety check completed with warnings"
           safety check
 
       - name: 📤 Upload security reports
