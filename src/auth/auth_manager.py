@@ -45,7 +45,8 @@ class AuthManager:
     def _hash_password(self, password: str) -> str:
         """Hash password with salt"""
         salt = self.secret_key.encode()
-        return hashlib.pbkdf2_hex(password.encode(), salt, 100000)
+        key = hashlib.pbkdf2_hmac('sha256', password.encode(), salt, 100000)
+        return key.hex()
     
     def _verify_password(self, password: str, password_hash: str) -> bool:
         """Verify password against hash"""
