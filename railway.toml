@@ -17,9 +17,9 @@ STREAMLIT_SERVER_ADDRESS = "0.0.0.0"
 STREAMLIT_BROWSER_GATHER_USAGE_STATS = "false"
 
 # Authentication settings
-AUTH_SECRET_KEY = "your-secret-key-change-this-in-production"
-ADMIN_USERNAME = "admin"
-ADMIN_PASSWORD = "change-this-password"
+AUTH_SECRET_KEY = "db00a3aec8daf7ef2117ddc1475bfda8b1983784b5ef2389a10189942d379cd6"
+ADMIN_USERNAME = "admin_3qwrjj3b"
+ADMIN_PASSWORD = "$N9mwR#3a#Ilm^2l"
 
 # AI and API settings
 GROQ_API_KEY = "$GROQ_API_KEY"

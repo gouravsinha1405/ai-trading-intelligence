@@ -32,6 +32,10 @@ Thumbs.db
 *.log
 logs/
 
+# Sensitive files
+ADMIN_CREDENTIALS.md
+admin_access_secret.py
+
 # Data files
 *.csv
 *.json

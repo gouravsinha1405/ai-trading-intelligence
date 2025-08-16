@@ -7,7 +7,7 @@ from pathlib import Path
 sys.path.append(str(Path(__file__).parent / "src"))
 
 from utils.config import load_config
-from auth.auth_ui import require_auth, show_admin_panel
+from auth.auth_ui import require_auth
 
 # Page configuration
 st.set_page_config(
@@ -22,20 +22,6 @@ def main():
     
     # Require authentication before showing main app
     require_auth()
-    
-    # Admin panel link in sidebar
-    from auth.auth_manager import auth_manager
-    if auth_manager.is_admin():
-        st.sidebar.markdown("### 👨‍💼 Admin Controls")
-        if st.sidebar.button("🔧 Admin Panel", use_container_width=True):
-            st.session_state["show_admin_panel"] = True
-        
-        if st.session_state.get("show_admin_panel", False):
-            show_admin_panel()
-            if st.button("⬅️ Back to Main App"):
-                st.session_state["show_admin_panel"] = False
-                st.rerun()
-            return
     
     # Legal disclaimer in sidebar
     st.sidebar.warning("""
