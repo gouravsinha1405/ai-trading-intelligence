@@ -1,4 +1,5 @@
 import sys
+import time
 from datetime import datetime, timedelta
 from pathlib import Path
 
@@ -115,32 +116,155 @@ def initialize_session_state():
         st.session_state.data_client = JugaadDataClient()
 
 
+def get_replay_data(symbols, replay_date, current_time_index=0):
+    """
+    Replay historical data from a specific date using real jugaad-data
+    
+    Args:
+        symbols: List of stock symbols
+        replay_date: Date to replay (datetime.date)
+        current_time_index: Current index in the replay (0 = market open)
+    
+    Returns:
+        Dict with live-like data for the replay timestamp
+    """
+    try:
+        from src.data.jugaad_client import JugaadDataClient
+        
+        client = JugaadDataClient()
+        replay_data = {}
+        
+        # Convert date to datetime for API calls
+        start_date = datetime.combine(replay_date, datetime.min.time())
+        end_date = start_date + timedelta(days=1)
+        
+        for symbol in symbols:
+            try:
+                # Get historical data for the specific date
+                df = client.get_historical_data(symbol, start_date, end_date)
+                
+                if df is not None and not df.empty:
+                    # If we have intraday data, use it
+                    if len(df) > 1:
+                        # Get data point based on current_time_index
+                        if current_time_index < len(df):
+                            row = df.iloc[current_time_index]
+                        else:
+                            row = df.iloc[-1]  # Use last available data
+                        
+                        # Calculate change from previous close or open
+                        prev_close = df.iloc[0]['OPEN'] if current_time_index == 0 else df.iloc[current_time_index-1]['CLOSE']
+                        current_price = row['CLOSE']
+                        change = current_price - prev_close
+                        pchange = (change / prev_close * 100) if prev_close != 0 else 0
+                        
+                        replay_data[symbol] = {
+                            "symbol": symbol,
+                            "price": float(current_price),
+                            "change": float(change),
+                            "pChange": float(pchange),
+                            "open": float(row['OPEN']),
+                            "high": float(row['HIGH']),
+                            "low": float(row['LOW']),
+                            "volume": int(row.get('VOLUME', 0)),
+                            "timestamp": row.name if hasattr(row, 'name') else datetime.now(),
+                        }
+                    else:
+                        # Single day data - treat as end-of-day
+                        row = df.iloc[0]
+                        change = row['CLOSE'] - row['OPEN']
+                        pchange = (change / row['OPEN'] * 100) if row['OPEN'] != 0 else 0
+                        
+                        replay_data[symbol] = {
+                            "symbol": symbol,
+                            "price": float(row['CLOSE']),
+                            "change": float(change),
+                            "pChange": float(pchange),
+                            "open": float(row['OPEN']),
+                            "high": float(row['HIGH']),
+                            "low": float(row['LOW']),
+                            "volume": int(row.get('VOLUME', 0)),
+                            "timestamp": datetime.combine(replay_date, datetime.min.time()),
+                        }
+                
+            except Exception as e:
+                print(f"Error getting replay data for {symbol}: {e}")
+                continue
+        
+        return replay_data if replay_data else None
+        
+    except Exception as e:
+        print(f"Error in replay system: {e}")
+        return None
+
+
 def generate_simulated_data(symbols):
-    """Generate simulated live data for demo"""
+    """Generate simulated live data for demo using recent real prices as base"""
     data = {}
-    base_prices = {
+    
+    # Try to get recent real prices first
+    try:
+        import yfinance as yf
+        base_prices = {}
+        
+        for symbol in symbols:
+            try:
+                ticker = yf.Ticker(f"{symbol}.NS")
+                hist = ticker.history(period="5d")
+                if not hist.empty:
+                    base_prices[symbol] = float(hist['Close'].iloc[-1])
+            except:
+                pass
+    except:
+        pass
+    
+    # Fallback to hardcoded recent prices if yfinance fails
+    fallback_prices = {
         "RELIANCE": 2456.75,
         "TCS": 3234.50,
         "INFY": 1567.25,
         "HDFCBANK": 1654.80,
         "ICICIBANK": 1089.30,
     }
+    
+    # Use real prices if available, fallback otherwise
+    if not base_prices:
+        base_prices = fallback_prices
 
     for symbol in symbols:
         if symbol in base_prices:
             base_price = base_prices[symbol]
-            change = np.random.normal(0, 0.01) * base_price
+            # More realistic intraday volatility (0.5% to 2%)
+            volatility = np.random.uniform(0.005, 0.02)
+            change = np.random.normal(0, volatility) * base_price
+            
             data[symbol] = {
                 "symbol": symbol,
                 "price": base_price + change,
                 "change": change,
                 "pChange": (change / base_price) * 100,
+                "open": base_price * np.random.uniform(0.995, 1.005),  # Realistic gap
+                "high": base_price + abs(change) * np.random.uniform(1.2, 2.0),
+                "low": base_price - abs(change) * np.random.uniform(1.2, 2.0),
+                "volume": np.random.randint(100000, 2000000),  # More realistic volume
+                "timestamp": datetime.now(),
+            }
+        else:
+            # For unknown symbols, generate basic simulated data
+            base_price = np.random.uniform(500, 3000)
+            change = np.random.normal(0, 0.01) * base_price
+            data[symbol] = {
+                "symbol": symbol,
+                "price": base_price,
+                "change": change,
+                "pChange": (change / base_price) * 100,
                 "open": base_price,
                 "high": base_price + abs(change) * 1.5,
                 "low": base_price - abs(change) * 1.5,
-                "volume": np.random.randint(100000, 1000000),
+                "volume": np.random.randint(50000, 500000),
                 "timestamp": datetime.now(),
             }
+    
     return data
 
 
@@ -240,19 +364,138 @@ def main():
     # Initialize session state
     initialize_session_state()
 
+    # Initialize replay state if not exists
+    if "replay_mode" not in st.session_state:
+        st.session_state.replay_mode = False
+        st.session_state.replay_date = None
+        st.session_state.replay_time_index = 0
+        st.session_state.replay_auto_play = False
+
     # Get symbols to watch - use canonicalized symbols
     symbols = canonicalize_symbols(["RELIANCE", "TCS", "INFY", "HDFC", "ICICI"])
 
-    # Get live data with fallback
+    # Try to get live data first
     live_data = fetch_live_data(symbols)
+    is_real_data = live_data is not None
+    data_source = "Real Live Data"
+    
+    # If no live data, show replay/simulation options
     if live_data is None:
-        st.warning(
-            "⚠️ Live feed unavailable (market closed or connection). Using simulated ticks."
+        st.sidebar.markdown("## 📊 Data Source Options")
+        
+        # Market status check
+        try:
+            from src.data.jugaad_client import JugaadDataClient
+            client = JugaadDataClient()
+            market_status = client.get_market_status()
+            if market_status.get("status") == "closed":
+                st.sidebar.info(f"🕒 {market_status.get('message', 'Market is closed')}")
+        except:
+            pass
+        
+        # Data source selection
+        data_mode = st.sidebar.radio(
+            "Choose Data Source:",
+            ["📺 Historical Replay", "🎲 Simulated Data"],
+            index=0 if st.session_state.replay_mode else 1
         )
+        
+        if data_mode == "📺 Historical Replay":
+            st.session_state.replay_mode = True
+            
+            # Date selection for replay
+            st.sidebar.markdown("### 📅 Replay Configuration")
+            
+            # Default to last trading day (not weekend)
+            default_date = datetime.now().date()
+            while default_date.weekday() >= 5:  # Weekend
+                default_date -= timedelta(days=1)
+            default_date -= timedelta(days=1)  # Previous trading day
+            
+            replay_date = st.sidebar.date_input(
+                "Select Date to Replay:",
+                value=default_date,
+                max_value=datetime.now().date() - timedelta(days=1),
+                min_value=datetime.now().date() - timedelta(days=365),
+                help="Choose a past trading day to replay real market data"
+            )
+            
+            # Time progression controls
+            col1, col2 = st.sidebar.columns(2)
+            with col1:
+                if st.button("⏮️ Reset"):
+                    st.session_state.replay_time_index = 0
+                    st.rerun()
+            
+            with col2:
+                auto_play = st.checkbox("▶️ Auto Play", value=st.session_state.replay_auto_play)
+                st.session_state.replay_auto_play = auto_play
+            
+            # Manual time control
+            if not auto_play:
+                time_step = st.sidebar.slider(
+                    "Time Progress:",
+                    min_value=0,
+                    max_value=100,
+                    value=st.session_state.replay_time_index,
+                    help="Simulate time progression through the trading day"
+                )
+                st.session_state.replay_time_index = time_step
+            else:
+                # Auto-increment time for auto-play
+                st.session_state.replay_time_index = (st.session_state.replay_time_index + 1) % 100
+                time.sleep(2)  # Auto-play speed
+                st.rerun()
+            
+            # Get replay data
+            live_data = get_replay_data(symbols, replay_date, st.session_state.replay_time_index)
+            
+            if live_data:
+                data_source = f"Historical Replay - {replay_date.strftime('%d %b %Y')}"
+                st.sidebar.success(f"✅ Replaying {replay_date.strftime('%d %b %Y')}")
+                
+                # Show replay progress
+                progress = st.session_state.replay_time_index / 100
+                st.sidebar.progress(progress, text=f"Trading Day Progress: {progress:.0%}")
+                
+            else:
+                st.sidebar.error("❌ No historical data available for selected date")
+                # Fallback to simulated data
+                live_data = generate_simulated_data(symbols)
+                data_source = "Simulated Data (Replay Failed)"
+        
+        else:
+            # Simulated data mode
+            st.session_state.replay_mode = False
+            live_data = generate_simulated_data(symbols)
+            data_source = "Simulated Data"
+            
+            st.sidebar.warning("⚠️ Using synthetic data with realistic volatility")
+    
+    # If still no data, use fallback
+    if live_data is None:
         live_data = generate_simulated_data(symbols)
+        data_source = "Simulated Data (Fallback)"
 
     # Execute any pending LIMIT orders
     process_limit_orders(live_data)
+
+    # Data source indicator
+    if is_real_data:
+        data_source_color = "🟢"
+    elif "Replay" in data_source:
+        data_source_color = "🔵" 
+    else:
+        data_source_color = "🟡"
+    
+    st.sidebar.markdown(f"{data_source_color} **Data Source**: {data_source}")
+    
+    if is_real_data:
+        st.sidebar.success("✅ Connected to live market feed")
+    elif "Replay" in data_source:
+        st.sidebar.info("🔵 Using historical market replay")
+    else:
+        st.sidebar.warning("⚠️ Using simulated market data")
 
     # Header with portfolio summary
     col1, col2, col3, col4 = st.columns(4)
