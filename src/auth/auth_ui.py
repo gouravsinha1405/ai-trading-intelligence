@@ -45,14 +45,7 @@ def show_login_page():
     
     # Info section
     st.markdown("---")
-    with st.expander("ℹ️ Demo Credentials"):
-        st.info("""
-        **Default Admin Credentials:**
-        - Username: `admin`
-        - Password: `admin123`
-        
-        **Note:** Change these credentials immediately after first login!
-        """)
+    # Demo credentials removed for production security
     
     # Features preview
     st.markdown("### 🌟 Platform Features")
