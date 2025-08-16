@@ -165,9 +165,10 @@ def add_regime_spans(fig, df, regime_col="market_regime"):
     spans = []
     cur = None
     start = None
+    prev_date = None
     for _, r in d.iterrows():
         if r[regime_col] != cur:
-            if cur is not None:
+            if cur is not None and prev_date is not None:
                 spans.append((start, prev_date, cur))
             cur = r[regime_col]
             start = r["Date"]
