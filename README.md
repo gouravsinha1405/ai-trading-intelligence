@@ -1,16 +1,37 @@
-# 🚀 Algorithmic Trading Platform
+# 🤖 AI Trading Intelligence Platform
 
-A comprehensive algorithmic trading platform built with Streamlit, featuring real-time Indian market data, AI-powered analysis, and virtual trading capabilities.
+> **Educational Trading Analysis Framework with AI-Powered Insights**
 
-## ✨ Features
+![License](https://img.shields.io/badge/license-MIT-blue.svg)
+![Python](https://img.shields.io/badge/python-3.8+-blue.svg)
+![Streamlit](https://img.shields.io/badge/streamlit-1.28+-red.svg)
+
+## ⚠️ Educational Purpose Only
+This platform is designed for **educational and demonstration purposes only**. It is not intended to provide investment advice or guarantee trading profits. All trading involves risk.
+
+## 🚀 Features
 
 - **📊 Real-time Market Data**: Live Indian stock market data via jugaad-data
-- **🤖 AI Assistant**: Groq-powered market analysis and strategy brainstorming  
-- **🔧 Strategy Builder**: Interactive strategy creation and testing
-- **📈 Live Trading**: Virtual money trading simulation
-- **🔄 Backtesting**: Historical performance analysis
-- **📰 News Analysis**: RSS feeds and sentiment analysis
-- **📋 Dashboard**: Portfolio tracking and performance metrics
+- **🤖 AI-Powered Analysis**: Groq LLM integration for market insights  
+- **� Strategy Framework**: Interactive strategy building and testing
+- **� News Sentiment**: RSS feed analysis with AI sentiment scoring
+- **🔄 Backtesting Engine**: Historical performance analysis
+- **� Paper Trading**: Virtual money trading simulation
+- **📚 Educational Content**: Comprehensive trading concepts tutorial
+
+## 🛡️ Intellectual Property Protection
+
+### What's Public (This Framework):
+- Educational trading platform structure
+- Standard technical indicator implementations
+- Basic AI integration patterns
+- Generic data processing utilities
+
+### What Stays Private (Your Competitive Advantage):
+- Your actual trading strategies and signals
+- Your profitable parameter combinations
+- Your market insights and analysis
+- Your trading performance and results
 
 ## 🛠️ Technology Stack
 
