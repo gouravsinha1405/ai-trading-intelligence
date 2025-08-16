@@ -549,9 +549,7 @@ def main():
         vol_label = (
             "Low Volatility"
             if vix < 20
-            else "Medium Volatility"
-            if vix < 30
-            else "High Volatility"
+            else "Medium Volatility" if vix < 30 else "High Volatility"
         )
         st.metric("Volatility Index", f"{vix:.1f}", vol_label)
 
@@ -560,9 +558,7 @@ def main():
         activity_level = (
             "Low Activity"
             if news_rate < 5
-            else "Medium Activity"
-            if news_rate < 15
-            else "High Activity"
+            else "Medium Activity" if news_rate < 15 else "High Activity"
         )
         st.metric("News Flow", f"{news_rate} articles", activity_level)
 
@@ -643,18 +639,26 @@ def main():
                         ],
                         "Percentage": [
                             "100%",
-                            f"{(total_positive/total_articles*100):.1f}%"
-                            if total_articles > 0
-                            else "0%",
-                            f"{(total_negative/total_articles*100):.1f}%"
-                            if total_articles > 0
-                            else "0%",
-                            f"{(total_neutral/total_articles*100):.1f}%"
-                            if total_articles > 0
-                            else "0%",
-                            f"{(high_impact_count/total_articles*100):.1f}%"
-                            if total_articles > 0
-                            else "0%",
+                            (
+                                f"{(total_positive/total_articles*100):.1f}%"
+                                if total_articles > 0
+                                else "0%"
+                            ),
+                            (
+                                f"{(total_negative/total_articles*100):.1f}%"
+                                if total_articles > 0
+                                else "0%"
+                            ),
+                            (
+                                f"{(total_neutral/total_articles*100):.1f}%"
+                                if total_articles > 0
+                                else "0%"
+                            ),
+                            (
+                                f"{(high_impact_count/total_articles*100):.1f}%"
+                                if total_articles > 0
+                                else "0%"
+                            ),
                         ],
                     }
 
@@ -741,24 +745,18 @@ def main():
                         pos_conf = (
                             "High"
                             if total_positive >= 3
-                            else "Medium"
-                            if total_positive >= 1
-                            else "Low"
+                            else "Medium" if total_positive >= 1 else "Low"
                         )
                         neg_conf = (
                             "High"
                             if total_negative >= 3
-                            else "Medium"
-                            if total_negative >= 1
-                            else "Low"
+                            else "Medium" if total_negative >= 1 else "Low"
                         )
                         neutral_conf = "Medium" if total_neutral >= 2 else "Low"
                         high_conf = (
                             "Very High"
                             if high_impact_count >= 2
-                            else "High"
-                            if high_impact_count >= 1
-                            else "Medium"
+                            else "High" if high_impact_count >= 1 else "Medium"
                         )
 
                         impact_data = {

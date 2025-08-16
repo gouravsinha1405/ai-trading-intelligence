@@ -377,9 +377,9 @@ class RegimeDetector:
                     "avg_return": returns.mean(),
                     "volatility": returns.std(),
                     "max_drawdown": self._calculate_max_drawdown(regime_data["Close"]),
-                    "sharpe_ratio": returns.mean() / returns.std()
-                    if returns.std() > 0
-                    else 0,
+                    "sharpe_ratio": (
+                        returns.mean() / returns.std() if returns.std() > 0 else 0
+                    ),
                     "frequency": len(regime_data) / len(data),
                 }
 

@@ -641,9 +641,11 @@ def display_optimization_results(result):
                     "Gain %": gain_str,
                     "Drawdown Δ": dd_str,
                     "Changes": len(it.get("suggestion", {}).get("changes", [])),
-                    "LLM Status": "✅ OK"
-                    if it.get("suggestion", {}).get("ok", True)
-                    else "❌ Error",
+                    "LLM Status": (
+                        "✅ OK"
+                        if it.get("suggestion", {}).get("ok", True)
+                        else "❌ Error"
+                    ),
                 }
             )
 

@@ -358,7 +358,9 @@ elif section == "Setup & Configuration":
 
         col1, col2, col3 = st.columns(3)
         with col1:
-            if st.button("💾 Save & Activate", type="primary", use_container_width=True):
+            if st.button(
+                "💾 Save & Activate", type="primary", use_container_width=True
+            ):
                 if groq_key and not groq_key.startswith("●") and len(groq_key) > 10:
                     from src.utils.config import save_api_key
 
@@ -552,7 +554,8 @@ elif section == "Platform Overview":
 elif section == "Trading Basics":
     hr()
     st.markdown(
-        '<p class="big-font">📖 Trading Basics for Beginners</p>', unsafe_allow_html=True
+        '<p class="big-font">📖 Trading Basics for Beginners</p>',
+        unsafe_allow_html=True,
     )
 
     st.markdown(

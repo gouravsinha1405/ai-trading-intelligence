@@ -1,6 +1,7 @@
 """
 UI Helper Functions for the Trading Platform
 """
+
 import streamlit as st
 
 from .config import load_config

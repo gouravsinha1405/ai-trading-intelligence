@@ -977,9 +977,9 @@ def main():
                                     .value_counts()
                                     .to_dict()
                                 )
-                                analysis_data[
-                                    "regime_distribution"
-                                ] = regime_distribution
+                                analysis_data["regime_distribution"] = (
+                                    regime_distribution
+                                )
 
                             # Get recent trades for analysis
                             recent_trades = (
@@ -1021,7 +1021,9 @@ def main():
                             st.subheader("🤖 AI Strategy Analysis")
 
                             # Create expandable sections for different aspects
-                            with st.expander("📊 Performance Assessment", expanded=True):
+                            with st.expander(
+                                "📊 Performance Assessment", expanded=True
+                            ):
                                 st.markdown(analysis_result)
 
                             # Additional AI insights based on strategy type

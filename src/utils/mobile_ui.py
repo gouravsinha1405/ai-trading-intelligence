@@ -1,6 +1,7 @@
 """
 Mobile-Friendly UI Enhancements for the Trading Platform
 """
+
 import streamlit as st
 
 

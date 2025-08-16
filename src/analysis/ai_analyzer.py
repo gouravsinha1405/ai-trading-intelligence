@@ -538,9 +538,9 @@ class GroqAnalyzer:
             "market_stats": {"index": self._compute_market_stats(market_data)},
             "regime": self._extract_regime_diagnostics(market_data, regime_data),
             # Compact news early to keep prompts minimal
-            "news_events": self._extract_news_signals(news_data)[:5]
-            if news_data
-            else [],
+            "news_events": (
+                self._extract_news_signals(news_data)[:5] if news_data else []
+            ),
             "strategy": {
                 "name": strategy_config.get("name", "unknown_strategy"),
                 "pseudocode": strategy_config.get(
@@ -932,9 +932,11 @@ Return ONLY JSON. No markdown, no prose."""
         headline = {
             "cagr": round((1 + total_return) ** (1 / years) - 1 if years > 0 else 0, 3),
             "sharpe": round(
-                returns.mean() / returns.std() * np.sqrt(252)
-                if returns.std() > 0
-                else 0,
+                (
+                    returns.mean() / returns.std() * np.sqrt(252)
+                    if returns.std() > 0
+                    else 0
+                ),
                 2,
             ),
             "max_dd": round(

@@ -1,6 +1,7 @@
 """
 Test configuration and fixtures for AI Trading Platform
 """
+
 import os
 import sys
 from unittest.mock import Mock, patch

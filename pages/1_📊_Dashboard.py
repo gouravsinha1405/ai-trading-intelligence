@@ -145,9 +145,11 @@ def main():
         d = market_data.get("NIFTY 50", {})
         st.metric(
             "NIFTY 50",
-            f"{d.get('value','—'):.2f}"
-            if isinstance(d.get("value"), (int, float))
-            else d.get("value", "—"),
+            (
+                f"{d.get('value','—'):.2f}"
+                if isinstance(d.get("value"), (int, float))
+                else d.get("value", "—")
+            ),
             f"{d.get('change','—'):+.2f}%",
         )
         st.caption(f"Volume: {d.get('volume','—')}")
@@ -155,9 +157,11 @@ def main():
         d = market_data.get("NIFTY BANK", {})
         st.metric(
             "NIFTY BANK",
-            f"{d.get('value','—'):.2f}"
-            if isinstance(d.get("value"), (int, float))
-            else d.get("value", "—"),
+            (
+                f"{d.get('value','—'):.2f}"
+                if isinstance(d.get("value"), (int, float))
+                else d.get("value", "—")
+            ),
             f"{d.get('change','—'):+.2f}%",
         )
         st.caption(f"Volume: {d.get('volume','—')}")
@@ -188,9 +192,11 @@ def main():
                     "High": _to_float(v.get("high", 0)),
                     "Low": _to_float(v.get("low", 0)),
                     "Volume": int(_to_float(v.get("volume", 0))),
-                    "Time": pd.to_datetime(v.get("timestamp")).strftime("%H:%M:%S")
-                    if v.get("timestamp")
-                    else "—",
+                    "Time": (
+                        pd.to_datetime(v.get("timestamp")).strftime("%H:%M:%S")
+                        if v.get("timestamp")
+                        else "—"
+                    ),
                 }
             )
         st.dataframe(pd.DataFrame(rows), use_container_width=True, hide_index=True)

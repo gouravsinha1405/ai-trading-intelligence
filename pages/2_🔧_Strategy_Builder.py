@@ -1032,27 +1032,38 @@ with col2:
                 ],
             }
             if strategy_type == "Momentum"
-            else {
-                "rsi_period": [max(5, int(rsi_period * 0.7)), int(rsi_period * 1.3)],
-                "rsi_lo": [
-                    max(5, int(rsi_lo * 0.8)),
-                    int(rsi_lo * 1.1),
-                ],  # Consistent naming
-                "rsi_hi": [
-                    int(rsi_hi * 0.9),
-                    min(95, int(rsi_hi * 1.05)),
-                ],  # Consistent naming
-                "bb_period": [max(10, int(bb_period * 0.8)), int(bb_period * 1.2)],
-                "bb_std": [round(max(1.0, bb_std * 0.8), 2), round(bb_std * 1.2, 2)],
-            }
-            if strategy_type == "Mean Reversion"
-            else {
-                "brk_period": [max(10, int(brk_period * 0.8)), int(brk_period * 1.2)],
-                "vol_mult": [
-                    max(1.0, round(vol_mult * 0.8, 2)),
-                    round(vol_mult * 1.2, 2),
-                ],
-            }
+            else (
+                {
+                    "rsi_period": [
+                        max(5, int(rsi_period * 0.7)),
+                        int(rsi_period * 1.3),
+                    ],
+                    "rsi_lo": [
+                        max(5, int(rsi_lo * 0.8)),
+                        int(rsi_lo * 1.1),
+                    ],  # Consistent naming
+                    "rsi_hi": [
+                        int(rsi_hi * 0.9),
+                        min(95, int(rsi_hi * 1.05)),
+                    ],  # Consistent naming
+                    "bb_period": [max(10, int(bb_period * 0.8)), int(bb_period * 1.2)],
+                    "bb_std": [
+                        round(max(1.0, bb_std * 0.8), 2),
+                        round(bb_std * 1.2, 2),
+                    ],
+                }
+                if strategy_type == "Mean Reversion"
+                else {
+                    "brk_period": [
+                        max(10, int(brk_period * 0.8)),
+                        int(brk_period * 1.2),
+                    ],
+                    "vol_mult": [
+                        max(1.0, round(vol_mult * 0.8, 2)),
+                        round(vol_mult * 1.2, 2),
+                    ],
+                }
+            )
         ),
         "invariants": [
             "no_lookahead",
@@ -1401,9 +1412,11 @@ with col2:
                                             "Suggestions": iter_data.get(
                                                 "suggestions_applied", 0
                                             ),
-                                            "Status": "✅ Accepted"
-                                            if iter_data.get("accepted", False)
-                                            else "❌ Rejected",
+                                            "Status": (
+                                                "✅ Accepted"
+                                                if iter_data.get("accepted", False)
+                                                else "❌ Rejected"
+                                            ),
                                         }
                                         for i, iter_data in enumerate(iterations)
                                     ]
@@ -1414,7 +1427,9 @@ with col2:
                                 st.markdown("**🤖 AI Reasoning for All Iterations:**")
                                 for i, iter_data in enumerate(iterations):
                                     status_emoji = (
-                                        "✅" if iter_data.get("accepted", False) else "❌"
+                                        "✅"
+                                        if iter_data.get("accepted", False)
+                                        else "❌"
                                     )
                                     with st.expander(
                                         f"{status_emoji} Iteration {iter_data.get('iteration', i+1)} - AI Analysis"
