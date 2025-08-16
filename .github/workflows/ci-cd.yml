@@ -217,10 +217,11 @@ jobs:
 
       - name: 🌟 Deploy to Railway Production
         run: |
-          echo "🚂 Linking to Railway project..."
-          railway link ${{ secrets.RAILWAY_PROJECT_ID }} || railway link --environment production
-          echo "🚀 Deploying to Railway..."
-          railway up --service ${{ secrets.RAILWAY_SERVICE }} || railway up
+          echo "🚂 Setting up Railway authentication..."
+          export RAILWAY_TOKEN="${{ secrets.RAILWAY_TOKEN }}"
+          
+          echo "� Deploying to Railway..."
+          railway up --detach
         env:
           RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
 
