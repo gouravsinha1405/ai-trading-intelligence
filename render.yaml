@@ -1,0 +1,29 @@
+services:
+  - type: web
+    name: ai-trading-platform
+    env: docker
+    dockerfilePath: ./Dockerfile
+    envVars:
+      - key: PORT
+        value: 8080
+      - key: STREAMLIT_SERVER_HEADLESS
+        value: true
+      - key: STREAMLIT_SERVER_PORT
+        value: 8080
+      - key: STREAMLIT_SERVER_ADDRESS
+        value: 0.0.0.0
+      - key: GROQ_API_KEY
+        fromParam: GROQ_API_KEY
+      - key: ADMIN_USERNAME
+        value: admin
+      - key: ADMIN_PASSWORD
+        fromParam: ADMIN_PASSWORD
+    healthCheckPath: /_stcore/health
+    autoDeploy: true
+    buildFilter:
+      paths:
+      - src/**
+      - pages/**
+      - main.py
+      - requirements.txt
+      - Dockerfile

@@ -11,6 +11,11 @@ yfinance>=0.2.0
 groq>=0.4.0
 scikit-learn>=1.4.0
 scipy>=1.11.0
+statsmodels>=0.14.0
+
+# Technical Analysis
+# TA-Lib>=0.4.28  # Commented out - may cause issues on Streamlit Cloud
+pandas-ta>=0.3.14b0  # Alternative to TA-Lib
 
 # News & Sentiment - Compatible versions
 feedparser>=6.0.0

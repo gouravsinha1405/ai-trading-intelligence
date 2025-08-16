@@ -3,7 +3,17 @@ from typing import Dict, List, Optional
 
 import numpy as np
 import pandas as pd
-from statsmodels.robust import mad
+
+# Handle statsmodels import gracefully
+try:
+    from statsmodels.robust import mad
+    STATSMODELS_AVAILABLE = True
+except ImportError:
+    STATSMODELS_AVAILABLE = False
+    # Fallback implementation using numpy
+    def mad(data, c=1.4826):
+        """Fallback median absolute deviation calculation"""
+        return np.median(np.abs(data - np.median(data))) * c
 
 
 class DataCleaner:

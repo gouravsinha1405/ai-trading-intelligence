@@ -25,8 +25,8 @@ st.set_page_config(
 # Inject mobile CSS
 inject_mobile_css()
 
-# Require authentication
-require_auth()
+# Authentication disabled for public demo
+# require_auth()
 
 # ---------- Data helpers ----------
 

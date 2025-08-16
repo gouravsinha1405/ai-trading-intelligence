@@ -46,13 +46,14 @@ def main():
     except ImportError:
         pass  # Mobile UI is optional
     
-    # Import authentication
-    try:
-        from auth.auth_ui import require_auth
-        require_auth()
-    except ImportError:
-        st.error("Authentication module not found. Please check your installation.")
-        return
+    # Authentication disabled for demo/public deployment
+    # To enable authentication, uncomment the lines below:
+    # try:
+    #     from auth.auth_ui import require_auth
+    #     require_auth()
+    # except ImportError:
+    #     st.error("Authentication module not found. Please check your installation.")
+    #     return
     
     # Main content
     st.title("🤖 AI Trading Intelligence Platform")

@@ -17,8 +17,8 @@ sys.path.append(str(Path(__file__).parent.parent / "src"))
 
 from auth.auth_ui import require_auth
 
-# Require authentication
-require_auth()
+# Authentication disabled for public demo
+# require_auth()
 
 # Set up comprehensive logging
 import os
