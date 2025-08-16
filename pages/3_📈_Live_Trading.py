@@ -66,20 +66,23 @@ def _normalize_live_dict(d):
 
 @st.cache_data(ttl=10, show_spinner=False)
 def fetch_live_data(symbols):
+    # DEPRECATED: This function was causing JSON parsing errors
+    # Using fetch_live_data_simplified instead
+    return None
     # returns normalized dict or None
-    try:
-        from src.data.jugaad_client import JugaadDataClient  # keep import consistent
+    # try:
+    #     from src.data.jugaad_client import JugaadDataClient  # keep import consistent
 
-        client = JugaadDataClient()
-        live = client.get_multiple_live_prices(symbols) or {}
-        if not live:
-            return None
-        clean = {
-            sym: _normalize_live_dict({**v, "symbol": sym}) for sym, v in live.items()
-        }
-        return clean
-    except Exception:
-        return None
+    #     client = JugaadDataClient()
+    #     live = client.get_multiple_live_prices(symbols) or {}
+    #     if not live:
+    #         return None
+    #     clean = {
+    #         sym: _normalize_live_dict({**v, "symbol": sym}) for sym, v in live.items()
+    #     }
+    #     return clean
+    # except Exception:
+    #     return None
 
 
 def process_limit_orders(live_data):
@@ -138,6 +141,8 @@ def get_replay_data(symbols, replay_date, current_time_index=0):
         # Convert datetime.date to date object if needed
         if isinstance(replay_date, datetime):
             replay_date = replay_date.date()
+        
+        print(f"🔄 Fetching historical data for {len(symbols)} symbols on {replay_date}")
         
         for symbol in symbols:
             try:
@@ -206,19 +211,82 @@ def get_replay_data(symbols, replay_date, current_time_index=0):
                         "close": float(close_price),  # End-of-day close price
                     }
                     
-                    print(f"✅ Replay data loaded for {symbol}: ₹{current_price:.2f} ({replay_date})")
+                    print(f"✅ {symbol}: ₹{current_price:.2f} (Open: ₹{open_price:.2f}, Close: ₹{close_price:.2f})")
+                else:
+                    print(f"⚠️ {symbol}: No data available for {replay_date}")
                 
             except Exception as e:
-                print(f"⚠️ Error getting replay data for {symbol}: {e}")
+                print(f"❌ {symbol}: {str(e)[:100]}...")  # Truncate long error messages
                 continue
         
-        return replay_data if replay_data else None
+        if replay_data:
+            print(f"✅ Successfully loaded replay data for {len(replay_data)} symbols")
+            return replay_data
+        else:
+            print("❌ No replay data could be loaded")
+            return None
         
     except ImportError as e:
         print(f"❌ jugaad-data not available: {e}")
         return None
     except Exception as e:
         print(f"❌ Error in replay system: {e}")
+        return None
+
+
+def fetch_live_data_simplified(symbols):
+    """
+    Simplified live data fetching with better error handling
+    
+    Args:
+        symbols: List of stock symbols
+    
+    Returns:
+        Dict with live data or None if failed
+    """
+    try:
+        # Try yfinance first (more reliable for live data)
+        import yfinance as yf
+        live_data = {}
+        
+        for symbol in symbols:
+            try:
+                # Get live data from yfinance
+                ticker = yf.Ticker(f"{symbol}.NS")
+                info = ticker.info
+                
+                if info and 'regularMarketPrice' in info:
+                    current_price = info.get('regularMarketPrice', 0)
+                    prev_close = info.get('previousClose', current_price)
+                    open_price = info.get('regularMarketOpen', current_price)
+                    high_price = info.get('dayHigh', current_price)
+                    low_price = info.get('dayLow', current_price)
+                    volume = info.get('regularMarketVolume', 0)
+                    
+                    change = current_price - prev_close
+                    p_change = (change / prev_close * 100) if prev_close else 0
+                    
+                    live_data[symbol] = {
+                        "symbol": symbol,
+                        "price": float(current_price),
+                        "change": float(change),
+                        "pChange": float(p_change),
+                        "open": float(open_price),
+                        "high": float(high_price),
+                        "low": float(low_price),
+                        "volume": int(volume),
+                        "timestamp": datetime.now(),
+                    }
+                    print(f"✅ Live data: {symbol} = ₹{current_price:.2f}")
+                
+            except Exception as e:
+                print(f"⚠️ {symbol} live data failed: {str(e)[:50]}...")
+                continue
+        
+        return live_data if live_data else None
+        
+    except Exception as e:
+        print(f"❌ Live data system error: {e}")
         return None
 
 
@@ -398,8 +466,8 @@ def main():
     # Get symbols to watch - use canonicalized symbols
     symbols = canonicalize_symbols(["RELIANCE", "TCS", "INFY", "HDFC", "ICICI"])
 
-    # Try to get live data first
-    live_data = fetch_live_data(symbols)
+    # Try to get live data first (simplified approach)
+    live_data = fetch_live_data_simplified(symbols)
     is_real_data = live_data is not None
     data_source = "Real Live Data"
     
