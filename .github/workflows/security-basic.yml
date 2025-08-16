@@ -1,0 +1,58 @@
+name: 🛡️ Basic Security Checks
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+  workflow_dispatch:
+
+jobs:
+  security-basics:
+    name: 🔍 Basic Security Scanning
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: 📥 Checkout Code
+        uses: actions/checkout@v4
+
+      - name: 🐍 Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: 🔧 Install security tools
+        run: |
+          python -m pip install --upgrade pip
+          pip install bandit safety
+          pip install -r requirements.txt
+
+      - name: 🔍 Run Bandit Security Scan
+        run: |
+          echo "🔍 Running Bandit security scan..."
+          bandit -r . -f txt || true
+          echo "✅ Bandit scan completed"
+
+      - name: 🔒 Check for Known Vulnerabilities
+        run: |
+          echo "🔒 Checking for known vulnerabilities..."
+          safety check || true
+          echo "✅ Safety check completed"
+
+      - name: 🧪 Check for Secrets
+        run: |
+          echo "🧪 Checking for potential secrets..."
+          grep -r --include="*.py" --include="*.yml" --include="*.yaml" --include="*.json" -i "password\|secret\|key\|token" . || true
+          echo "✅ Secret scan completed"
+
+      - name: 🔧 Check File Permissions
+        run: |
+          echo "🔧 Checking file permissions..."
+          find . -type f -executable -name "*.py" | head -10
+          echo "✅ Permission check completed"
+
+      - name: ✅ Security Summary
+        run: |
+          echo "🛡️ Security scan completed successfully!"
+          echo "📊 All basic security checks have been run"
+          echo "🔍 Review the output above for any findings"
