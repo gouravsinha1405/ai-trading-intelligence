@@ -6,11 +6,25 @@ import time
 import random
 import pytz
 
+# Graceful fallback for jugaad-data import
+JUGAAD_AVAILABLE = False
 try:
     from jugaad_data.nse import stock_df, index_df
     from jugaad_data.nse import NSELive
+    JUGAAD_AVAILABLE = True
+    print("✅ jugaad-data loaded successfully")
 except ImportError as e:
-    print(f"jugaad-data not available: {e}")
+    print(f"⚠️ jugaad-data not available: {e}")
+    print("📊 Using yfinance as primary data source")
+
+# Fallback to yfinance
+try:
+    import yfinance as yf
+    YF_AVAILABLE = True
+    print("✅ yfinance loaded successfully")
+except ImportError:
+    YF_AVAILABLE = False
+    print("❌ yfinance not available")
 
 # Timezone for Indian markets
 IST = pytz.timezone('Asia/Kolkata')
@@ -48,13 +62,17 @@ class JugaadDataClient:
             datetime(2024, 11, 15).date(), # Guru Nanak Jayanti
         }
         
-        # Initialize NSE Live client
-        try:
-            self.nse_live = NSELive()
-            self.logger.info("NSE Live client initialized successfully")
-        except Exception as e:
+        # Initialize NSE Live client if jugaad-data is available
+        if JUGAAD_AVAILABLE:
+            try:
+                self.nse_live = NSELive()
+                self.logger.info("NSE Live client initialized successfully")
+            except Exception as e:
+                self.nse_live = None
+                self.logger.warning(f"NSE Live client initialization failed: {e}")
+        else:
             self.nse_live = None
-            self.logger.warning(f"NSE Live client initialization failed: {e}")
+            self.logger.info("NSE Live client not available (jugaad-data not installed)")
     
     def _to_float(self, x) -> float:
         """
@@ -81,7 +99,7 @@ class JugaadDataClient:
     def get_stock_data(self, symbol: str, from_date, to_date, 
                       series: str = "EQ") -> Optional[pd.DataFrame]:
         """
-        Get historical stock data
+        Get historical stock data with fallback support
         
         Args:
             symbol: Stock symbol (e.g., 'RELIANCE', 'TCS')
@@ -92,27 +110,55 @@ class JugaadDataClient:
         Returns:
             DataFrame with OHLCV data
         """
-        try:
-            # Convert string dates to datetime if needed
-            if isinstance(from_date, str):
-                from_date = datetime.strptime(from_date, '%Y-%m-%d')
-            if isinstance(to_date, str):
-                to_date = datetime.strptime(to_date, '%Y-%m-%d')
+        # Try jugaad-data first if available
+        if JUGAAD_AVAILABLE:
+            try:
+                # Convert string dates to datetime if needed
+                if isinstance(from_date, str):
+                    from_date = datetime.strptime(from_date, '%Y-%m-%d')
+                if isinstance(to_date, str):
+                    to_date = datetime.strptime(to_date, '%Y-%m-%d')
+                    
+                df = stock_df(symbol=symbol, from_date=from_date, to_date=to_date, series=series)
                 
-            df = stock_df(symbol=symbol, from_date=from_date, to_date=to_date, series=series)
-            
-            if df is not None and not df.empty:
-                # Clean and standardize data with production-ready methods
-                df = self._clean_data(df)
-                self.logger.info(f"Retrieved {len(df)} records for {symbol}")
-                return df
-            else:
-                self.logger.warning(f"No data found for {symbol} from {from_date} to {to_date}")
-                return None
+                if df is not None and not df.empty:
+                    df = self._clean_data(df)
+                    self.logger.info(f"Retrieved {len(df)} records for {symbol} via jugaad-data")
+                    return df
+                    
+            except Exception as e:
+                self.logger.warning(f"jugaad-data failed for {symbol}: {e}, trying yfinance")
+        
+        # Fallback to yfinance
+        if YF_AVAILABLE:
+            try:
+                import yfinance as yf
                 
-        except Exception as e:
-            self.logger.error(f"Error fetching stock data for {symbol}: {e}")
-            return None
+                # Convert NSE symbol to Yahoo Finance format
+                yf_symbol = symbol + ".NS"  # Add .NS for NSE stocks
+                
+                ticker = yf.Ticker(yf_symbol)
+                df = ticker.history(start=from_date, end=to_date)
+                
+                if not df.empty:
+                    # Rename columns to match jugaad-data format
+                    df.rename(columns={
+                        'Open': 'OPEN',
+                        'High': 'HIGH', 
+                        'Low': 'LOW',
+                        'Close': 'CLOSE',
+                        'Volume': 'VOLUME'
+                    }, inplace=True)
+                    
+                    df = self._clean_data(df)
+                    self.logger.info(f"Retrieved {len(df)} records for {symbol} via yfinance")
+                    return df
+                    
+            except Exception as e:
+                self.logger.error(f"yfinance also failed for {symbol}: {e}")
+        
+        self.logger.error(f"All data sources failed for {symbol}")
+        return None
     
     def get_index_data(self, index: str, from_date: datetime, to_date: datetime) -> Optional[pd.DataFrame]:
         """
