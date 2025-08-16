@@ -11,8 +11,17 @@ ROOT = Path(__file__).resolve().parent
 sys.path.append(str(ROOT.parent / "src"))
 
 from auth.auth_ui import require_auth
+from utils.mobile_ui import inject_mobile_css, mobile_friendly_columns, responsive_chart_config
 
-st.set_page_config(page_title="Dashboard", page_icon="📊", layout="wide")
+st.set_page_config(
+    page_title="Dashboard", 
+    page_icon="📊", 
+    layout="wide",
+    initial_sidebar_state="auto"
+)
+
+# Inject mobile CSS
+inject_mobile_css()
 
 # Require authentication
 require_auth()
@@ -82,7 +91,8 @@ def main():
     st.title("📊 Trading Dashboard")
 
     # Metrics row (hook these to real stats later)
-    m1, m2, m3, m4 = st.columns(4)
+    # Mobile-friendly metrics layout
+    m1, m2, m3, m4 = mobile_friendly_columns([1, 1, 1, 1])
     with m1:
         st.metric("Portfolio Value", "₹1,00,000", "₹2,450 (2.45%)")
     with m2:
@@ -93,7 +103,8 @@ def main():
         st.metric("Win Rate", "68.5%", "2.3%")
 
     # Performance + Strategies
-    c1, c2 = st.columns([2, 1])
+    # Mobile-friendly chart layout
+    c1, c2 = mobile_friendly_columns([2, 1])
     with c1:
         st.subheader("📈 Portfolio Performance")
         pf = generate_portfolio_df()
@@ -119,7 +130,8 @@ def main():
     st.subheader("🌍 Market Overview")
     market_data, live_prices = get_real_market_overview()
 
-    k1, k2, k3 = st.columns(3)
+    # Mobile-friendly key insights layout
+    k1, k2, k3 = mobile_friendly_columns([1, 1, 1])
     with k1:
         d = market_data.get("NIFTY 50", {})
         st.metric("NIFTY 50", f"{d.get('value','—'):.2f}" if isinstance(d.get("value"), (int,float)) else d.get("value","—"),

@@ -11,7 +11,18 @@ import streamlit as st
 ROOT = Path(__file__).resolve().parent
 sys.path.append(str(ROOT.parent / "src"))
 
-st.set_page_config(page_title="Strategy Builder", page_icon="🔧", layout="wide")
+from utils.mobile_ui import inject_mobile_css, mobile_friendly_columns, responsive_chart_config
+
+st.set_page_config(
+    page_title="Strategy Builder", 
+    page_icon="🔧", 
+    layout="wide",
+    initial_sidebar_state="auto"
+)
+
+# Inject mobile CSS
+inject_mobile_css()
+
 st.title("🔧 Strategy Builder")
 st.caption("educational prototype • no investment advice • paper testing only")
 

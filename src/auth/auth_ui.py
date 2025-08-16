@@ -1,21 +1,26 @@
 """
 Authentication UI Components
-Login forms, admin panel, and user management interface
+Login forms, admin panel, and user management interface with mobile optimization
 """
 
 import streamlit as st
 import pandas as pd
 from datetime import datetime
 from src.auth.auth_manager import auth_manager
+from src.utils.mobile_ui import inject_mobile_css, mobile_friendly_columns
 
 def show_login_page():
-    """Display login page"""
+    """Display mobile-friendly login page"""
     st.set_page_config(
         page_title="AI Trading Platform - Login",
         page_icon="🔐",
         layout="centered"
     )
     
+    # Inject mobile CSS
+    inject_mobile_css()
+    
+    # Mobile-friendly login interface
     st.title("🔐 AI Trading Platform")
     st.subheader("Secure Login")
     
