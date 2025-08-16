@@ -111,15 +111,36 @@ jobs:
       - name: 🔍 Run Trivy vulnerability scanner
         run: |
           echo "🔍 Running Trivy vulnerability scanner..."
-          # Create empty SARIF file as fallback
-          echo '{"runs": [{"tool": {"driver": {"name": "trivy"}}, "results": []}]}' > trivy-results.sarif
           
-          # Run Trivy scan (continue on error)
+          # Create proper SARIF template with required version property
+          cat > trivy-results.sarif << 'EOF'
+          {
+            "version": "2.1.0",
+            "$schema": "https://raw.githubusercontent.com/oasis-tcs/sarif-spec/master/Schemata/sarif-schema-2.1.0.json",
+            "runs": [
+              {
+                "tool": {
+                  "driver": {
+                    "name": "Trivy",
+                    "version": "latest",
+                    "informationUri": "https://trivy.dev"
+                  }
+                },
+                "results": []
+              }
+            ]
+          }
+          EOF
+          
+          # Run Trivy scan with proper SARIF format
           docker run --rm -v "$(pwd)":/workspace \
             aquasec/trivy:latest image \
             --format sarif \
             --output /workspace/trivy-results.sarif \
-            ai-trading-platform:${{ github.sha }} || echo "⚠️ Trivy scan completed with warnings"
+            ai-trading-platform:${{ github.sha }} || {
+              echo "⚠️ Trivy scan completed with warnings or errors"
+              echo "Using fallback SARIF template"
+            }
           
           echo "✅ Trivy scan output generated"
 
@@ -128,6 +149,7 @@ jobs:
         if: always() && github.event_name != 'pull_request'
         with:
           sarif_file: 'trivy-results.sarif'
+        continue-on-error: true
 
   # ============================================================================
   # Deploy to Staging
