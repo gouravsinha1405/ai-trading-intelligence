@@ -21,9 +21,7 @@ beautifulsoup4>=4.9.0
 python-dotenv>=1.0.0
 
 # Authentication & Security
-secrets>=1.0.0  # For secure token generation
-hmac  # Built-in, for password verification
-hashlib  # Built-in, for password hashing
+# secrets, hmac, hashlib are built-in Python modules - no installation needed
 
 # Optional packages for enhanced functionality
 # jugaad-data>=0.20  # Commented out due to Python 3.13 compatibility issues
