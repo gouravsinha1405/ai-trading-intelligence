@@ -153,9 +153,10 @@ jobs:
             semgrep-results.json
             trivy-docker-results.sarif
 
-      - name: 🚨 Security Notifications
+      - name: 🚨 Security Notifications  
         if: failure()
         uses: 8398a7/action-slack@v3
+        continue-on-error: true
         with:
           status: failure
           text: |

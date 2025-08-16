@@ -113,6 +113,7 @@ jobs:
       - name: 🎉 Release Notification
         uses: 8398a7/action-slack@v3
         if: always()
+        continue-on-error: true
         with:
           status: ${{ job.status }}
           text: |
