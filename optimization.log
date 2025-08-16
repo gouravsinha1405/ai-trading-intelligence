@@ -1083,3 +1083,40 @@ TypeError: cannot unpack non-iterable int object
 2025-08-16 05:13:34,968 - httpx - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
 2025-08-16 05:13:35,432 - httpx - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
 2025-08-16 05:13:35,898 - httpx - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2025-08-16 06:07:28,439 - __main__ - INFO - AI Assistant page loaded - logging initialized
+2025-08-16 06:07:28,450 - __main__ - INFO - Loading configuration...
+2025-08-16 06:07:28,452 - __main__ - INFO - Config loaded - Keys available: ['groq_api_key', 'alpha_vantage_api_key', 'news_api_key', 'debug', 'log_level', 'virtual_money', 'commission']
+2025-08-16 06:07:28,452 - __main__ - INFO - AI analyzer found in session state - using cached version
+2025-08-16 06:15:21,264 - src.data.jugaad_client - WARNING - NSE Live client initialization failed: HTTPSConnectionPool(host='www.nseindia.com', port=443): Max retries exceeded with url: /get-quotes/equity?symbol=LT (Caused by NameResolutionError("<urllib3.connection.HTTPSConnection object at 0x71a4e2d30b30>: Failed to resolve 'www.nseindia.com' ([Errno -3] Temporary failure in name resolution)"))
+2025-08-16 06:15:31,274 - src.data.jugaad_client - WARNING - NSE Live client initialization failed: HTTPSConnectionPool(host='www.nseindia.com', port=443): Max retries exceeded with url: /get-quotes/equity?symbol=LT (Caused by NameResolutionError("<urllib3.connection.HTTPSConnection object at 0x71a54d7efb00>: Failed to resolve 'www.nseindia.com' ([Errno -3] Temporary failure in name resolution)"))
+2025-08-16 06:15:31,275 - src.data.jugaad_client - ERROR - NSE Live client not initialized
+2025-08-16 06:15:31,376 - src.data.jugaad_client - ERROR - NSE Live client not initialized
+2025-08-16 06:15:31,477 - src.data.jugaad_client - ERROR - NSE Live client not initialized
+2025-08-16 06:15:31,577 - src.data.jugaad_client - ERROR - NSE Live client not initialized
+2025-08-16 06:15:31,678 - src.data.jugaad_client - ERROR - NSE Live client not initialized
+2025-08-16 06:15:51,829 - src.data.jugaad_client - WARNING - NSE Live client initialization failed: HTTPSConnectionPool(host='www.nseindia.com', port=443): Max retries exceeded with url: /get-quotes/equity?symbol=LT (Caused by NameResolutionError("<urllib3.connection.HTTPSConnection object at 0x71a53676ee70>: Failed to resolve 'www.nseindia.com' ([Errno -3] Temporary failure in name resolution)"))
+2025-08-16 06:15:51,829 - src.data.jugaad_client - ERROR - NSE Live client not initialized
+2025-08-16 06:15:51,930 - src.data.jugaad_client - ERROR - NSE Live client not initialized
+2025-08-16 06:15:52,030 - src.data.jugaad_client - ERROR - NSE Live client not initialized
+2025-08-16 06:15:52,131 - src.data.jugaad_client - ERROR - NSE Live client not initialized
+2025-08-16 06:15:52,231 - src.data.jugaad_client - ERROR - NSE Live client not initialized
+2025-08-16 06:16:14,564 - src.data.jugaad_client - INFO - NSE Live client initialized successfully
+2025-08-16 06:16:43,433 - src.data.jugaad_client - INFO - NSE Live client initialized successfully
+2025-08-16 06:16:43,458 - src.data.data_cleaner - ERROR - Error in safe OHLCV cleaning: cannot reindex on an axis with duplicate labels
+2025-08-16 06:16:43,458 - src.data.jugaad_client - INFO - Retrieved 250 records for RELIANCE via jugaad-data
+2025-08-16 06:16:43,462 - src.data.data_cleaner - ERROR - Error in safe OHLCV cleaning: cannot reindex on an axis with duplicate labels
+2025-08-16 06:16:43,464 - src.data.data_cleaner - WARNING - Negative price check failed for Close: unsupported operand type(s) for +: 'int' and 'str'
+2025-08-16 06:16:43,465 - src.data.data_cleaner - WARNING - Price gap analysis failed: unsupported operand type(s) for +: 'int' and 'str'
+2025-08-16 06:16:43,466 - src.data.data_cleaner - INFO - OHLC integrity score: 100.0
+2025-08-16 06:16:50,632 - __main__ - INFO - AI Assistant page loaded - logging initialized
+2025-08-16 06:16:50,647 - __main__ - INFO - Loading configuration...
+2025-08-16 06:16:50,649 - __main__ - INFO - Config loaded - Keys available: ['groq_api_key', 'alpha_vantage_api_key', 'news_api_key', 'debug', 'log_level', 'virtual_money', 'commission']
+2025-08-16 06:16:50,649 - __main__ - INFO - Initializing AI analyzer...
+2025-08-16 06:16:50,649 - __main__ - INFO - Creating AI analyzer with API key...
+2025-08-16 06:16:50,650 - __main__ - INFO - Initializing AI analyzer...
+2025-08-16 06:16:50,667 - __main__ - INFO - AI analyzer initialized successfully
+2025-08-16 06:16:50,668 - __main__ - INFO - AI analyzer successfully initialized and cached
+2025-08-16 06:16:52,380 - src.data.jugaad_client - INFO - NSE Live client initialized successfully
+2025-08-16 06:17:05,615 - src.data.jugaad_client - INFO - NSE Live client initialized successfully
+2025-08-16 06:17:17,337 - src.data.jugaad_client - INFO - NSE Live client initialized successfully
+2025-08-16 06:17:35,472 - httpx - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
