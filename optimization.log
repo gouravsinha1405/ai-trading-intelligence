@@ -1,0 +1,1085 @@
+2025-08-16 01:30:07,306 - __main__ - INFO - AI Assistant page loaded - logging initialized
+2025-08-16 01:30:07,307 - __main__ - INFO - AI Assistant page loaded - logging initialized
+2025-08-16 01:30:07,564 - __main__ - INFO - Loading configuration...
+2025-08-16 01:30:07,566 - __main__ - INFO - Config loaded - Keys available: ['groq_api_key', 'alpha_vantage_api_key', 'news_api_key', 'debug', 'log_level', 'virtual_money', 'commission']
+2025-08-16 01:30:07,567 - __main__ - INFO - Initializing AI analyzer...
+2025-08-16 01:30:07,568 - __main__ - INFO - Creating AI analyzer with API key...
+2025-08-16 01:30:07,569 - __main__ - INFO - Initializing AI analyzer...
+2025-08-16 01:30:07,648 - __main__ - INFO - AI analyzer initialized successfully
+2025-08-16 01:30:07,649 - __main__ - INFO - AI analyzer successfully initialized and cached
+2025-08-16 01:30:07,784 - __main__ - INFO - Loading configuration...
+2025-08-16 01:30:07,786 - __main__ - INFO - Config loaded - Keys available: ['groq_api_key', 'alpha_vantage_api_key', 'news_api_key', 'debug', 'log_level', 'virtual_money', 'commission']
+2025-08-16 01:30:07,786 - __main__ - INFO - Initializing AI analyzer...
+2025-08-16 01:30:07,786 - __main__ - INFO - Creating AI analyzer with API key...
+2025-08-16 01:30:07,787 - __main__ - INFO - AI analyzer successfully initialized and cached
+2025-08-16 01:30:19,091 - __main__ - INFO - AI Assistant page loaded - logging initialized
+2025-08-16 01:30:19,093 - __main__ - INFO - Loading configuration...
+2025-08-16 01:30:19,095 - __main__ - INFO - Config loaded - Keys available: ['groq_api_key', 'alpha_vantage_api_key', 'news_api_key', 'debug', 'log_level', 'virtual_money', 'commission']
+2025-08-16 01:30:19,095 - __main__ - INFO - AI analyzer found in session state - using cached version
+2025-08-16 01:30:19,102 - __main__ - INFO - 🚀 START AI OPTIMIZATION BUTTON CLICKED
+2025-08-16 01:30:19,102 - __main__ - INFO - User parameters - SMA Fast: 10, SMA Slow: 30, Risk: 0.01
+2025-08-16 01:30:19,103 - __main__ - INFO - Optimization settings - Max iterations: 5, Min gain: 10.0%, Max DD tolerance: 2.0 pp
+2025-08-16 01:30:19,104 - __main__ - INFO - Strategy config created: {'name': 'SMA Crossover Strategy', 'description': 'Long when fast SMA > slow SMA; exit when fast SMA < slow SMA or stop loss triggered', 'universe': 'NIFTY50', 'timeframe': '1D', 'objective': 'maximize_sortino', 'constraints': {'max_dd': 0.15, 'risk_per_trade': 0.015, 'turnover_pa': 2.0}, 'knobs': {'sma_fast': 10, 'sma_slow': 30, 'risk_per_trade': 0.01}, 'invariants': ['sma_fast < sma_slow', 'risk_per_trade <= 1.5%']}
+2025-08-16 01:30:19,104 - __main__ - INFO - Generating market data...
+2025-08-16 01:30:19,108 - __main__ - INFO - Market data generated - Shape: (365, 5)
+2025-08-16 01:30:19,110 - __main__ - INFO - Market data prepared for analyzer - Columns: ['Close', 'High', 'Low', 'Volume']
+2025-08-16 01:30:19,111 - __main__ - INFO - Starting optimization process...
+2025-08-16 01:30:19,112 - __main__ - INFO - AI analyzer found in session state
+2025-08-16 01:30:19,112 - __main__ - INFO - Calling iterate_optimization...
+2025-08-16 01:30:19,113 - __main__ - INFO - ============================================================
+2025-08-16 01:30:19,114 - __main__ - INFO - STARTING OPTIMIZATION
+2025-08-16 01:30:19,114 - __main__ - INFO - Max iterations: 5
+2025-08-16 01:30:19,114 - __main__ - INFO - Min gain threshold: 10.0%
+2025-08-16 01:30:19,115 - __main__ - INFO - Max drawdown tolerance: 2.0 pp
+2025-08-16 01:30:19,115 - __main__ - INFO - Initial strategy config: {'name': 'SMA Crossover Strategy', 'description': 'Long when fast SMA > slow SMA; exit when fast SMA < slow SMA or stop loss triggered', 'universe': 'NIFTY50', 'timeframe': '1D', 'objective': 'maximize_sortino', 'constraints': {'max_dd': 0.15, 'risk_per_trade': 0.015, 'turnover_pa': 2.0}, 'knobs': {'sma_fast': 10, 'sma_slow': 30, 'risk_per_trade': 0.01}, 'invariants': ['sma_fast < sma_slow', 'risk_per_trade <= 1.5%']}
+2025-08-16 01:30:19,116 - __main__ - INFO - Champion config initialized: {'name': 'SMA Crossover Strategy', 'description': 'Long when fast SMA > slow SMA; exit when fast SMA < slow SMA or stop loss triggered', 'universe': 'NIFTY50', 'timeframe': '1D', 'objective': 'maximize_sortino', 'constraints': {'max_dd': 0.15, 'risk_per_trade': 0.015, 'turnover_pa': 2.0}, 'knobs': {'sma_fast': 10, 'sma_slow': 30, 'risk_per_trade': 0.01}, 'invariants': ['sma_fast < sma_slow', 'risk_per_trade <= 1.5%']}
+2025-08-16 01:30:19,116 - __main__ - INFO - Running baseline backtest...
+2025-08-16 01:30:19,117 - __main__ - INFO - Starting mock backtest with config: {'name': 'SMA Crossover Strategy', 'description': 'Long when fast SMA > slow SMA; exit when fast SMA < slow SMA or stop loss triggered', 'universe': 'NIFTY50', 'timeframe': '1D', 'objective': 'maximize_sortino', 'constraints': {'max_dd': 0.15, 'risk_per_trade': 0.015, 'turnover_pa': 2.0}, 'knobs': {'sma_fast': 10, 'sma_slow': 30, 'risk_per_trade': 0.01}, 'invariants': ['sma_fast < sma_slow', 'risk_per_trade <= 1.5%']}
+2025-08-16 01:30:19,117 - __main__ - INFO - Extracted knobs: {'sma_fast': 10, 'sma_slow': 30, 'risk_per_trade': 0.01}
+2025-08-16 01:30:19,118 - __main__ - INFO - Parameters - SMA Fast: 10, SMA Slow: 30, Risk: 0.01
+2025-08-16 01:30:19,118 - __main__ - INFO - Calculated multipliers - Trend: 0.980, Lag: 0.975, Risk: 1.000
+2025-08-16 01:30:19,119 - __main__ - INFO - Adjusted return: 0.00096, volatility: 0.02000
+2025-08-16 01:30:19,119 - __main__ - INFO - Generated 253 portfolio values
+2025-08-16 01:30:19,120 - __main__ - INFO - Max signals allowed: 20
+2025-08-16 01:30:19,121 - __main__ - INFO - Selected signal days: [214  25 142  50 231]... (showing first 5)
+2025-08-16 01:30:19,125 - __main__ - INFO - Calculated metrics - Return: 19.12%, Sharpe: 0.72, Drawdown: 25.65%
+2025-08-16 01:30:19,126 - __main__ - INFO - Mock backtest completed successfully
+2025-08-16 01:30:19,126 - __main__ - INFO - Baseline results: {'total_return': np.float64(19.122717136423063), 'sharpe_ratio': np.float64(0.7223201448297739), 'sortino_ratio': np.float64(1.3189268904418259), 'max_drawdown': np.float64(25.65024750197555), 'profit_factor': np.float64(1.1218067707404045), 'win_rate': 53.17460317460318, 'avg_win': np.float64(0.015244914237810363), 'avg_loss': np.float64(-0.015432266683219042), 'exposure': 0.8, 'turnover': 1.5, 'total_trades': 20}
+2025-08-16 01:30:19,127 - __main__ - INFO - Baseline objective (Sortino): 1.3189
+2025-08-16 01:30:19,127 - __main__ - INFO - Baseline drawdown: 25.65%
+2025-08-16 01:30:19,128 - __main__ - INFO - Parameter bounds: {'sma_fast': [7.0, 13.0], 'sma_slow': [21.0, 39.0], 'risk_per_trade': [0.006999999999999999, 0.013000000000000001]}
+2025-08-16 01:30:19,128 - __main__ - INFO - 
+--- ITERATION 1/5 ---
+2025-08-16 01:30:19,128 - __main__ - INFO - Requesting AI suggestion...
+2025-08-16 01:30:20,326 - httpx - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2025-08-16 01:30:20,334 - __main__ - ERROR - Error getting AI suggestion: cannot unpack non-iterable int object
+2025-08-16 01:30:20,336 - __main__ - ERROR - Traceback (most recent call last):
+  File "/home/gourav/ai/pages/6_🤖_AI_Assistant.py", line 332, in iterate_optimization
+    suggestion = analyzer.optimize_strategy_structured(
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/gourav/ai/src/analysis/ai_analyzer.py", line 594, in optimize_strategy_structured
+    result = self._clamp_changes(result, optimization_data["strategy"].get("knobs", {}))
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/gourav/ai/src/analysis/ai_analyzer.py", line 109, in _clamp_changes
+    low, high = knobs[param]
+    ^^^^^^^^^
+TypeError: cannot unpack non-iterable int object
+
+2025-08-16 01:30:20,336 - __main__ - WARNING - Invalid AI suggestion: None
+2025-08-16 01:30:20,337 - __main__ - INFO - ============================================================
+2025-08-16 01:30:20,337 - __main__ - INFO - OPTIMIZATION COMPLETED
+2025-08-16 01:30:20,337 - __main__ - INFO - Final objective: 1.3189
+2025-08-16 01:30:20,338 - __main__ - INFO - Final drawdown: 25.65%
+2025-08-16 01:30:20,338 - __main__ - INFO - Total iterations: 1
+2025-08-16 01:30:20,338 - __main__ - INFO - ============================================================
+2025-08-16 01:30:20,339 - __main__ - INFO - Optimization completed - Result keys: dict_keys(['champion_config', 'champion_perf', 'iterations', 'total_iterations', 'final_objective', 'final_drawdown_pct'])
+2025-08-16 01:30:20,340 - __main__ - INFO - Result stored in session state
+2025-08-16 01:30:20,341 - __main__ - INFO - Optimization summary: Completed 1 iterations with 0 promotions. Final Sortino: 1.319
+2025-08-16 01:30:31,217 - __main__ - INFO - AI Assistant page loaded - logging initialized
+2025-08-16 01:30:31,219 - __main__ - INFO - Loading configuration...
+2025-08-16 01:30:31,221 - __main__ - INFO - Config loaded - Keys available: ['groq_api_key', 'alpha_vantage_api_key', 'news_api_key', 'debug', 'log_level', 'virtual_money', 'commission']
+2025-08-16 01:30:31,221 - __main__ - INFO - AI analyzer found in session state - using cached version
+2025-08-16 01:30:31,227 - __main__ - INFO - 🚀 START AI OPTIMIZATION BUTTON CLICKED
+2025-08-16 01:30:31,228 - __main__ - INFO - User parameters - SMA Fast: 10, SMA Slow: 30, Risk: 0.01
+2025-08-16 01:30:31,230 - __main__ - INFO - Optimization settings - Max iterations: 5, Min gain: 10.0%, Max DD tolerance: 2.0 pp
+2025-08-16 01:30:31,230 - __main__ - INFO - Strategy config created: {'name': 'SMA Crossover Strategy', 'description': 'Long when fast SMA > slow SMA; exit when fast SMA < slow SMA or stop loss triggered', 'universe': 'NIFTY50', 'timeframe': '1D', 'objective': 'maximize_sortino', 'constraints': {'max_dd': 0.15, 'risk_per_trade': 0.015, 'turnover_pa': 2.0}, 'knobs': {'sma_fast': 10, 'sma_slow': 30, 'risk_per_trade': 0.01}, 'invariants': ['sma_fast < sma_slow', 'risk_per_trade <= 1.5%']}
+2025-08-16 01:30:31,231 - __main__ - INFO - Generating market data...
+2025-08-16 01:30:31,232 - __main__ - INFO - Market data generated - Shape: (365, 5)
+2025-08-16 01:30:31,233 - __main__ - INFO - Market data prepared for analyzer - Columns: ['Close', 'High', 'Low', 'Volume']
+2025-08-16 01:30:31,234 - __main__ - INFO - Starting optimization process...
+2025-08-16 01:30:31,234 - __main__ - INFO - AI analyzer found in session state
+2025-08-16 01:30:31,236 - __main__ - INFO - Calling iterate_optimization...
+2025-08-16 01:30:31,236 - __main__ - INFO - ============================================================
+2025-08-16 01:30:31,237 - __main__ - INFO - STARTING OPTIMIZATION
+2025-08-16 01:30:31,237 - __main__ - INFO - Max iterations: 5
+2025-08-16 01:30:31,238 - __main__ - INFO - Min gain threshold: 10.0%
+2025-08-16 01:30:31,238 - __main__ - INFO - Max drawdown tolerance: 2.0 pp
+2025-08-16 01:30:31,239 - __main__ - INFO - Initial strategy config: {'name': 'SMA Crossover Strategy', 'description': 'Long when fast SMA > slow SMA; exit when fast SMA < slow SMA or stop loss triggered', 'universe': 'NIFTY50', 'timeframe': '1D', 'objective': 'maximize_sortino', 'constraints': {'max_dd': 0.15, 'risk_per_trade': 0.015, 'turnover_pa': 2.0}, 'knobs': {'sma_fast': 10, 'sma_slow': 30, 'risk_per_trade': 0.01}, 'invariants': ['sma_fast < sma_slow', 'risk_per_trade <= 1.5%']}
+2025-08-16 01:30:31,239 - __main__ - INFO - Champion config initialized: {'name': 'SMA Crossover Strategy', 'description': 'Long when fast SMA > slow SMA; exit when fast SMA < slow SMA or stop loss triggered', 'universe': 'NIFTY50', 'timeframe': '1D', 'objective': 'maximize_sortino', 'constraints': {'max_dd': 0.15, 'risk_per_trade': 0.015, 'turnover_pa': 2.0}, 'knobs': {'sma_fast': 10, 'sma_slow': 30, 'risk_per_trade': 0.01}, 'invariants': ['sma_fast < sma_slow', 'risk_per_trade <= 1.5%']}
+2025-08-16 01:30:31,240 - __main__ - INFO - Running baseline backtest...
+2025-08-16 01:30:31,240 - __main__ - INFO - Starting mock backtest with config: {'name': 'SMA Crossover Strategy', 'description': 'Long when fast SMA > slow SMA; exit when fast SMA < slow SMA or stop loss triggered', 'universe': 'NIFTY50', 'timeframe': '1D', 'objective': 'maximize_sortino', 'constraints': {'max_dd': 0.15, 'risk_per_trade': 0.015, 'turnover_pa': 2.0}, 'knobs': {'sma_fast': 10, 'sma_slow': 30, 'risk_per_trade': 0.01}, 'invariants': ['sma_fast < sma_slow', 'risk_per_trade <= 1.5%']}
+2025-08-16 01:30:31,241 - __main__ - INFO - Extracted knobs: {'sma_fast': 10, 'sma_slow': 30, 'risk_per_trade': 0.01}
+2025-08-16 01:30:31,241 - __main__ - INFO - Parameters - SMA Fast: 10, SMA Slow: 30, Risk: 0.01
+2025-08-16 01:30:31,241 - __main__ - INFO - Calculated multipliers - Trend: 0.980, Lag: 0.975, Risk: 1.000
+2025-08-16 01:30:31,241 - __main__ - INFO - Adjusted return: 0.00096, volatility: 0.02000
+2025-08-16 01:30:31,241 - __main__ - INFO - Generated 253 portfolio values
+2025-08-16 01:30:31,243 - __main__ - INFO - Max signals allowed: 20
+2025-08-16 01:30:31,244 - __main__ - INFO - Selected signal days: [214  25 142  50 231]... (showing first 5)
+2025-08-16 01:30:31,247 - __main__ - INFO - Calculated metrics - Return: 19.12%, Sharpe: 0.72, Drawdown: 25.65%
+2025-08-16 01:30:31,247 - __main__ - INFO - Mock backtest completed successfully
+2025-08-16 01:30:31,248 - __main__ - INFO - Baseline results: {'total_return': np.float64(19.122717136423063), 'sharpe_ratio': np.float64(0.7223201448297739), 'sortino_ratio': np.float64(1.3189268904418259), 'max_drawdown': np.float64(25.65024750197555), 'profit_factor': np.float64(1.1218067707404045), 'win_rate': 53.17460317460318, 'avg_win': np.float64(0.015244914237810363), 'avg_loss': np.float64(-0.015432266683219042), 'exposure': 0.8, 'turnover': 1.5, 'total_trades': 20}
+2025-08-16 01:30:31,249 - __main__ - INFO - Baseline objective (Sortino): 1.3189
+2025-08-16 01:30:31,249 - __main__ - INFO - Baseline drawdown: 25.65%
+2025-08-16 01:30:31,250 - __main__ - INFO - Parameter bounds: {'sma_fast': [7.0, 13.0], 'sma_slow': [21.0, 39.0], 'risk_per_trade': [0.006999999999999999, 0.013000000000000001]}
+2025-08-16 01:30:31,250 - __main__ - INFO - 
+--- ITERATION 1/5 ---
+2025-08-16 01:30:31,250 - __main__ - INFO - Requesting AI suggestion...
+2025-08-16 01:30:32,362 - httpx - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2025-08-16 01:30:32,365 - __main__ - ERROR - Error getting AI suggestion: cannot unpack non-iterable int object
+2025-08-16 01:30:32,366 - __main__ - ERROR - Traceback (most recent call last):
+  File "/home/gourav/ai/pages/6_🤖_AI_Assistant.py", line 332, in iterate_optimization
+    suggestion = analyzer.optimize_strategy_structured(
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/gourav/ai/src/analysis/ai_analyzer.py", line 594, in optimize_strategy_structured
+    result = self._clamp_changes(result, optimization_data["strategy"].get("knobs", {}))
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/gourav/ai/src/analysis/ai_analyzer.py", line 109, in _clamp_changes
+    low, high = knobs[param]
+    ^^^^^^^^^
+TypeError: cannot unpack non-iterable int object
+
+2025-08-16 01:30:32,366 - __main__ - WARNING - Invalid AI suggestion: None
+2025-08-16 01:30:32,367 - __main__ - INFO - ============================================================
+2025-08-16 01:30:32,367 - __main__ - INFO - OPTIMIZATION COMPLETED
+2025-08-16 01:30:32,368 - __main__ - INFO - Final objective: 1.3189
+2025-08-16 01:30:32,368 - __main__ - INFO - Final drawdown: 25.65%
+2025-08-16 01:30:32,368 - __main__ - INFO - Total iterations: 1
+2025-08-16 01:30:32,368 - __main__ - INFO - ============================================================
+2025-08-16 01:30:32,369 - __main__ - INFO - Optimization completed - Result keys: dict_keys(['champion_config', 'champion_perf', 'iterations', 'total_iterations', 'final_objective', 'final_drawdown_pct'])
+2025-08-16 01:30:32,369 - __main__ - INFO - Result stored in session state
+2025-08-16 01:30:32,370 - __main__ - INFO - Optimization summary: Completed 1 iterations with 0 promotions. Final Sortino: 1.319
+2025-08-16 01:30:34,401 - __main__ - INFO - AI Assistant page loaded - logging initialized
+2025-08-16 01:30:34,403 - __main__ - INFO - Loading configuration...
+2025-08-16 01:30:34,404 - __main__ - INFO - Config loaded - Keys available: ['groq_api_key', 'alpha_vantage_api_key', 'news_api_key', 'debug', 'log_level', 'virtual_money', 'commission']
+2025-08-16 01:30:34,404 - __main__ - INFO - AI analyzer found in session state - using cached version
+2025-08-16 01:30:34,410 - __main__ - INFO - 🚀 START AI OPTIMIZATION BUTTON CLICKED
+2025-08-16 01:30:34,410 - __main__ - INFO - User parameters - SMA Fast: 10, SMA Slow: 30, Risk: 0.01
+2025-08-16 01:30:34,411 - __main__ - INFO - Optimization settings - Max iterations: 5, Min gain: 10.0%, Max DD tolerance: 2.0 pp
+2025-08-16 01:30:34,411 - __main__ - INFO - Strategy config created: {'name': 'SMA Crossover Strategy', 'description': 'Long when fast SMA > slow SMA; exit when fast SMA < slow SMA or stop loss triggered', 'universe': 'NIFTY50', 'timeframe': '1D', 'objective': 'maximize_sortino', 'constraints': {'max_dd': 0.15, 'risk_per_trade': 0.015, 'turnover_pa': 2.0}, 'knobs': {'sma_fast': 10, 'sma_slow': 30, 'risk_per_trade': 0.01}, 'invariants': ['sma_fast < sma_slow', 'risk_per_trade <= 1.5%']}
+2025-08-16 01:30:34,412 - __main__ - INFO - Generating market data...
+2025-08-16 01:30:34,413 - __main__ - INFO - Market data generated - Shape: (365, 5)
+2025-08-16 01:30:34,414 - __main__ - INFO - Market data prepared for analyzer - Columns: ['Close', 'High', 'Low', 'Volume']
+2025-08-16 01:30:34,415 - __main__ - INFO - Starting optimization process...
+2025-08-16 01:30:34,416 - __main__ - INFO - AI analyzer found in session state
+2025-08-16 01:30:34,417 - __main__ - INFO - Calling iterate_optimization...
+2025-08-16 01:30:34,417 - __main__ - INFO - ============================================================
+2025-08-16 01:30:34,418 - __main__ - INFO - STARTING OPTIMIZATION
+2025-08-16 01:30:34,419 - __main__ - INFO - Max iterations: 5
+2025-08-16 01:30:34,419 - __main__ - INFO - Min gain threshold: 10.0%
+2025-08-16 01:30:34,420 - __main__ - INFO - Max drawdown tolerance: 2.0 pp
+2025-08-16 01:30:34,420 - __main__ - INFO - Initial strategy config: {'name': 'SMA Crossover Strategy', 'description': 'Long when fast SMA > slow SMA; exit when fast SMA < slow SMA or stop loss triggered', 'universe': 'NIFTY50', 'timeframe': '1D', 'objective': 'maximize_sortino', 'constraints': {'max_dd': 0.15, 'risk_per_trade': 0.015, 'turnover_pa': 2.0}, 'knobs': {'sma_fast': 10, 'sma_slow': 30, 'risk_per_trade': 0.01}, 'invariants': ['sma_fast < sma_slow', 'risk_per_trade <= 1.5%']}
+2025-08-16 01:30:34,420 - __main__ - INFO - Champion config initialized: {'name': 'SMA Crossover Strategy', 'description': 'Long when fast SMA > slow SMA; exit when fast SMA < slow SMA or stop loss triggered', 'universe': 'NIFTY50', 'timeframe': '1D', 'objective': 'maximize_sortino', 'constraints': {'max_dd': 0.15, 'risk_per_trade': 0.015, 'turnover_pa': 2.0}, 'knobs': {'sma_fast': 10, 'sma_slow': 30, 'risk_per_trade': 0.01}, 'invariants': ['sma_fast < sma_slow', 'risk_per_trade <= 1.5%']}
+2025-08-16 01:30:34,421 - __main__ - INFO - Running baseline backtest...
+2025-08-16 01:30:34,421 - __main__ - INFO - Starting mock backtest with config: {'name': 'SMA Crossover Strategy', 'description': 'Long when fast SMA > slow SMA; exit when fast SMA < slow SMA or stop loss triggered', 'universe': 'NIFTY50', 'timeframe': '1D', 'objective': 'maximize_sortino', 'constraints': {'max_dd': 0.15, 'risk_per_trade': 0.015, 'turnover_pa': 2.0}, 'knobs': {'sma_fast': 10, 'sma_slow': 30, 'risk_per_trade': 0.01}, 'invariants': ['sma_fast < sma_slow', 'risk_per_trade <= 1.5%']}
+2025-08-16 01:30:34,422 - __main__ - INFO - Extracted knobs: {'sma_fast': 10, 'sma_slow': 30, 'risk_per_trade': 0.01}
+2025-08-16 01:30:34,422 - __main__ - INFO - Parameters - SMA Fast: 10, SMA Slow: 30, Risk: 0.01
+2025-08-16 01:30:34,423 - __main__ - INFO - Calculated multipliers - Trend: 0.980, Lag: 0.975, Risk: 1.000
+2025-08-16 01:30:34,423 - __main__ - INFO - Adjusted return: 0.00096, volatility: 0.02000
+2025-08-16 01:30:34,424 - __main__ - INFO - Generated 253 portfolio values
+2025-08-16 01:30:34,425 - __main__ - INFO - Max signals allowed: 20
+2025-08-16 01:30:34,426 - __main__ - INFO - Selected signal days: [214  25 142  50 231]... (showing first 5)
+2025-08-16 01:30:34,429 - __main__ - INFO - Calculated metrics - Return: 19.12%, Sharpe: 0.72, Drawdown: 25.65%
+2025-08-16 01:30:34,429 - __main__ - INFO - Mock backtest completed successfully
+2025-08-16 01:30:34,430 - __main__ - INFO - Baseline results: {'total_return': np.float64(19.122717136423063), 'sharpe_ratio': np.float64(0.7223201448297739), 'sortino_ratio': np.float64(1.3189268904418259), 'max_drawdown': np.float64(25.65024750197555), 'profit_factor': np.float64(1.1218067707404045), 'win_rate': 53.17460317460318, 'avg_win': np.float64(0.015244914237810363), 'avg_loss': np.float64(-0.015432266683219042), 'exposure': 0.8, 'turnover': 1.5, 'total_trades': 20}
+2025-08-16 01:30:34,430 - __main__ - INFO - Baseline objective (Sortino): 1.3189
+2025-08-16 01:30:34,430 - __main__ - INFO - Baseline drawdown: 25.65%
+2025-08-16 01:30:34,431 - __main__ - INFO - Parameter bounds: {'sma_fast': [7.0, 13.0], 'sma_slow': [21.0, 39.0], 'risk_per_trade': [0.006999999999999999, 0.013000000000000001]}
+2025-08-16 01:30:34,431 - __main__ - INFO - 
+--- ITERATION 1/5 ---
+2025-08-16 01:30:34,431 - __main__ - INFO - Requesting AI suggestion...
+2025-08-16 01:30:35,365 - httpx - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2025-08-16 01:30:35,366 - __main__ - ERROR - Error getting AI suggestion: cannot unpack non-iterable int object
+2025-08-16 01:30:35,367 - __main__ - ERROR - Traceback (most recent call last):
+  File "/home/gourav/ai/pages/6_🤖_AI_Assistant.py", line 332, in iterate_optimization
+    suggestion = analyzer.optimize_strategy_structured(
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/gourav/ai/src/analysis/ai_analyzer.py", line 594, in optimize_strategy_structured
+    result = self._clamp_changes(result, optimization_data["strategy"].get("knobs", {}))
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/gourav/ai/src/analysis/ai_analyzer.py", line 109, in _clamp_changes
+    low, high = knobs[param]
+    ^^^^^^^^^
+TypeError: cannot unpack non-iterable int object
+
+2025-08-16 01:30:35,368 - __main__ - WARNING - Invalid AI suggestion: None
+2025-08-16 01:30:35,368 - __main__ - INFO - ============================================================
+2025-08-16 01:30:35,368 - __main__ - INFO - OPTIMIZATION COMPLETED
+2025-08-16 01:30:35,368 - __main__ - INFO - Final objective: 1.3189
+2025-08-16 01:30:35,369 - __main__ - INFO - Final drawdown: 25.65%
+2025-08-16 01:30:35,369 - __main__ - INFO - Total iterations: 1
+2025-08-16 01:30:35,369 - __main__ - INFO - ============================================================
+2025-08-16 01:30:35,369 - __main__ - INFO - Optimization completed - Result keys: dict_keys(['champion_config', 'champion_perf', 'iterations', 'total_iterations', 'final_objective', 'final_drawdown_pct'])
+2025-08-16 01:30:35,370 - __main__ - INFO - Result stored in session state
+2025-08-16 01:30:35,371 - __main__ - INFO - Optimization summary: Completed 1 iterations with 0 promotions. Final Sortino: 1.319
+2025-08-16 01:30:53,024 - __main__ - INFO - AI Assistant page loaded - logging initialized
+2025-08-16 01:30:53,026 - __main__ - INFO - Loading configuration...
+2025-08-16 01:30:53,028 - __main__ - INFO - Config loaded - Keys available: ['groq_api_key', 'alpha_vantage_api_key', 'news_api_key', 'debug', 'log_level', 'virtual_money', 'commission']
+2025-08-16 01:30:53,028 - __main__ - INFO - AI analyzer found in session state - using cached version
+2025-08-16 01:30:53,415 - __main__ - INFO - AI Assistant page loaded - logging initialized
+2025-08-16 01:30:53,416 - __main__ - INFO - Loading configuration...
+2025-08-16 01:30:53,418 - __main__ - INFO - Config loaded - Keys available: ['groq_api_key', 'alpha_vantage_api_key', 'news_api_key', 'debug', 'log_level', 'virtual_money', 'commission']
+2025-08-16 01:30:53,418 - __main__ - INFO - AI analyzer found in session state - using cached version
+2025-08-16 01:30:53,655 - __main__ - INFO - AI Assistant page loaded - logging initialized
+2025-08-16 01:30:53,657 - __main__ - INFO - Loading configuration...
+2025-08-16 01:30:53,658 - __main__ - INFO - Config loaded - Keys available: ['groq_api_key', 'alpha_vantage_api_key', 'news_api_key', 'debug', 'log_level', 'virtual_money', 'commission']
+2025-08-16 01:30:53,659 - __main__ - INFO - AI analyzer found in session state - using cached version
+2025-08-16 01:30:53,863 - __main__ - INFO - AI Assistant page loaded - logging initialized
+2025-08-16 01:30:53,864 - __main__ - INFO - Loading configuration...
+2025-08-16 01:30:53,866 - __main__ - INFO - Config loaded - Keys available: ['groq_api_key', 'alpha_vantage_api_key', 'news_api_key', 'debug', 'log_level', 'virtual_money', 'commission']
+2025-08-16 01:30:53,866 - __main__ - INFO - AI analyzer found in session state - using cached version
+2025-08-16 01:30:54,046 - __main__ - INFO - AI Assistant page loaded - logging initialized
+2025-08-16 01:30:54,048 - __main__ - INFO - Loading configuration...
+2025-08-16 01:30:54,050 - __main__ - INFO - Config loaded - Keys available: ['groq_api_key', 'alpha_vantage_api_key', 'news_api_key', 'debug', 'log_level', 'virtual_money', 'commission']
+2025-08-16 01:30:54,050 - __main__ - INFO - AI analyzer found in session state - using cached version
+2025-08-16 01:30:54,430 - __main__ - INFO - AI Assistant page loaded - logging initialized
+2025-08-16 01:30:54,432 - __main__ - INFO - Loading configuration...
+2025-08-16 01:30:54,434 - __main__ - INFO - Config loaded - Keys available: ['groq_api_key', 'alpha_vantage_api_key', 'news_api_key', 'debug', 'log_level', 'virtual_money', 'commission']
+2025-08-16 01:30:54,434 - __main__ - INFO - AI analyzer found in session state - using cached version
+2025-08-16 01:30:57,016 - __main__ - INFO - AI Assistant page loaded - logging initialized
+2025-08-16 01:30:57,017 - __main__ - INFO - Loading configuration...
+2025-08-16 01:30:57,019 - __main__ - INFO - Config loaded - Keys available: ['groq_api_key', 'alpha_vantage_api_key', 'news_api_key', 'debug', 'log_level', 'virtual_money', 'commission']
+2025-08-16 01:30:57,019 - __main__ - INFO - AI analyzer found in session state - using cached version
+2025-08-16 01:30:59,157 - __main__ - INFO - AI Assistant page loaded - logging initialized
+2025-08-16 01:30:59,158 - __main__ - INFO - Loading configuration...
+2025-08-16 01:30:59,160 - __main__ - INFO - Config loaded - Keys available: ['groq_api_key', 'alpha_vantage_api_key', 'news_api_key', 'debug', 'log_level', 'virtual_money', 'commission']
+2025-08-16 01:30:59,161 - __main__ - INFO - AI analyzer found in session state - using cached version
+2025-08-16 01:30:59,654 - __main__ - INFO - AI Assistant page loaded - logging initialized
+2025-08-16 01:30:59,656 - __main__ - INFO - Loading configuration...
+2025-08-16 01:30:59,657 - __main__ - INFO - Config loaded - Keys available: ['groq_api_key', 'alpha_vantage_api_key', 'news_api_key', 'debug', 'log_level', 'virtual_money', 'commission']
+2025-08-16 01:30:59,658 - __main__ - INFO - AI analyzer found in session state - using cached version
+2025-08-16 01:31:00,814 - __main__ - INFO - AI Assistant page loaded - logging initialized
+2025-08-16 01:31:00,815 - __main__ - INFO - Loading configuration...
+2025-08-16 01:31:00,817 - __main__ - INFO - Config loaded - Keys available: ['groq_api_key', 'alpha_vantage_api_key', 'news_api_key', 'debug', 'log_level', 'virtual_money', 'commission']
+2025-08-16 01:31:00,817 - __main__ - INFO - AI analyzer found in session state - using cached version
+2025-08-16 01:31:01,049 - __main__ - INFO - AI Assistant page loaded - logging initialized
+2025-08-16 01:31:01,051 - __main__ - INFO - Loading configuration...
+2025-08-16 01:31:01,052 - __main__ - INFO - Config loaded - Keys available: ['groq_api_key', 'alpha_vantage_api_key', 'news_api_key', 'debug', 'log_level', 'virtual_money', 'commission']
+2025-08-16 01:31:01,052 - __main__ - INFO - AI analyzer found in session state - using cached version
+2025-08-16 01:31:01,248 - __main__ - INFO - AI Assistant page loaded - logging initialized
+2025-08-16 01:31:01,250 - __main__ - INFO - Loading configuration...
+2025-08-16 01:31:01,251 - __main__ - INFO - Config loaded - Keys available: ['groq_api_key', 'alpha_vantage_api_key', 'news_api_key', 'debug', 'log_level', 'virtual_money', 'commission']
+2025-08-16 01:31:01,251 - __main__ - INFO - AI analyzer found in session state - using cached version
+2025-08-16 01:31:02,462 - __main__ - INFO - AI Assistant page loaded - logging initialized
+2025-08-16 01:31:02,463 - __main__ - INFO - Loading configuration...
+2025-08-16 01:31:02,465 - __main__ - INFO - Config loaded - Keys available: ['groq_api_key', 'alpha_vantage_api_key', 'news_api_key', 'debug', 'log_level', 'virtual_money', 'commission']
+2025-08-16 01:31:02,465 - __main__ - INFO - AI analyzer found in session state - using cached version
+2025-08-16 01:31:02,681 - __main__ - INFO - AI Assistant page loaded - logging initialized
+2025-08-16 01:31:02,683 - __main__ - INFO - Loading configuration...
+2025-08-16 01:31:02,684 - __main__ - INFO - Config loaded - Keys available: ['groq_api_key', 'alpha_vantage_api_key', 'news_api_key', 'debug', 'log_level', 'virtual_money', 'commission']
+2025-08-16 01:31:02,684 - __main__ - INFO - AI analyzer found in session state - using cached version
+2025-08-16 01:31:02,879 - __main__ - INFO - AI Assistant page loaded - logging initialized
+2025-08-16 01:31:02,880 - __main__ - INFO - Loading configuration...
+2025-08-16 01:31:02,882 - __main__ - INFO - Config loaded - Keys available: ['groq_api_key', 'alpha_vantage_api_key', 'news_api_key', 'debug', 'log_level', 'virtual_money', 'commission']
+2025-08-16 01:31:02,882 - __main__ - INFO - AI analyzer found in session state - using cached version
+2025-08-16 01:31:03,173 - __main__ - INFO - AI Assistant page loaded - logging initialized
+2025-08-16 01:31:03,175 - __main__ - INFO - Loading configuration...
+2025-08-16 01:31:03,176 - __main__ - INFO - Config loaded - Keys available: ['groq_api_key', 'alpha_vantage_api_key', 'news_api_key', 'debug', 'log_level', 'virtual_money', 'commission']
+2025-08-16 01:31:03,177 - __main__ - INFO - AI analyzer found in session state - using cached version
+2025-08-16 01:31:05,962 - __main__ - INFO - AI Assistant page loaded - logging initialized
+2025-08-16 01:31:05,964 - __main__ - INFO - Loading configuration...
+2025-08-16 01:31:05,966 - __main__ - INFO - Config loaded - Keys available: ['groq_api_key', 'alpha_vantage_api_key', 'news_api_key', 'debug', 'log_level', 'virtual_money', 'commission']
+2025-08-16 01:31:05,966 - __main__ - INFO - AI analyzer found in session state - using cached version
+2025-08-16 01:31:05,973 - __main__ - INFO - 🚀 START AI OPTIMIZATION BUTTON CLICKED
+2025-08-16 01:31:05,975 - __main__ - INFO - User parameters - SMA Fast: 12, SMA Slow: 24, Risk: 0.009000000000000001
+2025-08-16 01:31:05,976 - __main__ - INFO - Optimization settings - Max iterations: 4, Min gain: 10.0%, Max DD tolerance: 2.0 pp
+2025-08-16 01:31:05,976 - __main__ - INFO - Strategy config created: {'name': 'SMA Crossover Strategy', 'description': 'Long when fast SMA > slow SMA; exit when fast SMA < slow SMA or stop loss triggered', 'universe': 'NIFTY50', 'timeframe': '1D', 'objective': 'maximize_sortino', 'constraints': {'max_dd': 0.15, 'risk_per_trade': 0.015, 'turnover_pa': 2.0}, 'knobs': {'sma_fast': 12, 'sma_slow': 24, 'risk_per_trade': 0.009000000000000001}, 'invariants': ['sma_fast < sma_slow', 'risk_per_trade <= 1.5%']}
+2025-08-16 01:31:05,976 - __main__ - INFO - Generating market data...
+2025-08-16 01:31:05,977 - __main__ - INFO - Market data generated - Shape: (365, 5)
+2025-08-16 01:31:05,978 - __main__ - INFO - Market data prepared for analyzer - Columns: ['Close', 'High', 'Low', 'Volume']
+2025-08-16 01:31:05,979 - __main__ - INFO - Starting optimization process...
+2025-08-16 01:31:05,980 - __main__ - INFO - AI analyzer found in session state
+2025-08-16 01:31:05,981 - __main__ - INFO - Calling iterate_optimization...
+2025-08-16 01:31:05,981 - __main__ - INFO - ============================================================
+2025-08-16 01:31:05,982 - __main__ - INFO - STARTING OPTIMIZATION
+2025-08-16 01:31:05,982 - __main__ - INFO - Max iterations: 4
+2025-08-16 01:31:05,983 - __main__ - INFO - Min gain threshold: 10.0%
+2025-08-16 01:31:05,983 - __main__ - INFO - Max drawdown tolerance: 2.0 pp
+2025-08-16 01:31:05,984 - __main__ - INFO - Initial strategy config: {'name': 'SMA Crossover Strategy', 'description': 'Long when fast SMA > slow SMA; exit when fast SMA < slow SMA or stop loss triggered', 'universe': 'NIFTY50', 'timeframe': '1D', 'objective': 'maximize_sortino', 'constraints': {'max_dd': 0.15, 'risk_per_trade': 0.015, 'turnover_pa': 2.0}, 'knobs': {'sma_fast': 12, 'sma_slow': 24, 'risk_per_trade': 0.009000000000000001}, 'invariants': ['sma_fast < sma_slow', 'risk_per_trade <= 1.5%']}
+2025-08-16 01:31:05,984 - __main__ - INFO - Champion config initialized: {'name': 'SMA Crossover Strategy', 'description': 'Long when fast SMA > slow SMA; exit when fast SMA < slow SMA or stop loss triggered', 'universe': 'NIFTY50', 'timeframe': '1D', 'objective': 'maximize_sortino', 'constraints': {'max_dd': 0.15, 'risk_per_trade': 0.015, 'turnover_pa': 2.0}, 'knobs': {'sma_fast': 12, 'sma_slow': 24, 'risk_per_trade': 0.009000000000000001}, 'invariants': ['sma_fast < sma_slow', 'risk_per_trade <= 1.5%']}
+2025-08-16 01:31:05,985 - __main__ - INFO - Running baseline backtest...
+2025-08-16 01:31:05,986 - __main__ - INFO - Starting mock backtest with config: {'name': 'SMA Crossover Strategy', 'description': 'Long when fast SMA > slow SMA; exit when fast SMA < slow SMA or stop loss triggered', 'universe': 'NIFTY50', 'timeframe': '1D', 'objective': 'maximize_sortino', 'constraints': {'max_dd': 0.15, 'risk_per_trade': 0.015, 'turnover_pa': 2.0}, 'knobs': {'sma_fast': 12, 'sma_slow': 24, 'risk_per_trade': 0.009000000000000001}, 'invariants': ['sma_fast < sma_slow', 'risk_per_trade <= 1.5%']}
+2025-08-16 01:31:05,986 - __main__ - INFO - Extracted knobs: {'sma_fast': 12, 'sma_slow': 24, 'risk_per_trade': 0.009000000000000001}
+2025-08-16 01:31:05,986 - __main__ - INFO - Parameters - SMA Fast: 12, SMA Slow: 24, Risk: 0.009000000000000001
+2025-08-16 01:31:05,987 - __main__ - INFO - Calculated multipliers - Trend: 1.000, Lag: 1.005, Risk: 1.010
+2025-08-16 01:31:05,987 - __main__ - INFO - Adjusted return: 0.00102, volatility: 0.02010
+2025-08-16 01:31:05,989 - __main__ - INFO - Generated 253 portfolio values
+2025-08-16 01:31:05,990 - __main__ - INFO - Max signals allowed: 20
+2025-08-16 01:31:05,990 - __main__ - INFO - Selected signal days: [214  25 142  50 231]... (showing first 5)
+2025-08-16 01:31:05,993 - __main__ - INFO - Calculated metrics - Return: 20.85%, Sharpe: 0.77, Drawdown: 25.59%
+2025-08-16 01:31:05,994 - __main__ - INFO - Mock backtest completed successfully
+2025-08-16 01:31:05,995 - __main__ - INFO - Baseline results: {'total_return': np.float64(20.854831535356432), 'sharpe_ratio': np.float64(0.7670444511707973), 'sortino_ratio': np.float64(1.4005916352392107), 'max_drawdown': np.float64(25.58693439583089), 'profit_factor': np.float64(1.1298071717120277), 'win_rate': 53.17460317460318, 'avg_win': np.float64(0.015375911308999414), 'avg_loss': np.float64(-0.015454655516635139), 'exposure': 0.8, 'turnover': 1.5, 'total_trades': 20}
+2025-08-16 01:31:05,995 - __main__ - INFO - Baseline objective (Sortino): 1.4006
+2025-08-16 01:31:05,996 - __main__ - INFO - Baseline drawdown: 25.59%
+2025-08-16 01:31:05,996 - __main__ - INFO - Parameter bounds: {'sma_fast': [8.399999999999999, 15.600000000000001], 'sma_slow': [16.799999999999997, 31.200000000000003], 'risk_per_trade': [0.0063, 0.011700000000000002]}
+2025-08-16 01:31:05,997 - __main__ - INFO - 
+--- ITERATION 1/4 ---
+2025-08-16 01:31:05,997 - __main__ - INFO - Requesting AI suggestion...
+2025-08-16 01:31:07,057 - httpx - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2025-08-16 01:31:07,058 - __main__ - INFO - AI suggestion received: {'meta': {'model': 'llama-3.3-70b-versatile', 'temperature': 0.1, 'ts': '2025-08-16T07:01:07.058718+05:30', 'prompt_version': 'v1.1'}, 'ok': True, 'issues': [], 'changes': [], 'risks': ['Overfitting to training data', 'Regime-dependent performance'], 'test_plan': [{'name': 'Walk-forward optimization', 'desc': 'Test strategy on out-of-sample data', 'metric': 'Sortino ratio'}, {'name': 'Regime-based evaluation', 'desc': 'Evaluate strategy performance across different market regimes', 'metric': 'Maximum drawdown'}, {'name': 'Sensitivity analysis', 'desc': 'Analyze strategy sensitivity to parameter changes', 'metric': 'Sharpe ratio'}]}
+2025-08-16 01:31:07,059 - __main__ - INFO - Applying suggested changes...
+2025-08-16 01:31:07,059 - __main__ - INFO - Applying changes - Input knobs: {'sma_fast': 12, 'sma_slow': 24, 'risk_per_trade': 0.009000000000000001}
+2025-08-16 01:31:07,059 - __main__ - INFO - Suggested changes: []
+2025-08-16 01:31:07,059 - __main__ - INFO - Parameter bounds: {'sma_fast': [8.399999999999999, 15.600000000000001], 'sma_slow': [16.799999999999997, 31.200000000000003], 'risk_per_trade': [0.0063, 0.011700000000000002]}
+2025-08-16 01:31:07,060 - __main__ - INFO - Final knobs after changes: {'sma_fast': 12, 'sma_slow': 24, 'risk_per_trade': 0.009000000000000001}
+2025-08-16 01:31:07,060 - __main__ - INFO - Applied 0 changes successfully
+2025-08-16 01:31:07,061 - __main__ - INFO - New knobs after applying changes: {'sma_fast': 12, 'sma_slow': 24, 'risk_per_trade': 0.009000000000000001}
+2025-08-16 01:31:07,061 - __main__ - INFO - Trial config: {'name': 'SMA Crossover Strategy', 'description': 'Long when fast SMA > slow SMA; exit when fast SMA < slow SMA or stop loss triggered', 'universe': 'NIFTY50', 'timeframe': '1D', 'objective': 'maximize_sortino', 'constraints': {'max_dd': 0.15, 'risk_per_trade': 0.015, 'turnover_pa': 2.0}, 'knobs': {'sma_fast': 12, 'sma_slow': 24, 'risk_per_trade': 0.009000000000000001}, 'invariants': ['sma_fast < sma_slow', 'risk_per_trade <= 1.5%']}
+2025-08-16 01:31:07,061 - __main__ - INFO - Backtesting trial config...
+2025-08-16 01:31:07,061 - __main__ - INFO - Starting mock backtest with config: {'name': 'SMA Crossover Strategy', 'description': 'Long when fast SMA > slow SMA; exit when fast SMA < slow SMA or stop loss triggered', 'universe': 'NIFTY50', 'timeframe': '1D', 'objective': 'maximize_sortino', 'constraints': {'max_dd': 0.15, 'risk_per_trade': 0.015, 'turnover_pa': 2.0}, 'knobs': {'sma_fast': 12, 'sma_slow': 24, 'risk_per_trade': 0.009000000000000001}, 'invariants': ['sma_fast < sma_slow', 'risk_per_trade <= 1.5%']}
+2025-08-16 01:31:07,061 - __main__ - INFO - Extracted knobs: {'sma_fast': 12, 'sma_slow': 24, 'risk_per_trade': 0.009000000000000001}
+2025-08-16 01:31:07,061 - __main__ - INFO - Parameters - SMA Fast: 12, SMA Slow: 24, Risk: 0.009000000000000001
+2025-08-16 01:31:07,061 - __main__ - INFO - Calculated multipliers - Trend: 1.000, Lag: 1.005, Risk: 1.010
+2025-08-16 01:31:07,061 - __main__ - INFO - Adjusted return: 0.00102, volatility: 0.02010
+2025-08-16 01:31:07,062 - __main__ - INFO - Generated 253 portfolio values
+2025-08-16 01:31:07,063 - __main__ - INFO - Max signals allowed: 20
+2025-08-16 01:31:07,063 - __main__ - INFO - Selected signal days: [214  25 142  50 231]... (showing first 5)
+2025-08-16 01:31:07,066 - __main__ - INFO - Calculated metrics - Return: 20.85%, Sharpe: 0.77, Drawdown: 25.59%
+2025-08-16 01:31:07,066 - __main__ - INFO - Mock backtest completed successfully
+2025-08-16 01:31:07,066 - __main__ - INFO - Trial results: {'total_return': np.float64(20.854831535356432), 'sharpe_ratio': np.float64(0.7670444511707973), 'sortino_ratio': np.float64(1.4005916352392107), 'max_drawdown': np.float64(25.58693439583089), 'profit_factor': np.float64(1.1298071717120277), 'win_rate': 53.17460317460318, 'avg_win': np.float64(0.015375911308999414), 'avg_loss': np.float64(-0.015454655516635139), 'exposure': 0.8, 'turnover': 1.5, 'total_trades': 20}
+2025-08-16 01:31:07,066 - __main__ - INFO - Trial objective: 1.4006
+2025-08-16 01:31:07,067 - __main__ - INFO - Trial drawdown: 25.59%
+2025-08-16 01:31:07,067 - __main__ - INFO - Gain percentage: 0.00%
+2025-08-16 01:31:07,067 - __main__ - INFO - Drawdown worsening: 0.00 pp
+2025-08-16 01:31:07,068 - __main__ - INFO - ❌ Trial rejected - Gain: 0.00% (need 10.0%), DD worsening: 0.00 pp (max 2.0)
+2025-08-16 01:31:07,068 - __main__ - INFO - No more changes suggested - stopping optimization
+2025-08-16 01:31:07,068 - __main__ - INFO - ============================================================
+2025-08-16 01:31:07,068 - __main__ - INFO - OPTIMIZATION COMPLETED
+2025-08-16 01:31:07,069 - __main__ - INFO - Final objective: 1.4006
+2025-08-16 01:31:07,069 - __main__ - INFO - Final drawdown: 25.59%
+2025-08-16 01:31:07,069 - __main__ - INFO - Total iterations: 1
+2025-08-16 01:31:07,070 - __main__ - INFO - ============================================================
+2025-08-16 01:31:07,070 - __main__ - INFO - Optimization completed - Result keys: dict_keys(['champion_config', 'champion_perf', 'iterations', 'total_iterations', 'final_objective', 'final_drawdown_pct'])
+2025-08-16 01:31:07,071 - __main__ - INFO - Result stored in session state
+2025-08-16 01:31:07,072 - __main__ - INFO - Optimization summary: Completed 1 iterations with 0 promotions. Final Sortino: 1.401
+2025-08-16 01:32:32,892 - __main__ - INFO - AI Assistant page loaded - logging initialized
+2025-08-16 01:32:33,157 - __main__ - INFO - Loading configuration...
+2025-08-16 01:32:33,159 - __main__ - INFO - Config loaded - Keys available: ['groq_api_key', 'alpha_vantage_api_key', 'news_api_key', 'debug', 'log_level', 'virtual_money', 'commission']
+2025-08-16 01:32:33,159 - __main__ - INFO - Initializing AI analyzer...
+2025-08-16 01:32:33,160 - __main__ - INFO - Creating AI analyzer with API key...
+2025-08-16 01:32:33,161 - __main__ - INFO - Initializing AI analyzer...
+2025-08-16 01:32:33,219 - __main__ - INFO - AI analyzer initialized successfully
+2025-08-16 01:32:33,219 - __main__ - INFO - AI analyzer successfully initialized and cached
+2025-08-16 01:32:36,669 - __main__ - INFO - AI Assistant page loaded - logging initialized
+2025-08-16 01:32:36,672 - __main__ - INFO - Loading configuration...
+2025-08-16 01:32:36,673 - __main__ - INFO - Config loaded - Keys available: ['groq_api_key', 'alpha_vantage_api_key', 'news_api_key', 'debug', 'log_level', 'virtual_money', 'commission']
+2025-08-16 01:32:36,673 - __main__ - INFO - Initializing AI analyzer...
+2025-08-16 01:32:36,674 - __main__ - INFO - Creating AI analyzer with API key...
+2025-08-16 01:32:36,674 - __main__ - INFO - AI analyzer successfully initialized and cached
+2025-08-16 01:32:36,817 - __main__ - INFO - AI Assistant page loaded - logging initialized
+2025-08-16 01:32:36,819 - __main__ - INFO - Loading configuration...
+2025-08-16 01:32:36,822 - __main__ - INFO - Config loaded - Keys available: ['groq_api_key', 'alpha_vantage_api_key', 'news_api_key', 'debug', 'log_level', 'virtual_money', 'commission']
+2025-08-16 01:32:36,822 - __main__ - INFO - AI analyzer found in session state - using cached version
+2025-08-16 01:32:36,828 - __main__ - INFO - 🚀 START AI OPTIMIZATION BUTTON CLICKED
+2025-08-16 01:32:36,828 - __main__ - INFO - User parameters - SMA Fast: 10, SMA Slow: 30, Risk: 0.01
+2025-08-16 01:32:36,829 - __main__ - INFO - Optimization settings - Max iterations: 5, Min gain: 10.0%, Max DD tolerance: 2.0 pp
+2025-08-16 01:32:36,830 - __main__ - INFO - Strategy config created: {'name': 'SMA Crossover Strategy', 'description': 'Long when fast SMA > slow SMA; exit when fast SMA < slow SMA or stop loss triggered', 'universe': 'NIFTY50', 'timeframe': '1D', 'objective': 'maximize_sortino', 'constraints': {'max_dd': 0.15, 'risk_per_trade': 0.015, 'turnover_pa': 2.0}, 'knobs': {'sma_fast': 10, 'sma_slow': 30, 'risk_per_trade': 0.01}, 'invariants': ['sma_fast < sma_slow', 'risk_per_trade <= 1.5%']}
+2025-08-16 01:32:36,830 - __main__ - INFO - Generating market data...
+2025-08-16 01:32:36,834 - __main__ - INFO - Market data generated - Shape: (365, 5)
+2025-08-16 01:32:36,836 - __main__ - INFO - Market data prepared for analyzer - Columns: ['Close', 'High', 'Low', 'Volume']
+2025-08-16 01:32:36,836 - __main__ - INFO - Starting optimization process...
+2025-08-16 01:32:36,838 - __main__ - INFO - AI analyzer found in session state
+2025-08-16 01:32:36,838 - __main__ - INFO - Calling iterate_optimization...
+2025-08-16 01:32:36,839 - __main__ - INFO - ============================================================
+2025-08-16 01:32:36,839 - __main__ - INFO - STARTING OPTIMIZATION
+2025-08-16 01:32:36,840 - __main__ - INFO - Max iterations: 5
+2025-08-16 01:32:36,840 - __main__ - INFO - Min gain threshold: 10.0%
+2025-08-16 01:32:36,840 - __main__ - INFO - Max drawdown tolerance: 2.0 pp
+2025-08-16 01:32:36,841 - __main__ - INFO - Initial strategy config: {'name': 'SMA Crossover Strategy', 'description': 'Long when fast SMA > slow SMA; exit when fast SMA < slow SMA or stop loss triggered', 'universe': 'NIFTY50', 'timeframe': '1D', 'objective': 'maximize_sortino', 'constraints': {'max_dd': 0.15, 'risk_per_trade': 0.015, 'turnover_pa': 2.0}, 'knobs': {'sma_fast': 10, 'sma_slow': 30, 'risk_per_trade': 0.01}, 'invariants': ['sma_fast < sma_slow', 'risk_per_trade <= 1.5%']}
+2025-08-16 01:32:36,841 - __main__ - INFO - Champion config initialized: {'name': 'SMA Crossover Strategy', 'description': 'Long when fast SMA > slow SMA; exit when fast SMA < slow SMA or stop loss triggered', 'universe': 'NIFTY50', 'timeframe': '1D', 'objective': 'maximize_sortino', 'constraints': {'max_dd': 0.15, 'risk_per_trade': 0.015, 'turnover_pa': 2.0}, 'knobs': {'sma_fast': 10, 'sma_slow': 30, 'risk_per_trade': 0.01}, 'invariants': ['sma_fast < sma_slow', 'risk_per_trade <= 1.5%']}
+2025-08-16 01:32:36,842 - __main__ - INFO - Running baseline backtest...
+2025-08-16 01:32:36,843 - __main__ - INFO - Starting mock backtest with config: {'name': 'SMA Crossover Strategy', 'description': 'Long when fast SMA > slow SMA; exit when fast SMA < slow SMA or stop loss triggered', 'universe': 'NIFTY50', 'timeframe': '1D', 'objective': 'maximize_sortino', 'constraints': {'max_dd': 0.15, 'risk_per_trade': 0.015, 'turnover_pa': 2.0}, 'knobs': {'sma_fast': 10, 'sma_slow': 30, 'risk_per_trade': 0.01}, 'invariants': ['sma_fast < sma_slow', 'risk_per_trade <= 1.5%']}
+2025-08-16 01:32:36,843 - __main__ - INFO - Extracted knobs: {'sma_fast': 10, 'sma_slow': 30, 'risk_per_trade': 0.01}
+2025-08-16 01:32:36,844 - __main__ - INFO - Parameters - SMA Fast: 10, SMA Slow: 30, Risk: 0.01
+2025-08-16 01:32:36,844 - __main__ - INFO - Calculated multipliers - Trend: 0.980, Lag: 0.975, Risk: 1.000
+2025-08-16 01:32:36,844 - __main__ - INFO - Adjusted return: 0.00096, volatility: 0.02000
+2025-08-16 01:32:36,845 - __main__ - INFO - Generated 253 portfolio values
+2025-08-16 01:32:36,846 - __main__ - INFO - Max signals allowed: 20
+2025-08-16 01:32:36,846 - __main__ - INFO - Selected signal days: [214  25 142  50 231]... (showing first 5)
+2025-08-16 01:32:36,852 - __main__ - INFO - Calculated metrics - Return: 19.12%, Sharpe: 0.72, Drawdown: 25.65%
+2025-08-16 01:32:36,852 - __main__ - INFO - Mock backtest completed successfully
+2025-08-16 01:32:36,853 - __main__ - INFO - Baseline results: {'total_return': np.float64(19.122717136423063), 'sharpe_ratio': np.float64(0.7223201448297739), 'sortino_ratio': np.float64(1.3189268904418259), 'max_drawdown': np.float64(25.65024750197555), 'profit_factor': np.float64(1.1218067707404045), 'win_rate': 53.17460317460318, 'avg_win': np.float64(0.015244914237810363), 'avg_loss': np.float64(-0.015432266683219042), 'exposure': 0.8, 'turnover': 1.5, 'total_trades': 20}
+2025-08-16 01:32:36,853 - __main__ - INFO - Baseline objective (Sortino): 1.3189
+2025-08-16 01:32:36,853 - __main__ - INFO - Baseline drawdown: 25.65%
+2025-08-16 01:32:36,853 - __main__ - INFO - Parameter bounds: {'sma_fast': [7.0, 13.0], 'sma_slow': [21.0, 39.0], 'risk_per_trade': [0.006999999999999999, 0.013000000000000001]}
+2025-08-16 01:32:36,853 - __main__ - INFO - 
+--- ITERATION 1/5 ---
+2025-08-16 01:32:36,854 - __main__ - INFO - Requesting AI suggestion...
+2025-08-16 01:32:36,854 - __main__ - INFO - Knobs formatted for analyzer: {'sma_fast': [7.0, 13.0], 'sma_slow': [21.0, 39.0], 'risk_per_trade': [0.006999999999999999, 0.013000000000000001]}
+2025-08-16 01:32:38,192 - httpx - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2025-08-16 01:32:38,199 - __main__ - INFO - AI suggestion received: {'meta': {'model': 'llama-3.3-70b-versatile', 'temperature': 0.1, 'ts': '2025-08-16T07:02:38.199538+05:30', 'prompt_version': 'v1.1'}, 'ok': True, 'issues': [], 'changes': [], 'risks': ['Regime shift risk', 'Overfitting risk'], 'test_plan': [{'name': 'Walk-forward optimization', 'desc': 'Test strategy on out-of-sample data', 'metric': 'Sortino ratio'}, {'name': 'Regime-based backtest', 'desc': 'Evaluate strategy under different market regimes', 'metric': 'Max drawdown'}, {'name': 'Sensitivity analysis', 'desc': "Analyze strategy's sensitivity to parameter changes", 'metric': 'Sharpe ratio'}]}
+2025-08-16 01:32:38,199 - __main__ - INFO - Applying suggested changes...
+2025-08-16 01:32:38,199 - __main__ - INFO - Applying changes - Input knobs: {'sma_fast': 10, 'sma_slow': 30, 'risk_per_trade': 0.01}
+2025-08-16 01:32:38,200 - __main__ - INFO - Suggested changes: []
+2025-08-16 01:32:38,200 - __main__ - INFO - Parameter bounds: {'sma_fast': [7.0, 13.0], 'sma_slow': [21.0, 39.0], 'risk_per_trade': [0.006999999999999999, 0.013000000000000001]}
+2025-08-16 01:32:38,200 - __main__ - INFO - Final knobs after changes: {'sma_fast': 10, 'sma_slow': 30, 'risk_per_trade': 0.01}
+2025-08-16 01:32:38,200 - __main__ - INFO - Applied 0 changes successfully
+2025-08-16 01:32:38,200 - __main__ - INFO - New knobs after applying changes: {'sma_fast': 10, 'sma_slow': 30, 'risk_per_trade': 0.01}
+2025-08-16 01:32:38,200 - __main__ - INFO - Trial config: {'name': 'SMA Crossover Strategy', 'description': 'Long when fast SMA > slow SMA; exit when fast SMA < slow SMA or stop loss triggered', 'universe': 'NIFTY50', 'timeframe': '1D', 'objective': 'maximize_sortino', 'constraints': {'max_dd': 0.15, 'risk_per_trade': 0.015, 'turnover_pa': 2.0}, 'knobs': {'sma_fast': 10, 'sma_slow': 30, 'risk_per_trade': 0.01}, 'invariants': ['sma_fast < sma_slow', 'risk_per_trade <= 1.5%']}
+2025-08-16 01:32:38,201 - __main__ - INFO - Backtesting trial config...
+2025-08-16 01:32:38,202 - __main__ - INFO - Starting mock backtest with config: {'name': 'SMA Crossover Strategy', 'description': 'Long when fast SMA > slow SMA; exit when fast SMA < slow SMA or stop loss triggered', 'universe': 'NIFTY50', 'timeframe': '1D', 'objective': 'maximize_sortino', 'constraints': {'max_dd': 0.15, 'risk_per_trade': 0.015, 'turnover_pa': 2.0}, 'knobs': {'sma_fast': 10, 'sma_slow': 30, 'risk_per_trade': 0.01}, 'invariants': ['sma_fast < sma_slow', 'risk_per_trade <= 1.5%']}
+2025-08-16 01:32:38,202 - __main__ - INFO - Extracted knobs: {'sma_fast': 10, 'sma_slow': 30, 'risk_per_trade': 0.01}
+2025-08-16 01:32:38,202 - __main__ - INFO - Parameters - SMA Fast: 10, SMA Slow: 30, Risk: 0.01
+2025-08-16 01:32:38,203 - __main__ - INFO - Calculated multipliers - Trend: 0.980, Lag: 0.975, Risk: 1.000
+2025-08-16 01:32:38,203 - __main__ - INFO - Adjusted return: 0.00096, volatility: 0.02000
+2025-08-16 01:32:38,203 - __main__ - INFO - Generated 253 portfolio values
+2025-08-16 01:32:38,204 - __main__ - INFO - Max signals allowed: 20
+2025-08-16 01:32:38,205 - __main__ - INFO - Selected signal days: [214  25 142  50 231]... (showing first 5)
+2025-08-16 01:32:38,208 - __main__ - INFO - Calculated metrics - Return: 19.12%, Sharpe: 0.72, Drawdown: 25.65%
+2025-08-16 01:32:38,208 - __main__ - INFO - Mock backtest completed successfully
+2025-08-16 01:32:38,209 - __main__ - INFO - Trial results: {'total_return': np.float64(19.122717136423063), 'sharpe_ratio': np.float64(0.7223201448297739), 'sortino_ratio': np.float64(1.3189268904418259), 'max_drawdown': np.float64(25.65024750197555), 'profit_factor': np.float64(1.1218067707404045), 'win_rate': 53.17460317460318, 'avg_win': np.float64(0.015244914237810363), 'avg_loss': np.float64(-0.015432266683219042), 'exposure': 0.8, 'turnover': 1.5, 'total_trades': 20}
+2025-08-16 01:32:38,209 - __main__ - INFO - Trial objective: 1.3189
+2025-08-16 01:32:38,210 - __main__ - INFO - Trial drawdown: 25.65%
+2025-08-16 01:32:38,210 - __main__ - INFO - Gain percentage: 0.00%
+2025-08-16 01:32:38,210 - __main__ - INFO - Drawdown worsening: 0.00 pp
+2025-08-16 01:32:38,210 - __main__ - INFO - ❌ Trial rejected - Gain: 0.00% (need 10.0%), DD worsening: 0.00 pp (max 2.0)
+2025-08-16 01:32:38,211 - __main__ - INFO - No more changes suggested - stopping optimization
+2025-08-16 01:32:38,211 - __main__ - INFO - ============================================================
+2025-08-16 01:32:38,211 - __main__ - INFO - OPTIMIZATION COMPLETED
+2025-08-16 01:32:38,211 - __main__ - INFO - Final objective: 1.3189
+2025-08-16 01:32:38,212 - __main__ - INFO - Final drawdown: 25.65%
+2025-08-16 01:32:38,212 - __main__ - INFO - Total iterations: 1
+2025-08-16 01:32:38,212 - __main__ - INFO - ============================================================
+2025-08-16 01:32:38,213 - __main__ - INFO - Optimization completed - Result keys: dict_keys(['champion_config', 'champion_perf', 'iterations', 'total_iterations', 'final_objective', 'final_drawdown_pct'])
+2025-08-16 01:32:38,214 - __main__ - INFO - Result stored in session state
+2025-08-16 01:32:38,215 - __main__ - INFO - Optimization summary: Completed 1 iterations with 0 promotions. Final Sortino: 1.319
+2025-08-16 01:32:46,088 - __main__ - INFO - AI Assistant page loaded - logging initialized
+2025-08-16 01:32:46,090 - __main__ - INFO - Loading configuration...
+2025-08-16 01:32:46,091 - __main__ - INFO - Config loaded - Keys available: ['groq_api_key', 'alpha_vantage_api_key', 'news_api_key', 'debug', 'log_level', 'virtual_money', 'commission']
+2025-08-16 01:32:46,091 - __main__ - INFO - AI analyzer found in session state - using cached version
+2025-08-16 01:32:46,097 - __main__ - INFO - 🚀 START AI OPTIMIZATION BUTTON CLICKED
+2025-08-16 01:32:46,098 - __main__ - INFO - User parameters - SMA Fast: 10, SMA Slow: 30, Risk: 0.01
+2025-08-16 01:32:46,098 - __main__ - INFO - Optimization settings - Max iterations: 5, Min gain: 10.0%, Max DD tolerance: 2.0 pp
+2025-08-16 01:32:46,099 - __main__ - INFO - Strategy config created: {'name': 'SMA Crossover Strategy', 'description': 'Long when fast SMA > slow SMA; exit when fast SMA < slow SMA or stop loss triggered', 'universe': 'NIFTY50', 'timeframe': '1D', 'objective': 'maximize_sortino', 'constraints': {'max_dd': 0.15, 'risk_per_trade': 0.015, 'turnover_pa': 2.0}, 'knobs': {'sma_fast': 10, 'sma_slow': 30, 'risk_per_trade': 0.01}, 'invariants': ['sma_fast < sma_slow', 'risk_per_trade <= 1.5%']}
+2025-08-16 01:32:46,100 - __main__ - INFO - Generating market data...
+2025-08-16 01:32:46,101 - __main__ - INFO - Market data generated - Shape: (365, 5)
+2025-08-16 01:32:46,102 - __main__ - INFO - Market data prepared for analyzer - Columns: ['Close', 'High', 'Low', 'Volume']
+2025-08-16 01:32:46,103 - __main__ - INFO - Starting optimization process...
+2025-08-16 01:32:46,104 - __main__ - INFO - AI analyzer found in session state
+2025-08-16 01:32:46,105 - __main__ - INFO - Calling iterate_optimization...
+2025-08-16 01:32:46,106 - __main__ - INFO - ============================================================
+2025-08-16 01:32:46,106 - __main__ - INFO - STARTING OPTIMIZATION
+2025-08-16 01:32:46,106 - __main__ - INFO - Max iterations: 5
+2025-08-16 01:32:46,106 - __main__ - INFO - Min gain threshold: 10.0%
+2025-08-16 01:32:46,107 - __main__ - INFO - Max drawdown tolerance: 2.0 pp
+2025-08-16 01:32:46,107 - __main__ - INFO - Initial strategy config: {'name': 'SMA Crossover Strategy', 'description': 'Long when fast SMA > slow SMA; exit when fast SMA < slow SMA or stop loss triggered', 'universe': 'NIFTY50', 'timeframe': '1D', 'objective': 'maximize_sortino', 'constraints': {'max_dd': 0.15, 'risk_per_trade': 0.015, 'turnover_pa': 2.0}, 'knobs': {'sma_fast': 10, 'sma_slow': 30, 'risk_per_trade': 0.01}, 'invariants': ['sma_fast < sma_slow', 'risk_per_trade <= 1.5%']}
+2025-08-16 01:32:46,107 - __main__ - INFO - Champion config initialized: {'name': 'SMA Crossover Strategy', 'description': 'Long when fast SMA > slow SMA; exit when fast SMA < slow SMA or stop loss triggered', 'universe': 'NIFTY50', 'timeframe': '1D', 'objective': 'maximize_sortino', 'constraints': {'max_dd': 0.15, 'risk_per_trade': 0.015, 'turnover_pa': 2.0}, 'knobs': {'sma_fast': 10, 'sma_slow': 30, 'risk_per_trade': 0.01}, 'invariants': ['sma_fast < sma_slow', 'risk_per_trade <= 1.5%']}
+2025-08-16 01:32:46,108 - __main__ - INFO - Running baseline backtest...
+2025-08-16 01:32:46,108 - __main__ - INFO - Starting mock backtest with config: {'name': 'SMA Crossover Strategy', 'description': 'Long when fast SMA > slow SMA; exit when fast SMA < slow SMA or stop loss triggered', 'universe': 'NIFTY50', 'timeframe': '1D', 'objective': 'maximize_sortino', 'constraints': {'max_dd': 0.15, 'risk_per_trade': 0.015, 'turnover_pa': 2.0}, 'knobs': {'sma_fast': 10, 'sma_slow': 30, 'risk_per_trade': 0.01}, 'invariants': ['sma_fast < sma_slow', 'risk_per_trade <= 1.5%']}
+2025-08-16 01:32:46,111 - __main__ - INFO - Extracted knobs: {'sma_fast': 10, 'sma_slow': 30, 'risk_per_trade': 0.01}
+2025-08-16 01:32:46,111 - __main__ - INFO - Parameters - SMA Fast: 10, SMA Slow: 30, Risk: 0.01
+2025-08-16 01:32:46,111 - __main__ - INFO - Calculated multipliers - Trend: 0.980, Lag: 0.975, Risk: 1.000
+2025-08-16 01:32:46,111 - __main__ - INFO - Adjusted return: 0.00096, volatility: 0.02000
+2025-08-16 01:32:46,112 - __main__ - INFO - Generated 253 portfolio values
+2025-08-16 01:32:46,113 - __main__ - INFO - Max signals allowed: 20
+2025-08-16 01:32:46,114 - __main__ - INFO - Selected signal days: [214  25 142  50 231]... (showing first 5)
+2025-08-16 01:32:46,118 - __main__ - INFO - Calculated metrics - Return: 19.12%, Sharpe: 0.72, Drawdown: 25.65%
+2025-08-16 01:32:46,118 - __main__ - INFO - Mock backtest completed successfully
+2025-08-16 01:32:46,118 - __main__ - INFO - Baseline results: {'total_return': np.float64(19.122717136423063), 'sharpe_ratio': np.float64(0.7223201448297739), 'sortino_ratio': np.float64(1.3189268904418259), 'max_drawdown': np.float64(25.65024750197555), 'profit_factor': np.float64(1.1218067707404045), 'win_rate': 53.17460317460318, 'avg_win': np.float64(0.015244914237810363), 'avg_loss': np.float64(-0.015432266683219042), 'exposure': 0.8, 'turnover': 1.5, 'total_trades': 20}
+2025-08-16 01:32:46,119 - __main__ - INFO - Baseline objective (Sortino): 1.3189
+2025-08-16 01:32:46,119 - __main__ - INFO - Baseline drawdown: 25.65%
+2025-08-16 01:32:46,119 - __main__ - INFO - Parameter bounds: {'sma_fast': [7.0, 13.0], 'sma_slow': [21.0, 39.0], 'risk_per_trade': [0.006999999999999999, 0.013000000000000001]}
+2025-08-16 01:32:46,120 - __main__ - INFO - 
+--- ITERATION 1/5 ---
+2025-08-16 01:32:46,121 - __main__ - INFO - Requesting AI suggestion...
+2025-08-16 01:32:46,121 - __main__ - INFO - Knobs formatted for analyzer: {'sma_fast': [7.0, 13.0], 'sma_slow': [21.0, 39.0], 'risk_per_trade': [0.006999999999999999, 0.013000000000000001]}
+2025-08-16 01:32:47,207 - httpx - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2025-08-16 01:32:47,208 - __main__ - INFO - AI suggestion received: {'meta': {'model': 'llama-3.3-70b-versatile', 'temperature': 0.1, 'ts': '2025-08-16T07:02:47.208889+05:30', 'prompt_version': 'v1.1'}, 'ok': True, 'issues': [], 'changes': [], 'risks': ['Regime shift', 'Overfitting'], 'test_plan': [{'name': 'Walk-forward optimization', 'desc': 'Test strategy on unseen data', 'metric': 'Sortino ratio'}, {'name': 'Regime-based backtest', 'desc': 'Evaluate strategy under different market conditions', 'metric': 'Max drawdown'}, {'name': 'Parameter sensitivity analysis', 'desc': 'Assess impact of parameter changes on strategy performance', 'metric': 'Sharpe ratio'}]}
+2025-08-16 01:32:47,209 - __main__ - INFO - Applying suggested changes...
+2025-08-16 01:32:47,209 - __main__ - INFO - Applying changes - Input knobs: {'sma_fast': 10, 'sma_slow': 30, 'risk_per_trade': 0.01}
+2025-08-16 01:32:47,209 - __main__ - INFO - Suggested changes: []
+2025-08-16 01:32:47,209 - __main__ - INFO - Parameter bounds: {'sma_fast': [7.0, 13.0], 'sma_slow': [21.0, 39.0], 'risk_per_trade': [0.006999999999999999, 0.013000000000000001]}
+2025-08-16 01:32:47,210 - __main__ - INFO - Final knobs after changes: {'sma_fast': 10, 'sma_slow': 30, 'risk_per_trade': 0.01}
+2025-08-16 01:32:47,210 - __main__ - INFO - Applied 0 changes successfully
+2025-08-16 01:32:47,210 - __main__ - INFO - New knobs after applying changes: {'sma_fast': 10, 'sma_slow': 30, 'risk_per_trade': 0.01}
+2025-08-16 01:32:47,210 - __main__ - INFO - Trial config: {'name': 'SMA Crossover Strategy', 'description': 'Long when fast SMA > slow SMA; exit when fast SMA < slow SMA or stop loss triggered', 'universe': 'NIFTY50', 'timeframe': '1D', 'objective': 'maximize_sortino', 'constraints': {'max_dd': 0.15, 'risk_per_trade': 0.015, 'turnover_pa': 2.0}, 'knobs': {'sma_fast': 10, 'sma_slow': 30, 'risk_per_trade': 0.01}, 'invariants': ['sma_fast < sma_slow', 'risk_per_trade <= 1.5%']}
+2025-08-16 01:32:47,211 - __main__ - INFO - Backtesting trial config...
+2025-08-16 01:32:47,211 - __main__ - INFO - Starting mock backtest with config: {'name': 'SMA Crossover Strategy', 'description': 'Long when fast SMA > slow SMA; exit when fast SMA < slow SMA or stop loss triggered', 'universe': 'NIFTY50', 'timeframe': '1D', 'objective': 'maximize_sortino', 'constraints': {'max_dd': 0.15, 'risk_per_trade': 0.015, 'turnover_pa': 2.0}, 'knobs': {'sma_fast': 10, 'sma_slow': 30, 'risk_per_trade': 0.01}, 'invariants': ['sma_fast < sma_slow', 'risk_per_trade <= 1.5%']}
+2025-08-16 01:32:47,211 - __main__ - INFO - Extracted knobs: {'sma_fast': 10, 'sma_slow': 30, 'risk_per_trade': 0.01}
+2025-08-16 01:32:47,212 - __main__ - INFO - Parameters - SMA Fast: 10, SMA Slow: 30, Risk: 0.01
+2025-08-16 01:32:47,212 - __main__ - INFO - Calculated multipliers - Trend: 0.980, Lag: 0.975, Risk: 1.000
+2025-08-16 01:32:47,212 - __main__ - INFO - Adjusted return: 0.00096, volatility: 0.02000
+2025-08-16 01:32:47,213 - __main__ - INFO - Generated 253 portfolio values
+2025-08-16 01:32:47,214 - __main__ - INFO - Max signals allowed: 20
+2025-08-16 01:32:47,214 - __main__ - INFO - Selected signal days: [214  25 142  50 231]... (showing first 5)
+2025-08-16 01:32:47,217 - __main__ - INFO - Calculated metrics - Return: 19.12%, Sharpe: 0.72, Drawdown: 25.65%
+2025-08-16 01:32:47,217 - __main__ - INFO - Mock backtest completed successfully
+2025-08-16 01:32:47,217 - __main__ - INFO - Trial results: {'total_return': np.float64(19.122717136423063), 'sharpe_ratio': np.float64(0.7223201448297739), 'sortino_ratio': np.float64(1.3189268904418259), 'max_drawdown': np.float64(25.65024750197555), 'profit_factor': np.float64(1.1218067707404045), 'win_rate': 53.17460317460318, 'avg_win': np.float64(0.015244914237810363), 'avg_loss': np.float64(-0.015432266683219042), 'exposure': 0.8, 'turnover': 1.5, 'total_trades': 20}
+2025-08-16 01:32:47,217 - __main__ - INFO - Trial objective: 1.3189
+2025-08-16 01:32:47,218 - __main__ - INFO - Trial drawdown: 25.65%
+2025-08-16 01:32:47,218 - __main__ - INFO - Gain percentage: 0.00%
+2025-08-16 01:32:47,218 - __main__ - INFO - Drawdown worsening: 0.00 pp
+2025-08-16 01:32:47,218 - __main__ - INFO - ❌ Trial rejected - Gain: 0.00% (need 10.0%), DD worsening: 0.00 pp (max 2.0)
+2025-08-16 01:32:47,219 - __main__ - INFO - No more changes suggested - stopping optimization
+2025-08-16 01:32:47,219 - __main__ - INFO - ============================================================
+2025-08-16 01:32:47,219 - __main__ - INFO - OPTIMIZATION COMPLETED
+2025-08-16 01:32:47,219 - __main__ - INFO - Final objective: 1.3189
+2025-08-16 01:32:47,220 - __main__ - INFO - Final drawdown: 25.65%
+2025-08-16 01:32:47,220 - __main__ - INFO - Total iterations: 1
+2025-08-16 01:32:47,220 - __main__ - INFO - ============================================================
+2025-08-16 01:32:47,220 - __main__ - INFO - Optimization completed - Result keys: dict_keys(['champion_config', 'champion_perf', 'iterations', 'total_iterations', 'final_objective', 'final_drawdown_pct'])
+2025-08-16 01:32:47,222 - __main__ - INFO - Result stored in session state
+2025-08-16 01:32:47,222 - __main__ - INFO - Optimization summary: Completed 1 iterations with 0 promotions. Final Sortino: 1.319
+2025-08-16 01:38:04,107 - __main__ - INFO - AI Assistant page loaded - logging initialized
+2025-08-16 01:38:04,116 - __main__ - INFO - Loading configuration...
+2025-08-16 01:38:04,118 - __main__ - INFO - Config loaded - Keys available: ['groq_api_key', 'alpha_vantage_api_key', 'news_api_key', 'debug', 'log_level', 'virtual_money', 'commission']
+2025-08-16 01:38:04,119 - __main__ - INFO - Initializing AI analyzer...
+2025-08-16 01:38:04,119 - __main__ - INFO - Creating AI analyzer with API key...
+2025-08-16 01:38:04,119 - __main__ - INFO - AI analyzer successfully initialized and cached
+2025-08-16 01:38:21,524 - __main__ - INFO - AI Assistant page loaded - logging initialized
+2025-08-16 01:38:21,526 - __main__ - INFO - Loading configuration...
+2025-08-16 01:38:21,528 - __main__ - INFO - Config loaded - Keys available: ['groq_api_key', 'alpha_vantage_api_key', 'news_api_key', 'debug', 'log_level', 'virtual_money', 'commission']
+2025-08-16 01:38:21,528 - __main__ - INFO - Initializing AI analyzer...
+2025-08-16 01:38:21,529 - __main__ - INFO - Creating AI analyzer with API key...
+2025-08-16 01:38:21,529 - __main__ - INFO - AI analyzer successfully initialized and cached
+2025-08-16 01:38:25,574 - __main__ - INFO - AI Assistant page loaded - logging initialized
+2025-08-16 01:38:25,576 - __main__ - INFO - Loading configuration...
+2025-08-16 01:38:25,576 - __main__ - INFO - Config loaded - Keys available: ['groq_api_key', 'alpha_vantage_api_key', 'news_api_key', 'debug', 'log_level', 'virtual_money', 'commission']
+2025-08-16 01:38:25,576 - __main__ - INFO - AI analyzer found in session state - using cached version
+2025-08-16 01:38:26,155 - httpx - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2025-08-16 01:41:16,941 - __main__ - INFO - AI Assistant page loaded - logging initialized
+2025-08-16 01:41:17,189 - __main__ - INFO - Loading configuration...
+2025-08-16 01:41:17,190 - __main__ - INFO - Config loaded - Keys available: ['groq_api_key', 'alpha_vantage_api_key', 'news_api_key', 'debug', 'log_level', 'virtual_money', 'commission']
+2025-08-16 01:41:17,191 - __main__ - INFO - Initializing AI analyzer...
+2025-08-16 01:41:17,191 - __main__ - INFO - Creating AI analyzer with API key...
+2025-08-16 01:41:17,192 - __main__ - INFO - Initializing AI analyzer...
+2025-08-16 01:41:17,246 - __main__ - INFO - AI analyzer initialized successfully
+2025-08-16 01:41:17,248 - __main__ - INFO - AI analyzer successfully initialized and cached
+2025-08-16 01:41:22,434 - __main__ - INFO - AI Assistant page loaded - logging initialized
+2025-08-16 01:41:22,436 - __main__ - INFO - Loading configuration...
+2025-08-16 01:41:22,437 - __main__ - INFO - Config loaded - Keys available: ['groq_api_key', 'alpha_vantage_api_key', 'news_api_key', 'debug', 'log_level', 'virtual_money', 'commission']
+2025-08-16 01:41:22,437 - __main__ - INFO - AI analyzer found in session state - using cached version
+2025-08-16 01:41:23,162 - httpx - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2025-08-16 01:41:24,767 - __main__ - INFO - AI Assistant page loaded - logging initialized
+2025-08-16 01:41:24,770 - __main__ - INFO - Loading configuration...
+2025-08-16 01:41:24,771 - __main__ - INFO - Config loaded - Keys available: ['groq_api_key', 'alpha_vantage_api_key', 'news_api_key', 'debug', 'log_level', 'virtual_money', 'commission']
+2025-08-16 01:41:24,772 - __main__ - INFO - Initializing AI analyzer...
+2025-08-16 01:41:24,772 - __main__ - INFO - Creating AI analyzer with API key...
+2025-08-16 01:41:24,772 - __main__ - INFO - AI analyzer successfully initialized and cached
+2025-08-16 01:41:37,362 - __main__ - INFO - AI Assistant page loaded - logging initialized
+2025-08-16 01:41:37,364 - __main__ - INFO - Loading configuration...
+2025-08-16 01:41:37,365 - __main__ - INFO - Config loaded - Keys available: ['groq_api_key', 'alpha_vantage_api_key', 'news_api_key', 'debug', 'log_level', 'virtual_money', 'commission']
+2025-08-16 01:41:37,365 - __main__ - INFO - AI analyzer found in session state - using cached version
+2025-08-16 01:41:38,612 - httpx - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2025-08-16 01:42:07,856 - __main__ - INFO - AI Assistant page loaded - logging initialized
+2025-08-16 01:42:07,860 - __main__ - INFO - Loading configuration...
+2025-08-16 01:42:07,862 - __main__ - INFO - Config loaded - Keys available: ['groq_api_key', 'alpha_vantage_api_key', 'news_api_key', 'debug', 'log_level', 'virtual_money', 'commission']
+2025-08-16 01:42:07,862 - __main__ - INFO - AI analyzer found in session state - using cached version
+2025-08-16 01:42:08,244 - httpx - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2025-08-16 01:42:15,798 - __main__ - INFO - AI Assistant page loaded - logging initialized
+2025-08-16 01:42:15,800 - __main__ - INFO - Loading configuration...
+2025-08-16 01:42:15,801 - __main__ - INFO - Config loaded - Keys available: ['groq_api_key', 'alpha_vantage_api_key', 'news_api_key', 'debug', 'log_level', 'virtual_money', 'commission']
+2025-08-16 01:42:15,801 - __main__ - INFO - AI analyzer found in session state - using cached version
+2025-08-16 01:42:16,790 - httpx - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2025-08-16 01:45:37,346 - __main__ - INFO - AI Assistant page loaded - logging initialized
+2025-08-16 01:45:37,584 - __main__ - INFO - Loading configuration...
+2025-08-16 01:45:37,586 - __main__ - INFO - Config loaded - Keys available: ['groq_api_key', 'alpha_vantage_api_key', 'news_api_key', 'debug', 'log_level', 'virtual_money', 'commission']
+2025-08-16 01:45:37,586 - __main__ - INFO - Initializing AI analyzer...
+2025-08-16 01:45:37,587 - __main__ - INFO - Creating AI analyzer with API key...
+2025-08-16 01:45:37,588 - __main__ - INFO - Initializing AI analyzer...
+2025-08-16 01:45:37,641 - __main__ - INFO - AI analyzer initialized successfully
+2025-08-16 01:45:37,642 - __main__ - INFO - AI analyzer successfully initialized and cached
+2025-08-16 01:45:42,454 - __main__ - INFO - AI Assistant page loaded - logging initialized
+2025-08-16 01:45:42,455 - __main__ - INFO - Loading configuration...
+2025-08-16 01:45:42,457 - __main__ - INFO - Config loaded - Keys available: ['groq_api_key', 'alpha_vantage_api_key', 'news_api_key', 'debug', 'log_level', 'virtual_money', 'commission']
+2025-08-16 01:45:42,457 - __main__ - INFO - Initializing AI analyzer...
+2025-08-16 01:45:42,457 - __main__ - INFO - Creating AI analyzer with API key...
+2025-08-16 01:45:42,458 - __main__ - INFO - AI analyzer successfully initialized and cached
+2025-08-16 01:45:49,671 - __main__ - INFO - AI Assistant page loaded - logging initialized
+2025-08-16 01:45:49,674 - __main__ - INFO - Loading configuration...
+2025-08-16 01:45:49,675 - __main__ - INFO - Config loaded - Keys available: ['groq_api_key', 'alpha_vantage_api_key', 'news_api_key', 'debug', 'log_level', 'virtual_money', 'commission']
+2025-08-16 01:45:49,675 - __main__ - INFO - AI analyzer found in session state - using cached version
+2025-08-16 01:45:50,266 - httpx - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2025-08-16 01:45:50,325 - __main__ - INFO - AI Assistant page loaded - logging initialized
+2025-08-16 01:45:50,327 - __main__ - INFO - Loading configuration...
+2025-08-16 01:45:50,328 - __main__ - INFO - Config loaded - Keys available: ['groq_api_key', 'alpha_vantage_api_key', 'news_api_key', 'debug', 'log_level', 'virtual_money', 'commission']
+2025-08-16 01:45:50,329 - __main__ - INFO - AI analyzer found in session state - using cached version
+2025-08-16 01:46:02,513 - __main__ - INFO - AI Assistant page loaded - logging initialized
+2025-08-16 01:46:02,515 - __main__ - INFO - Loading configuration...
+2025-08-16 01:46:02,516 - __main__ - INFO - Config loaded - Keys available: ['groq_api_key', 'alpha_vantage_api_key', 'news_api_key', 'debug', 'log_level', 'virtual_money', 'commission']
+2025-08-16 01:46:02,516 - __main__ - INFO - AI analyzer found in session state - using cached version
+2025-08-16 01:46:03,690 - httpx - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2025-08-16 01:46:03,758 - __main__ - INFO - AI Assistant page loaded - logging initialized
+2025-08-16 01:46:03,759 - __main__ - INFO - Loading configuration...
+2025-08-16 01:46:03,761 - __main__ - INFO - Config loaded - Keys available: ['groq_api_key', 'alpha_vantage_api_key', 'news_api_key', 'debug', 'log_level', 'virtual_money', 'commission']
+2025-08-16 01:46:03,762 - __main__ - INFO - AI analyzer found in session state - using cached version
+2025-08-16 01:46:17,531 - __main__ - INFO - AI Assistant page loaded - logging initialized
+2025-08-16 01:46:17,533 - __main__ - INFO - Loading configuration...
+2025-08-16 01:46:17,535 - __main__ - INFO - Config loaded - Keys available: ['groq_api_key', 'alpha_vantage_api_key', 'news_api_key', 'debug', 'log_level', 'virtual_money', 'commission']
+2025-08-16 01:46:17,535 - __main__ - INFO - AI analyzer found in session state - using cached version
+2025-08-16 01:46:17,543 - __main__ - INFO - 🚀 START AI OPTIMIZATION BUTTON CLICKED
+2025-08-16 01:46:17,544 - __main__ - INFO - User parameters - SMA Fast: 10, SMA Slow: 30, Risk: 0.01
+2025-08-16 01:46:17,545 - __main__ - INFO - Optimization settings - Max iterations: 5, Min gain: 10.0%, Max DD tolerance: 2.0 pp
+2025-08-16 01:46:17,545 - __main__ - INFO - Strategy config created: {'name': 'SMA Crossover Strategy', 'description': 'Long when fast SMA > slow SMA; exit when fast SMA < slow SMA or stop loss triggered', 'universe': 'NIFTY50', 'timeframe': '1D', 'objective': 'maximize_sortino', 'constraints': {'max_dd': 0.15, 'risk_per_trade': 0.015, 'turnover_pa': 2.0}, 'knobs': {'sma_fast': 10, 'sma_slow': 30, 'risk_per_trade': 0.01}, 'invariants': ['sma_fast < sma_slow', 'risk_per_trade <= 1.5%']}
+2025-08-16 01:46:17,545 - __main__ - INFO - Generating market data...
+2025-08-16 01:46:17,560 - __main__ - INFO - Market data generated - Shape: (365, 5)
+2025-08-16 01:46:17,563 - __main__ - INFO - Market data prepared for analyzer - Columns: ['Close', 'High', 'Low', 'Volume']
+2025-08-16 01:46:17,565 - __main__ - INFO - Starting optimization process...
+2025-08-16 01:46:17,566 - __main__ - INFO - AI analyzer found in session state
+2025-08-16 01:46:17,568 - __main__ - INFO - Calling iterate_optimization...
+2025-08-16 01:46:17,568 - __main__ - INFO - ============================================================
+2025-08-16 01:46:17,569 - __main__ - INFO - STARTING OPTIMIZATION
+2025-08-16 01:46:17,569 - __main__ - INFO - Max iterations: 5
+2025-08-16 01:46:17,569 - __main__ - INFO - Min gain threshold: 10.0%
+2025-08-16 01:46:17,569 - __main__ - INFO - Max drawdown tolerance: 2.0 pp
+2025-08-16 01:46:17,570 - __main__ - INFO - Initial strategy config: {'name': 'SMA Crossover Strategy', 'description': 'Long when fast SMA > slow SMA; exit when fast SMA < slow SMA or stop loss triggered', 'universe': 'NIFTY50', 'timeframe': '1D', 'objective': 'maximize_sortino', 'constraints': {'max_dd': 0.15, 'risk_per_trade': 0.015, 'turnover_pa': 2.0}, 'knobs': {'sma_fast': 10, 'sma_slow': 30, 'risk_per_trade': 0.01}, 'invariants': ['sma_fast < sma_slow', 'risk_per_trade <= 1.5%']}
+2025-08-16 01:46:17,570 - __main__ - INFO - Champion config initialized: {'name': 'SMA Crossover Strategy', 'description': 'Long when fast SMA > slow SMA; exit when fast SMA < slow SMA or stop loss triggered', 'universe': 'NIFTY50', 'timeframe': '1D', 'objective': 'maximize_sortino', 'constraints': {'max_dd': 0.15, 'risk_per_trade': 0.015, 'turnover_pa': 2.0}, 'knobs': {'sma_fast': 10, 'sma_slow': 30, 'risk_per_trade': 0.01}, 'invariants': ['sma_fast < sma_slow', 'risk_per_trade <= 1.5%']}
+2025-08-16 01:46:17,570 - __main__ - INFO - Running baseline backtest...
+2025-08-16 01:46:17,570 - __main__ - INFO - Starting mock backtest with config: {'name': 'SMA Crossover Strategy', 'description': 'Long when fast SMA > slow SMA; exit when fast SMA < slow SMA or stop loss triggered', 'universe': 'NIFTY50', 'timeframe': '1D', 'objective': 'maximize_sortino', 'constraints': {'max_dd': 0.15, 'risk_per_trade': 0.015, 'turnover_pa': 2.0}, 'knobs': {'sma_fast': 10, 'sma_slow': 30, 'risk_per_trade': 0.01}, 'invariants': ['sma_fast < sma_slow', 'risk_per_trade <= 1.5%']}
+2025-08-16 01:46:17,571 - __main__ - INFO - Extracted knobs: {'sma_fast': 10, 'sma_slow': 30, 'risk_per_trade': 0.01}
+2025-08-16 01:46:17,571 - __main__ - INFO - Parameters - SMA Fast: 10, SMA Slow: 30, Risk: 0.01
+2025-08-16 01:46:17,572 - __main__ - INFO - Calculated multipliers - Trend: 0.980, Lag: 0.975, Risk: 1.000
+2025-08-16 01:46:17,572 - __main__ - INFO - Adjusted return: 0.00096, volatility: 0.02000
+2025-08-16 01:46:17,572 - __main__ - INFO - Generated 253 portfolio values
+2025-08-16 01:46:17,574 - __main__ - INFO - Max signals allowed: 20
+2025-08-16 01:46:17,575 - __main__ - INFO - Selected signal days: [214  25 142  50 231]... (showing first 5)
+2025-08-16 01:46:17,582 - __main__ - INFO - Calculated metrics - Return: 19.12%, Sharpe: 0.72, Drawdown: 25.65%
+2025-08-16 01:46:17,583 - __main__ - INFO - Mock backtest completed successfully
+2025-08-16 01:46:17,583 - __main__ - INFO - Baseline results: {'total_return': np.float64(19.122717136423063), 'sharpe_ratio': np.float64(0.7223201448297739), 'sortino_ratio': np.float64(1.3189268904418259), 'max_drawdown': np.float64(25.65024750197555), 'profit_factor': np.float64(1.1218067707404045), 'win_rate': 53.17460317460318, 'avg_win': np.float64(0.015244914237810363), 'avg_loss': np.float64(-0.015432266683219042), 'exposure': 0.8, 'turnover': 1.5, 'total_trades': 20}
+2025-08-16 01:46:17,583 - __main__ - INFO - Baseline objective (Sortino): 1.3189
+2025-08-16 01:46:17,583 - __main__ - INFO - Baseline drawdown: 25.65%
+2025-08-16 01:46:17,584 - __main__ - INFO - Parameter bounds: {'sma_fast': [7.0, 13.0], 'sma_slow': [21.0, 39.0], 'risk_per_trade': [0.006999999999999999, 0.013000000000000001]}
+2025-08-16 01:46:17,584 - __main__ - INFO - 
+--- ITERATION 1/5 ---
+2025-08-16 01:46:17,584 - __main__ - INFO - Requesting AI suggestion...
+2025-08-16 01:46:17,584 - __main__ - INFO - Knobs formatted for analyzer: {'sma_fast': [7.0, 13.0], 'sma_slow': [21.0, 39.0], 'risk_per_trade': [0.006999999999999999, 0.013000000000000001]}
+2025-08-16 01:46:18,667 - httpx - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2025-08-16 01:46:18,669 - __main__ - INFO - AI suggestion received: {'meta': {'model': 'llama-3.3-70b-versatile', 'temperature': 0.1, 'ts': '2025-08-16T07:16:18.669619+05:30', 'prompt_version': 'v1.1'}, 'ok': True, 'issues': [], 'changes': [], 'risks': ['Overfitting to training data', 'Insufficient regime coverage'], 'test_plan': [{'name': 'Walk-forward optimization', 'desc': 'Evaluate strategy on unseen data', 'metric': 'Sortino ratio'}, {'name': 'Regime-based stress testing', 'desc': 'Assess performance under different market conditions', 'metric': 'Max drawdown'}, {'name': 'Parameter sensitivity analysis', 'desc': 'Analyze impact of parameter changes on strategy performance', 'metric': 'Sharpe ratio'}]}
+2025-08-16 01:46:18,669 - __main__ - INFO - Applying suggested changes...
+2025-08-16 01:46:18,670 - __main__ - INFO - Applying changes - Input knobs: {'sma_fast': 10, 'sma_slow': 30, 'risk_per_trade': 0.01}
+2025-08-16 01:46:18,670 - __main__ - INFO - Suggested changes: []
+2025-08-16 01:46:18,671 - __main__ - INFO - Parameter bounds: {'sma_fast': [7.0, 13.0], 'sma_slow': [21.0, 39.0], 'risk_per_trade': [0.006999999999999999, 0.013000000000000001]}
+2025-08-16 01:46:18,671 - __main__ - INFO - Final knobs after changes: {'sma_fast': 10, 'sma_slow': 30, 'risk_per_trade': 0.01}
+2025-08-16 01:46:18,671 - __main__ - INFO - Applied 0 changes successfully
+2025-08-16 01:46:18,672 - __main__ - INFO - New knobs after applying changes: {'sma_fast': 10, 'sma_slow': 30, 'risk_per_trade': 0.01}
+2025-08-16 01:46:18,672 - __main__ - INFO - Trial config: {'name': 'SMA Crossover Strategy', 'description': 'Long when fast SMA > slow SMA; exit when fast SMA < slow SMA or stop loss triggered', 'universe': 'NIFTY50', 'timeframe': '1D', 'objective': 'maximize_sortino', 'constraints': {'max_dd': 0.15, 'risk_per_trade': 0.015, 'turnover_pa': 2.0}, 'knobs': {'sma_fast': 10, 'sma_slow': 30, 'risk_per_trade': 0.01}, 'invariants': ['sma_fast < sma_slow', 'risk_per_trade <= 1.5%']}
+2025-08-16 01:46:18,672 - __main__ - INFO - Backtesting trial config...
+2025-08-16 01:46:18,673 - __main__ - INFO - Starting mock backtest with config: {'name': 'SMA Crossover Strategy', 'description': 'Long when fast SMA > slow SMA; exit when fast SMA < slow SMA or stop loss triggered', 'universe': 'NIFTY50', 'timeframe': '1D', 'objective': 'maximize_sortino', 'constraints': {'max_dd': 0.15, 'risk_per_trade': 0.015, 'turnover_pa': 2.0}, 'knobs': {'sma_fast': 10, 'sma_slow': 30, 'risk_per_trade': 0.01}, 'invariants': ['sma_fast < sma_slow', 'risk_per_trade <= 1.5%']}
+2025-08-16 01:46:18,673 - __main__ - INFO - Extracted knobs: {'sma_fast': 10, 'sma_slow': 30, 'risk_per_trade': 0.01}
+2025-08-16 01:46:18,673 - __main__ - INFO - Parameters - SMA Fast: 10, SMA Slow: 30, Risk: 0.01
+2025-08-16 01:46:18,673 - __main__ - INFO - Calculated multipliers - Trend: 0.980, Lag: 0.975, Risk: 1.000
+2025-08-16 01:46:18,673 - __main__ - INFO - Adjusted return: 0.00096, volatility: 0.02000
+2025-08-16 01:46:18,674 - __main__ - INFO - Generated 253 portfolio values
+2025-08-16 01:46:18,675 - __main__ - INFO - Max signals allowed: 20
+2025-08-16 01:46:18,675 - __main__ - INFO - Selected signal days: [214  25 142  50 231]... (showing first 5)
+2025-08-16 01:46:18,678 - __main__ - INFO - Calculated metrics - Return: 19.12%, Sharpe: 0.72, Drawdown: 25.65%
+2025-08-16 01:46:18,678 - __main__ - INFO - Mock backtest completed successfully
+2025-08-16 01:46:18,679 - __main__ - INFO - Trial results: {'total_return': np.float64(19.122717136423063), 'sharpe_ratio': np.float64(0.7223201448297739), 'sortino_ratio': np.float64(1.3189268904418259), 'max_drawdown': np.float64(25.65024750197555), 'profit_factor': np.float64(1.1218067707404045), 'win_rate': 53.17460317460318, 'avg_win': np.float64(0.015244914237810363), 'avg_loss': np.float64(-0.015432266683219042), 'exposure': 0.8, 'turnover': 1.5, 'total_trades': 20}
+2025-08-16 01:46:18,679 - __main__ - INFO - Trial objective: 1.3189
+2025-08-16 01:46:18,679 - __main__ - INFO - Trial drawdown: 25.65%
+2025-08-16 01:46:18,679 - __main__ - INFO - Gain percentage: 0.00%
+2025-08-16 01:46:18,680 - __main__ - INFO - Drawdown worsening: 0.00 pp
+2025-08-16 01:46:18,680 - __main__ - INFO - ❌ Trial rejected - Gain: 0.00% (need 10.0%), DD worsening: 0.00 pp (max 2.0)
+2025-08-16 01:46:18,680 - __main__ - INFO - No more changes suggested - stopping optimization
+2025-08-16 01:46:18,680 - __main__ - INFO - ============================================================
+2025-08-16 01:46:18,680 - __main__ - INFO - OPTIMIZATION COMPLETED
+2025-08-16 01:46:18,681 - __main__ - INFO - Final objective: 1.3189
+2025-08-16 01:46:18,681 - __main__ - INFO - Final drawdown: 25.65%
+2025-08-16 01:46:18,681 - __main__ - INFO - Total iterations: 1
+2025-08-16 01:46:18,682 - __main__ - INFO - ============================================================
+2025-08-16 01:46:18,682 - __main__ - INFO - Optimization completed - Result keys: dict_keys(['champion_config', 'champion_perf', 'iterations', 'total_iterations', 'final_objective', 'final_drawdown_pct'])
+2025-08-16 01:46:18,683 - __main__ - INFO - Result stored in session state
+2025-08-16 01:46:18,684 - __main__ - INFO - Optimization summary: Completed 1 iterations with 0 promotions. Final Sortino: 1.319
+2025-08-16 01:46:55,138 - src.data.jugaad_client - INFO - NSE Live client initialized successfully
+2025-08-16 01:46:58,515 - httpx - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2025-08-16 01:48:35,441 - __main__ - INFO - AI Assistant page loaded - logging initialized
+2025-08-16 01:48:35,446 - __main__ - INFO - Loading configuration...
+2025-08-16 01:48:35,447 - __main__ - INFO - Config loaded - Keys available: ['groq_api_key', 'alpha_vantage_api_key', 'news_api_key', 'debug', 'log_level', 'virtual_money', 'commission']
+2025-08-16 01:48:35,447 - __main__ - INFO - AI analyzer found in session state - using cached version
+2025-08-16 01:55:36,701 - httpx - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2025-08-16 01:55:52,361 - httpx - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2025-08-16 01:56:10,585 - httpx - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2025-08-16 01:56:38,028 - httpx - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2025-08-16 01:57:04,133 - httpx - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2025-08-16 02:21:11,853 - __main__ - INFO - AI Assistant page loaded - logging initialized
+2025-08-16 02:21:12,141 - __main__ - INFO - Loading configuration...
+2025-08-16 02:21:12,142 - __main__ - INFO - Config loaded - Keys available: ['groq_api_key', 'alpha_vantage_api_key', 'news_api_key', 'debug', 'log_level', 'virtual_money', 'commission']
+2025-08-16 02:21:12,143 - __main__ - INFO - Initializing AI analyzer...
+2025-08-16 02:21:12,143 - __main__ - INFO - Creating AI analyzer with API key...
+2025-08-16 02:21:12,144 - __main__ - INFO - Initializing AI analyzer...
+2025-08-16 02:21:12,214 - __main__ - INFO - AI analyzer initialized successfully
+2025-08-16 02:21:12,216 - __main__ - INFO - AI analyzer successfully initialized and cached
+2025-08-16 02:21:19,803 - httpx - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2025-08-16 02:21:20,283 - httpx - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2025-08-16 02:21:20,887 - httpx - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2025-08-16 02:21:21,363 - httpx - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2025-08-16 02:21:21,833 - httpx - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2025-08-16 02:22:16,202 - httpx - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2025-08-16 02:22:16,666 - httpx - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2025-08-16 02:22:17,105 - httpx - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2025-08-16 02:22:17,561 - httpx - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2025-08-16 02:22:18,036 - httpx - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2025-08-16 02:22:44,890 - httpx - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2025-08-16 02:22:45,414 - httpx - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2025-08-16 02:22:45,870 - httpx - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2025-08-16 02:22:46,308 - httpx - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2025-08-16 02:22:46,788 - httpx - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2025-08-16 02:23:08,928 - httpx - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2025-08-16 02:23:09,391 - httpx - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2025-08-16 02:23:09,838 - httpx - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2025-08-16 02:23:10,304 - httpx - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2025-08-16 02:23:10,816 - httpx - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2025-08-16 02:23:35,619 - httpx - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2025-08-16 02:23:36,074 - httpx - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2025-08-16 02:23:36,498 - httpx - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2025-08-16 02:23:36,953 - httpx - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2025-08-16 02:23:37,445 - httpx - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2025-08-16 02:38:03,223 - __main__ - INFO - AI Assistant page loaded - logging initialized
+2025-08-16 02:38:03,231 - __main__ - INFO - Loading configuration...
+2025-08-16 02:38:03,232 - __main__ - INFO - Config loaded - Keys available: ['groq_api_key', 'alpha_vantage_api_key', 'news_api_key', 'debug', 'log_level', 'virtual_money', 'commission']
+2025-08-16 02:38:03,233 - __main__ - INFO - AI analyzer found in session state - using cached version
+2025-08-16 02:38:06,502 - __main__ - INFO - AI Assistant page loaded - logging initialized
+2025-08-16 02:38:06,504 - __main__ - INFO - Loading configuration...
+2025-08-16 02:38:06,506 - __main__ - INFO - Config loaded - Keys available: ['groq_api_key', 'alpha_vantage_api_key', 'news_api_key', 'debug', 'log_level', 'virtual_money', 'commission']
+2025-08-16 02:38:06,506 - __main__ - INFO - AI analyzer found in session state - using cached version
+2025-08-16 02:38:06,513 - __main__ - INFO - 🚀 START AI OPTIMIZATION BUTTON CLICKED
+2025-08-16 02:38:06,514 - __main__ - INFO - User parameters - SMA Fast: 10, SMA Slow: 30, Risk: 0.01
+2025-08-16 02:38:06,515 - __main__ - INFO - Optimization settings - Max iterations: 5, Min gain: 10.0%, Max DD tolerance: 2.0 pp
+2025-08-16 02:38:06,515 - __main__ - INFO - Strategy config created: {'name': 'SMA Crossover Strategy', 'description': 'Long when fast SMA > slow SMA; exit when fast SMA < slow SMA or stop loss triggered', 'universe': 'NIFTY50', 'timeframe': '1D', 'objective': 'maximize_sortino', 'constraints': {'max_dd': 0.15, 'risk_per_trade': 0.015, 'turnover_pa': 2.0}, 'knobs': {'sma_fast': 10, 'sma_slow': 30, 'risk_per_trade': 0.01}, 'invariants': ['sma_fast < sma_slow', 'risk_per_trade <= 1.5%']}
+2025-08-16 02:38:06,516 - __main__ - INFO - Generating market data...
+2025-08-16 02:38:06,522 - __main__ - INFO - Market data generated - Shape: (365, 5)
+2025-08-16 02:38:06,523 - __main__ - INFO - Market data prepared for analyzer - Columns: ['Close', 'High', 'Low', 'Volume']
+2025-08-16 02:38:06,524 - __main__ - INFO - Starting optimization process...
+2025-08-16 02:38:06,525 - __main__ - INFO - AI analyzer found in session state
+2025-08-16 02:38:06,526 - __main__ - INFO - Calling iterate_optimization...
+2025-08-16 02:38:06,527 - __main__ - INFO - ============================================================
+2025-08-16 02:38:06,527 - __main__ - INFO - STARTING OPTIMIZATION
+2025-08-16 02:38:06,527 - __main__ - INFO - Max iterations: 5
+2025-08-16 02:38:06,528 - __main__ - INFO - Min gain threshold: 10.0%
+2025-08-16 02:38:06,528 - __main__ - INFO - Max drawdown tolerance: 2.0 pp
+2025-08-16 02:38:06,529 - __main__ - INFO - Initial strategy config: {'name': 'SMA Crossover Strategy', 'description': 'Long when fast SMA > slow SMA; exit when fast SMA < slow SMA or stop loss triggered', 'universe': 'NIFTY50', 'timeframe': '1D', 'objective': 'maximize_sortino', 'constraints': {'max_dd': 0.15, 'risk_per_trade': 0.015, 'turnover_pa': 2.0}, 'knobs': {'sma_fast': 10, 'sma_slow': 30, 'risk_per_trade': 0.01}, 'invariants': ['sma_fast < sma_slow', 'risk_per_trade <= 1.5%']}
+2025-08-16 02:38:06,530 - __main__ - INFO - Champion config initialized: {'name': 'SMA Crossover Strategy', 'description': 'Long when fast SMA > slow SMA; exit when fast SMA < slow SMA or stop loss triggered', 'universe': 'NIFTY50', 'timeframe': '1D', 'objective': 'maximize_sortino', 'constraints': {'max_dd': 0.15, 'risk_per_trade': 0.015, 'turnover_pa': 2.0}, 'knobs': {'sma_fast': 10, 'sma_slow': 30, 'risk_per_trade': 0.01}, 'invariants': ['sma_fast < sma_slow', 'risk_per_trade <= 1.5%']}
+2025-08-16 02:38:06,531 - __main__ - INFO - Running baseline backtest...
+2025-08-16 02:38:06,531 - __main__ - INFO - Starting mock backtest with config: {'name': 'SMA Crossover Strategy', 'description': 'Long when fast SMA > slow SMA; exit when fast SMA < slow SMA or stop loss triggered', 'universe': 'NIFTY50', 'timeframe': '1D', 'objective': 'maximize_sortino', 'constraints': {'max_dd': 0.15, 'risk_per_trade': 0.015, 'turnover_pa': 2.0}, 'knobs': {'sma_fast': 10, 'sma_slow': 30, 'risk_per_trade': 0.01}, 'invariants': ['sma_fast < sma_slow', 'risk_per_trade <= 1.5%']}
+2025-08-16 02:38:06,531 - __main__ - INFO - Extracted knobs: {'sma_fast': 10, 'sma_slow': 30, 'risk_per_trade': 0.01}
+2025-08-16 02:38:06,532 - __main__ - INFO - Parameters - SMA Fast: 10, SMA Slow: 30, Risk: 0.01
+2025-08-16 02:38:06,533 - __main__ - INFO - Calculated multipliers - Trend: 0.980, Lag: 0.975, Risk: 1.000
+2025-08-16 02:38:06,533 - __main__ - INFO - Adjusted return: 0.00096, volatility: 0.02000
+2025-08-16 02:38:06,534 - __main__ - INFO - Generated 253 portfolio values
+2025-08-16 02:38:06,535 - __main__ - INFO - Max signals allowed: 20
+2025-08-16 02:38:06,537 - __main__ - INFO - Selected signal days: [214  25 142  50 231]... (showing first 5)
+2025-08-16 02:38:06,540 - __main__ - INFO - Calculated metrics - Return: 19.12%, Sharpe: 0.72, Drawdown: 25.65%
+2025-08-16 02:38:06,541 - __main__ - INFO - Mock backtest completed successfully
+2025-08-16 02:38:06,541 - __main__ - INFO - Baseline results: {'total_return': np.float64(19.122717136423063), 'sharpe_ratio': np.float64(0.7223201448297739), 'sortino_ratio': np.float64(1.3189268904418259), 'max_drawdown': np.float64(25.65024750197555), 'profit_factor': np.float64(1.1218067707404045), 'win_rate': 53.17460317460318, 'avg_win': np.float64(0.015244914237810363), 'avg_loss': np.float64(-0.015432266683219042), 'exposure': 0.8, 'turnover': 1.5, 'total_trades': 20}
+2025-08-16 02:38:06,542 - __main__ - INFO - Baseline objective (Sortino): 1.3189
+2025-08-16 02:38:06,543 - __main__ - INFO - Baseline drawdown: 25.65%
+2025-08-16 02:38:06,543 - __main__ - INFO - Parameter bounds: {'sma_fast': [7.0, 13.0], 'sma_slow': [21.0, 39.0], 'risk_per_trade': [0.006999999999999999, 0.013000000000000001]}
+2025-08-16 02:38:06,544 - __main__ - INFO - 
+--- ITERATION 1/5 ---
+2025-08-16 02:38:06,545 - __main__ - INFO - Requesting AI suggestion...
+2025-08-16 02:38:06,545 - __main__ - INFO - Knobs formatted for analyzer: {'sma_fast': [7.0, 13.0], 'sma_slow': [21.0, 39.0], 'risk_per_trade': [0.006999999999999999, 0.013000000000000001]}
+2025-08-16 02:38:07,656 - httpx - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2025-08-16 02:38:07,668 - __main__ - INFO - AI suggestion received: {'meta': {'model': 'llama-3.3-70b-versatile', 'temperature': 0.1, 'ts': '2025-08-16T08:08:07.668321+05:30', 'prompt_version': 'v1.1'}, 'ok': True, 'issues': [], 'changes': [{'area': 'entry', 'param': 'sma_fast', 'new_range': [10.0, 13.0], 'why': 'Optimize for better mean reversion', 'expected_effect': 'Improved Sharpe ratio'}, {'area': 'sizing', 'param': 'risk_per_trade', 'new_range': [0.008, 0.012], 'why': 'Reduce risk per trade to minimize drawdown', 'expected_effect': 'Decreased maximum drawdown'}], 'risks': ['Overfitting', 'Regime shift'], 'test_plan': [{'name': 'Walk-forward optimization', 'desc': 'Evaluate strategy performance on out-of-sample data', 'metric': 'Sortino ratio'}, {'name': 'Regime-based backtest', 'desc': 'Assess strategy performance across different market regimes', 'metric': 'Maximum drawdown'}, {'name': 'Transaction cost sensitivity', 'desc': 'Analyze strategy robustness to varying transaction costs', 'metric': 'Net return'}]}
+2025-08-16 02:38:07,668 - __main__ - INFO - Applying suggested changes...
+2025-08-16 02:38:07,668 - __main__ - INFO - Applying changes - Input knobs: {'sma_fast': 10, 'sma_slow': 30, 'risk_per_trade': 0.01}
+2025-08-16 02:38:07,668 - __main__ - INFO - Suggested changes: [{'area': 'entry', 'param': 'sma_fast', 'new_range': [10.0, 13.0], 'why': 'Optimize for better mean reversion', 'expected_effect': 'Improved Sharpe ratio'}, {'area': 'sizing', 'param': 'risk_per_trade', 'new_range': [0.008, 0.012], 'why': 'Reduce risk per trade to minimize drawdown', 'expected_effect': 'Decreased maximum drawdown'}]
+2025-08-16 02:38:07,669 - __main__ - INFO - Parameter bounds: {'sma_fast': [7.0, 13.0], 'sma_slow': [21.0, 39.0], 'risk_per_trade': [0.006999999999999999, 0.013000000000000001]}
+2025-08-16 02:38:07,669 - __main__ - INFO - Processing change 1: {'area': 'entry', 'param': 'sma_fast', 'new_range': [10.0, 13.0], 'why': 'Optimize for better mean reversion', 'expected_effect': 'Improved Sharpe ratio'}
+2025-08-16 02:38:07,669 - __main__ - INFO - Applied change to sma_fast: 10 -> 11.5 (from range [10.0000, 13.0000])
+2025-08-16 02:38:07,669 - __main__ - INFO - Processing change 2: {'area': 'sizing', 'param': 'risk_per_trade', 'new_range': [0.008, 0.012], 'why': 'Reduce risk per trade to minimize drawdown', 'expected_effect': 'Decreased maximum drawdown'}
+2025-08-16 02:38:07,669 - __main__ - INFO - Applied change to risk_per_trade: 0.01 -> 0.01 (from range [0.0080, 0.0120])
+2025-08-16 02:38:07,669 - __main__ - INFO - Final knobs after changes: {'sma_fast': 11.5, 'sma_slow': 30, 'risk_per_trade': 0.01}
+2025-08-16 02:38:07,669 - __main__ - INFO - Applied 2 changes successfully
+2025-08-16 02:38:07,670 - __main__ - INFO - New knobs after applying changes: {'sma_fast': 11.5, 'sma_slow': 30, 'risk_per_trade': 0.01}
+2025-08-16 02:38:07,670 - __main__ - INFO - Trial config: {'name': 'SMA Crossover Strategy', 'description': 'Long when fast SMA > slow SMA; exit when fast SMA < slow SMA or stop loss triggered', 'universe': 'NIFTY50', 'timeframe': '1D', 'objective': 'maximize_sortino', 'constraints': {'max_dd': 0.15, 'risk_per_trade': 0.015, 'turnover_pa': 2.0}, 'knobs': {'sma_fast': 11.5, 'sma_slow': 30, 'risk_per_trade': 0.01}, 'invariants': ['sma_fast < sma_slow', 'risk_per_trade <= 1.5%']}
+2025-08-16 02:38:07,670 - __main__ - INFO - Backtesting trial config...
+2025-08-16 02:38:07,670 - __main__ - INFO - Starting mock backtest with config: {'name': 'SMA Crossover Strategy', 'description': 'Long when fast SMA > slow SMA; exit when fast SMA < slow SMA or stop loss triggered', 'universe': 'NIFTY50', 'timeframe': '1D', 'objective': 'maximize_sortino', 'constraints': {'max_dd': 0.15, 'risk_per_trade': 0.015, 'turnover_pa': 2.0}, 'knobs': {'sma_fast': 11.5, 'sma_slow': 30, 'risk_per_trade': 0.01}, 'invariants': ['sma_fast < sma_slow', 'risk_per_trade <= 1.5%']}
+2025-08-16 02:38:07,670 - __main__ - INFO - Extracted knobs: {'sma_fast': 11.5, 'sma_slow': 30, 'risk_per_trade': 0.01}
+2025-08-16 02:38:07,670 - __main__ - INFO - Parameters - SMA Fast: 11.5, SMA Slow: 30, Risk: 0.01
+2025-08-16 02:38:07,670 - __main__ - INFO - Calculated multipliers - Trend: 0.995, Lag: 0.975, Risk: 1.000
+2025-08-16 02:38:07,671 - __main__ - INFO - Adjusted return: 0.00097, volatility: 0.02000
+2025-08-16 02:38:07,671 - __main__ - INFO - Generated 253 portfolio values
+2025-08-16 02:38:07,672 - __main__ - INFO - Max signals allowed: 20
+2025-08-16 02:38:07,672 - __main__ - INFO - Selected signal days: [214  25 142  50 231]... (showing first 5)
+2025-08-16 02:38:07,674 - __main__ - INFO - Calculated metrics - Return: 19.56%, Sharpe: 0.73, Drawdown: 25.60%
+2025-08-16 02:38:07,675 - __main__ - INFO - Mock backtest completed successfully
+2025-08-16 02:38:07,675 - __main__ - INFO - Trial results: {'total_return': np.float64(19.56232625238772), 'sharpe_ratio': np.float64(0.734321850889177), 'sortino_ratio': np.float64(1.340841512325528), 'max_drawdown': np.float64(25.60314556556969), 'profit_factor': np.float64(1.1239481147635608), 'win_rate': 53.17460317460318, 'avg_win': np.float64(0.015259539237810362), 'avg_loss': np.float64(-0.015417641683219045), 'exposure': 0.8, 'turnover': 1.5, 'total_trades': 20}
+2025-08-16 02:38:07,675 - __main__ - INFO - Trial objective: 1.3408
+2025-08-16 02:38:07,676 - __main__ - INFO - Trial drawdown: 25.60%
+2025-08-16 02:38:07,676 - __main__ - INFO - Gain percentage: 1.66%
+2025-08-16 02:38:07,677 - __main__ - INFO - Drawdown worsening: 0.00 pp
+2025-08-16 02:38:07,677 - __main__ - INFO - ❌ Trial rejected - Gain: 1.66% (need 10.0%), DD worsening: 0.00 pp (max 2.0)
+2025-08-16 02:38:07,677 - __main__ - INFO - 
+--- ITERATION 2/5 ---
+2025-08-16 02:38:07,678 - __main__ - INFO - Requesting AI suggestion...
+2025-08-16 02:38:07,678 - __main__ - INFO - Knobs formatted for analyzer: {'sma_fast': [7.0, 13.0], 'sma_slow': [21.0, 39.0], 'risk_per_trade': [0.006999999999999999, 0.013000000000000001]}
+2025-08-16 02:38:08,679 - httpx - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2025-08-16 02:38:08,682 - __main__ - INFO - AI suggestion received: {'meta': {'model': 'llama-3.3-70b-versatile', 'temperature': 0.1, 'ts': '2025-08-16T08:08:08.682271+05:30', 'prompt_version': 'v1.1'}, 'ok': True, 'issues': [], 'changes': [], 'risks': ['Regime shift', 'Overfitting'], 'test_plan': [{'name': 'Walk-forward optimization', 'desc': 'Evaluate strategy on unseen data', 'metric': 'Sortino ratio'}, {'name': 'Regime-dependent performance', 'desc': 'Analyze strategy performance across regimes', 'metric': 'Max drawdown'}, {'name': 'Transaction cost sensitivity', 'desc': 'Assess impact of varying transaction costs', 'metric': 'Net return'}]}
+2025-08-16 02:38:08,682 - __main__ - INFO - Applying suggested changes...
+2025-08-16 02:38:08,682 - __main__ - INFO - Applying changes - Input knobs: {'sma_fast': 10, 'sma_slow': 30, 'risk_per_trade': 0.01}
+2025-08-16 02:38:08,682 - __main__ - INFO - Suggested changes: []
+2025-08-16 02:38:08,682 - __main__ - INFO - Parameter bounds: {'sma_fast': [7.0, 13.0], 'sma_slow': [21.0, 39.0], 'risk_per_trade': [0.006999999999999999, 0.013000000000000001]}
+2025-08-16 02:38:08,682 - __main__ - INFO - Final knobs after changes: {'sma_fast': 10, 'sma_slow': 30, 'risk_per_trade': 0.01}
+2025-08-16 02:38:08,682 - __main__ - INFO - Applied 0 changes successfully
+2025-08-16 02:38:08,682 - __main__ - INFO - New knobs after applying changes: {'sma_fast': 10, 'sma_slow': 30, 'risk_per_trade': 0.01}
+2025-08-16 02:38:08,682 - __main__ - INFO - Trial config: {'name': 'SMA Crossover Strategy', 'description': 'Long when fast SMA > slow SMA; exit when fast SMA < slow SMA or stop loss triggered', 'universe': 'NIFTY50', 'timeframe': '1D', 'objective': 'maximize_sortino', 'constraints': {'max_dd': 0.15, 'risk_per_trade': 0.015, 'turnover_pa': 2.0}, 'knobs': {'sma_fast': 10, 'sma_slow': 30, 'risk_per_trade': 0.01}, 'invariants': ['sma_fast < sma_slow', 'risk_per_trade <= 1.5%']}
+2025-08-16 02:38:08,682 - __main__ - INFO - Backtesting trial config...
+2025-08-16 02:38:08,682 - __main__ - INFO - Starting mock backtest with config: {'name': 'SMA Crossover Strategy', 'description': 'Long when fast SMA > slow SMA; exit when fast SMA < slow SMA or stop loss triggered', 'universe': 'NIFTY50', 'timeframe': '1D', 'objective': 'maximize_sortino', 'constraints': {'max_dd': 0.15, 'risk_per_trade': 0.015, 'turnover_pa': 2.0}, 'knobs': {'sma_fast': 10, 'sma_slow': 30, 'risk_per_trade': 0.01}, 'invariants': ['sma_fast < sma_slow', 'risk_per_trade <= 1.5%']}
+2025-08-16 02:38:08,683 - __main__ - INFO - Extracted knobs: {'sma_fast': 10, 'sma_slow': 30, 'risk_per_trade': 0.01}
+2025-08-16 02:38:08,683 - __main__ - INFO - Parameters - SMA Fast: 10, SMA Slow: 30, Risk: 0.01
+2025-08-16 02:38:08,683 - __main__ - INFO - Calculated multipliers - Trend: 0.980, Lag: 0.975, Risk: 1.000
+2025-08-16 02:38:08,684 - __main__ - INFO - Adjusted return: 0.00096, volatility: 0.02000
+2025-08-16 02:38:08,684 - __main__ - INFO - Generated 253 portfolio values
+2025-08-16 02:38:08,686 - __main__ - INFO - Max signals allowed: 20
+2025-08-16 02:38:08,686 - __main__ - INFO - Selected signal days: [214  25 142  50 231]... (showing first 5)
+2025-08-16 02:38:08,688 - __main__ - INFO - Calculated metrics - Return: 19.12%, Sharpe: 0.72, Drawdown: 25.65%
+2025-08-16 02:38:08,689 - __main__ - INFO - Mock backtest completed successfully
+2025-08-16 02:38:08,689 - __main__ - INFO - Trial results: {'total_return': np.float64(19.122717136423063), 'sharpe_ratio': np.float64(0.7223201448297739), 'sortino_ratio': np.float64(1.3189268904418259), 'max_drawdown': np.float64(25.65024750197555), 'profit_factor': np.float64(1.1218067707404045), 'win_rate': 53.17460317460318, 'avg_win': np.float64(0.015244914237810363), 'avg_loss': np.float64(-0.015432266683219042), 'exposure': 0.8, 'turnover': 1.5, 'total_trades': 20}
+2025-08-16 02:38:08,689 - __main__ - INFO - Trial objective: 1.3189
+2025-08-16 02:38:08,689 - __main__ - INFO - Trial drawdown: 25.65%
+2025-08-16 02:38:08,690 - __main__ - INFO - Gain percentage: 0.00%
+2025-08-16 02:38:08,690 - __main__ - INFO - Drawdown worsening: 0.00 pp
+2025-08-16 02:38:08,691 - __main__ - INFO - ❌ Trial rejected - Gain: 0.00% (need 10.0%), DD worsening: 0.00 pp (max 2.0)
+2025-08-16 02:38:08,691 - __main__ - INFO - No more changes suggested - stopping optimization
+2025-08-16 02:38:08,691 - __main__ - INFO - ============================================================
+2025-08-16 02:38:08,691 - __main__ - INFO - OPTIMIZATION COMPLETED
+2025-08-16 02:38:08,691 - __main__ - INFO - Final objective: 1.3189
+2025-08-16 02:38:08,692 - __main__ - INFO - Final drawdown: 25.65%
+2025-08-16 02:38:08,692 - __main__ - INFO - Total iterations: 2
+2025-08-16 02:38:08,692 - __main__ - INFO - ============================================================
+2025-08-16 02:38:08,692 - __main__ - INFO - Optimization completed - Result keys: dict_keys(['champion_config', 'champion_perf', 'iterations', 'total_iterations', 'final_objective', 'final_drawdown_pct'])
+2025-08-16 02:38:08,693 - __main__ - INFO - Result stored in session state
+2025-08-16 02:38:08,695 - __main__ - INFO - Optimization summary: Completed 2 iterations with 0 promotions. Final Sortino: 1.319
+2025-08-16 03:16:00,494 - __main__ - INFO - AI Assistant page loaded - logging initialized
+2025-08-16 03:16:00,499 - __main__ - INFO - Loading configuration...
+2025-08-16 03:16:00,501 - __main__ - INFO - Config loaded - Keys available: ['groq_api_key', 'alpha_vantage_api_key', 'news_api_key', 'debug', 'log_level', 'virtual_money', 'commission']
+2025-08-16 03:16:00,501 - __main__ - INFO - Initializing AI analyzer...
+2025-08-16 03:16:00,501 - __main__ - INFO - Creating AI analyzer with API key...
+2025-08-16 03:16:00,503 - __main__ - INFO - Initializing AI analyzer...
+2025-08-16 03:16:00,525 - __main__ - INFO - AI analyzer initialized successfully
+2025-08-16 03:16:00,527 - __main__ - INFO - AI analyzer successfully initialized and cached
+2025-08-16 03:16:05,271 - __main__ - INFO - AI Assistant page loaded - logging initialized
+2025-08-16 03:16:05,272 - __main__ - INFO - Loading configuration...
+2025-08-16 03:16:05,273 - __main__ - INFO - Config loaded - Keys available: ['groq_api_key', 'alpha_vantage_api_key', 'news_api_key', 'debug', 'log_level', 'virtual_money', 'commission']
+2025-08-16 03:16:05,273 - __main__ - INFO - AI analyzer found in session state - using cached version
+2025-08-16 03:16:07,105 - httpx - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2025-08-16 03:16:07,155 - __main__ - INFO - AI Assistant page loaded - logging initialized
+2025-08-16 03:16:07,157 - __main__ - INFO - Loading configuration...
+2025-08-16 03:16:07,158 - __main__ - INFO - Config loaded - Keys available: ['groq_api_key', 'alpha_vantage_api_key', 'news_api_key', 'debug', 'log_level', 'virtual_money', 'commission']
+2025-08-16 03:16:07,158 - __main__ - INFO - AI analyzer found in session state - using cached version
+2025-08-16 03:16:23,075 - src.data.jugaad_client - INFO - NSE Live client initialized successfully
+2025-08-16 03:16:37,336 - src.data.jugaad_client - INFO - NSE Live client initialized successfully
+2025-08-16 03:16:39,088 - src.data.jugaad_client - WARNING - DataCleaner doesn't have expected methods
+2025-08-16 03:16:39,089 - src.data.jugaad_client - INFO - Retrieved 250 records for RELIANCE
+2025-08-16 03:45:05,453 - __main__ - INFO - AI Assistant page loaded - logging initialized
+2025-08-16 03:45:05,465 - __main__ - INFO - Loading configuration...
+2025-08-16 03:45:05,466 - __main__ - INFO - Config loaded - Keys available: ['groq_api_key', 'alpha_vantage_api_key', 'news_api_key', 'debug', 'log_level', 'virtual_money', 'commission']
+2025-08-16 03:45:05,466 - __main__ - INFO - AI analyzer found in session state - using cached version
+2025-08-16 03:45:09,979 - __main__ - INFO - AI Assistant page loaded - logging initialized
+2025-08-16 03:45:09,980 - __main__ - INFO - Loading configuration...
+2025-08-16 03:45:09,981 - __main__ - INFO - Config loaded - Keys available: ['groq_api_key', 'alpha_vantage_api_key', 'news_api_key', 'debug', 'log_level', 'virtual_money', 'commission']
+2025-08-16 03:45:09,981 - __main__ - INFO - AI analyzer found in session state - using cached version
+2025-08-16 03:45:09,989 - __main__ - INFO - 🚀 START AI OPTIMIZATION BUTTON CLICKED
+2025-08-16 03:45:09,990 - __main__ - INFO - User parameters - SMA Fast: 10, SMA Slow: 30, Risk: 0.01
+2025-08-16 03:45:09,991 - __main__ - INFO - Optimization settings - Max iterations: 5, Min gain: 10.0%, Max DD tolerance: 2.0 pp
+2025-08-16 03:45:09,991 - __main__ - INFO - Strategy config created: {'name': 'SMA Crossover Strategy', 'description': 'Long when fast SMA > slow SMA; exit when fast SMA < slow SMA or stop loss triggered', 'universe': 'NIFTY50', 'timeframe': '1D', 'objective': 'maximize_sortino', 'constraints': {'max_dd': 0.15, 'risk_per_trade': 0.015, 'turnover_pa': 2.0}, 'knobs': {'sma_fast': 10, 'sma_slow': 30, 'risk_per_trade': 0.01}, 'invariants': ['sma_fast < sma_slow', 'risk_per_trade <= 1.5%']}
+2025-08-16 03:45:09,992 - __main__ - INFO - Generating market data...
+2025-08-16 03:45:09,997 - __main__ - INFO - Market data generated - Shape: (365, 5)
+2025-08-16 03:45:09,998 - __main__ - INFO - Market data prepared for analyzer - Columns: ['Close', 'High', 'Low', 'Volume']
+2025-08-16 03:45:09,999 - __main__ - INFO - Starting optimization process...
+2025-08-16 03:45:09,999 - __main__ - INFO - AI analyzer found in session state
+2025-08-16 03:45:10,000 - __main__ - INFO - Calling iterate_optimization...
+2025-08-16 03:45:10,001 - __main__ - INFO - ============================================================
+2025-08-16 03:45:10,001 - __main__ - INFO - STARTING OPTIMIZATION
+2025-08-16 03:45:10,002 - __main__ - INFO - Max iterations: 5
+2025-08-16 03:45:10,002 - __main__ - INFO - Min gain threshold: 10.0%
+2025-08-16 03:45:10,003 - __main__ - INFO - Max drawdown tolerance: 2.0 pp
+2025-08-16 03:45:10,003 - __main__ - INFO - Initial strategy config: {'name': 'SMA Crossover Strategy', 'description': 'Long when fast SMA > slow SMA; exit when fast SMA < slow SMA or stop loss triggered', 'universe': 'NIFTY50', 'timeframe': '1D', 'objective': 'maximize_sortino', 'constraints': {'max_dd': 0.15, 'risk_per_trade': 0.015, 'turnover_pa': 2.0}, 'knobs': {'sma_fast': 10, 'sma_slow': 30, 'risk_per_trade': 0.01}, 'invariants': ['sma_fast < sma_slow', 'risk_per_trade <= 1.5%']}
+2025-08-16 03:45:10,004 - __main__ - INFO - Champion config initialized: {'name': 'SMA Crossover Strategy', 'description': 'Long when fast SMA > slow SMA; exit when fast SMA < slow SMA or stop loss triggered', 'universe': 'NIFTY50', 'timeframe': '1D', 'objective': 'maximize_sortino', 'constraints': {'max_dd': 0.15, 'risk_per_trade': 0.015, 'turnover_pa': 2.0}, 'knobs': {'sma_fast': 10, 'sma_slow': 30, 'risk_per_trade': 0.01}, 'invariants': ['sma_fast < sma_slow', 'risk_per_trade <= 1.5%']}
+2025-08-16 03:45:10,004 - __main__ - INFO - Running baseline backtest...
+2025-08-16 03:45:10,004 - __main__ - INFO - Starting mock backtest with config: {'name': 'SMA Crossover Strategy', 'description': 'Long when fast SMA > slow SMA; exit when fast SMA < slow SMA or stop loss triggered', 'universe': 'NIFTY50', 'timeframe': '1D', 'objective': 'maximize_sortino', 'constraints': {'max_dd': 0.15, 'risk_per_trade': 0.015, 'turnover_pa': 2.0}, 'knobs': {'sma_fast': 10, 'sma_slow': 30, 'risk_per_trade': 0.01}, 'invariants': ['sma_fast < sma_slow', 'risk_per_trade <= 1.5%']}
+2025-08-16 03:45:10,005 - __main__ - INFO - Extracted knobs: {'sma_fast': 10, 'sma_slow': 30, 'risk_per_trade': 0.01}
+2025-08-16 03:45:10,005 - __main__ - INFO - Parameters - SMA Fast: 10, SMA Slow: 30, Risk: 0.01
+2025-08-16 03:45:10,005 - __main__ - INFO - Calculated multipliers - Trend: 0.980, Lag: 0.975, Risk: 1.000
+2025-08-16 03:45:10,006 - __main__ - INFO - Adjusted return: 0.00096, volatility: 0.02000
+2025-08-16 03:45:10,006 - __main__ - INFO - Generated 253 portfolio values
+2025-08-16 03:45:10,007 - __main__ - INFO - Max signals allowed: 20
+2025-08-16 03:45:10,008 - __main__ - INFO - Selected signal days: [214  25 142  50 231]... (showing first 5)
+2025-08-16 03:45:10,012 - __main__ - INFO - Calculated metrics - Return: 19.12%, Sharpe: 0.72, Drawdown: 25.65%
+2025-08-16 03:45:10,013 - __main__ - INFO - Mock backtest completed successfully
+2025-08-16 03:45:10,013 - __main__ - INFO - Baseline results: {'total_return': np.float64(19.122717136423063), 'sharpe_ratio': np.float64(0.7223201448297739), 'sortino_ratio': np.float64(1.3189268904418259), 'max_drawdown': np.float64(25.65024750197555), 'profit_factor': np.float64(1.1218067707404045), 'win_rate': 53.17460317460318, 'avg_win': np.float64(0.015244914237810363), 'avg_loss': np.float64(-0.015432266683219042), 'exposure': 0.8, 'turnover': 1.5, 'total_trades': 20}
+2025-08-16 03:45:10,014 - __main__ - INFO - Baseline objective (Sortino): 1.3189
+2025-08-16 03:45:10,014 - __main__ - INFO - Baseline drawdown: 25.65%
+2025-08-16 03:45:10,014 - __main__ - INFO - Parameter bounds: {'sma_fast': [7.0, 13.0], 'sma_slow': [21.0, 39.0], 'risk_per_trade': [0.006999999999999999, 0.013000000000000001]}
+2025-08-16 03:45:10,015 - __main__ - INFO - 
+--- ITERATION 1/5 ---
+2025-08-16 03:45:10,015 - __main__ - INFO - Requesting AI suggestion...
+2025-08-16 03:45:10,016 - __main__ - INFO - Knobs formatted for analyzer: {'sma_fast': [7.0, 13.0], 'sma_slow': [21.0, 39.0], 'risk_per_trade': [0.006999999999999999, 0.013000000000000001]}
+2025-08-16 03:45:11,110 - httpx - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2025-08-16 03:45:11,112 - __main__ - INFO - AI suggestion received: {'meta': {'model': 'llama-3.3-70b-versatile', 'temperature': 0.1, 'ts': '2025-08-16T09:15:11.112126+05:30', 'prompt_version': 'v1.1'}, 'ok': True, 'issues': [], 'changes': [], 'risks': ['Overfitting to training data', 'Insufficient regime coverage'], 'test_plan': [{'name': 'Walk-forward optimization', 'desc': 'Evaluate strategy on unseen data', 'metric': 'Sortino ratio'}, {'name': 'Regime-based stress testing', 'desc': 'Assess performance under different market conditions', 'metric': 'Max drawdown'}, {'name': 'Parameter sensitivity analysis', 'desc': 'Analyze impact of parameter changes on strategy performance', 'metric': 'Sharpe ratio'}]}
+2025-08-16 03:45:11,113 - __main__ - INFO - Applying suggested changes...
+2025-08-16 03:45:11,113 - __main__ - INFO - Applying changes - Input knobs: {'sma_fast': 10, 'sma_slow': 30, 'risk_per_trade': 0.01}
+2025-08-16 03:45:11,113 - __main__ - INFO - Suggested changes: []
+2025-08-16 03:45:11,114 - __main__ - INFO - Parameter bounds: {'sma_fast': [7.0, 13.0], 'sma_slow': [21.0, 39.0], 'risk_per_trade': [0.006999999999999999, 0.013000000000000001]}
+2025-08-16 03:45:11,114 - __main__ - INFO - Final knobs after changes: {'sma_fast': 10, 'sma_slow': 30, 'risk_per_trade': 0.01}
+2025-08-16 03:45:11,114 - __main__ - INFO - Applied 0 changes successfully
+2025-08-16 03:45:11,115 - __main__ - INFO - New knobs after applying changes: {'sma_fast': 10, 'sma_slow': 30, 'risk_per_trade': 0.01}
+2025-08-16 03:45:11,115 - __main__ - INFO - Trial config: {'name': 'SMA Crossover Strategy', 'description': 'Long when fast SMA > slow SMA; exit when fast SMA < slow SMA or stop loss triggered', 'universe': 'NIFTY50', 'timeframe': '1D', 'objective': 'maximize_sortino', 'constraints': {'max_dd': 0.15, 'risk_per_trade': 0.015, 'turnover_pa': 2.0}, 'knobs': {'sma_fast': 10, 'sma_slow': 30, 'risk_per_trade': 0.01}, 'invariants': ['sma_fast < sma_slow', 'risk_per_trade <= 1.5%']}
+2025-08-16 03:45:11,115 - __main__ - INFO - Backtesting trial config...
+2025-08-16 03:45:11,116 - __main__ - INFO - Starting mock backtest with config: {'name': 'SMA Crossover Strategy', 'description': 'Long when fast SMA > slow SMA; exit when fast SMA < slow SMA or stop loss triggered', 'universe': 'NIFTY50', 'timeframe': '1D', 'objective': 'maximize_sortino', 'constraints': {'max_dd': 0.15, 'risk_per_trade': 0.015, 'turnover_pa': 2.0}, 'knobs': {'sma_fast': 10, 'sma_slow': 30, 'risk_per_trade': 0.01}, 'invariants': ['sma_fast < sma_slow', 'risk_per_trade <= 1.5%']}
+2025-08-16 03:45:11,116 - __main__ - INFO - Extracted knobs: {'sma_fast': 10, 'sma_slow': 30, 'risk_per_trade': 0.01}
+2025-08-16 03:45:11,116 - __main__ - INFO - Parameters - SMA Fast: 10, SMA Slow: 30, Risk: 0.01
+2025-08-16 03:45:11,116 - __main__ - INFO - Calculated multipliers - Trend: 0.980, Lag: 0.975, Risk: 1.000
+2025-08-16 03:45:11,117 - __main__ - INFO - Adjusted return: 0.00096, volatility: 0.02000
+2025-08-16 03:45:11,117 - __main__ - INFO - Generated 253 portfolio values
+2025-08-16 03:45:11,118 - __main__ - INFO - Max signals allowed: 20
+2025-08-16 03:45:11,119 - __main__ - INFO - Selected signal days: [214  25 142  50 231]... (showing first 5)
+2025-08-16 03:45:11,121 - __main__ - INFO - Calculated metrics - Return: 19.12%, Sharpe: 0.72, Drawdown: 25.65%
+2025-08-16 03:45:11,121 - __main__ - INFO - Mock backtest completed successfully
+2025-08-16 03:45:11,122 - __main__ - INFO - Trial results: {'total_return': np.float64(19.122717136423063), 'sharpe_ratio': np.float64(0.7223201448297739), 'sortino_ratio': np.float64(1.3189268904418259), 'max_drawdown': np.float64(25.65024750197555), 'profit_factor': np.float64(1.1218067707404045), 'win_rate': 53.17460317460318, 'avg_win': np.float64(0.015244914237810363), 'avg_loss': np.float64(-0.015432266683219042), 'exposure': 0.8, 'turnover': 1.5, 'total_trades': 20}
+2025-08-16 03:45:11,122 - __main__ - INFO - Trial objective: 1.3189
+2025-08-16 03:45:11,122 - __main__ - INFO - Trial drawdown: 25.65%
+2025-08-16 03:45:11,122 - __main__ - INFO - Gain percentage: 0.00%
+2025-08-16 03:45:11,123 - __main__ - INFO - Drawdown worsening: 0.00 pp
+2025-08-16 03:45:11,123 - __main__ - INFO - ❌ Trial rejected - Gain: 0.00% (need 10.0%), DD worsening: 0.00 pp (max 2.0)
+2025-08-16 03:45:11,123 - __main__ - INFO - No more changes suggested - stopping optimization
+2025-08-16 03:45:11,124 - __main__ - INFO - ============================================================
+2025-08-16 03:45:11,124 - __main__ - INFO - OPTIMIZATION COMPLETED
+2025-08-16 03:45:11,124 - __main__ - INFO - Final objective: 1.3189
+2025-08-16 03:45:11,124 - __main__ - INFO - Final drawdown: 25.65%
+2025-08-16 03:45:11,125 - __main__ - INFO - Total iterations: 1
+2025-08-16 03:45:11,125 - __main__ - INFO - ============================================================
+2025-08-16 03:45:11,125 - __main__ - INFO - Optimization completed - Result keys: dict_keys(['champion_config', 'champion_perf', 'iterations', 'total_iterations', 'final_objective', 'final_drawdown_pct'])
+2025-08-16 03:45:11,126 - __main__ - INFO - Result stored in session state
+2025-08-16 03:45:11,127 - __main__ - INFO - Optimization summary: Completed 1 iterations with 0 promotions. Final Sortino: 1.319
+2025-08-16 03:45:25,188 - src.data.jugaad_client - INFO - NSE Live client initialized successfully
+2025-08-16 03:55:27,964 - __main__ - INFO - AI Assistant page loaded - logging initialized
+2025-08-16 03:55:28,167 - __main__ - INFO - Loading configuration...
+2025-08-16 03:55:28,169 - __main__ - INFO - Config loaded - Keys available: ['groq_api_key', 'alpha_vantage_api_key', 'news_api_key', 'debug', 'log_level', 'virtual_money', 'commission']
+2025-08-16 03:55:28,169 - __main__ - INFO - Initializing AI analyzer...
+2025-08-16 03:55:28,169 - __main__ - INFO - Creating AI analyzer with API key...
+2025-08-16 03:55:28,170 - __main__ - INFO - Initializing AI analyzer...
+2025-08-16 03:55:28,227 - __main__ - INFO - AI analyzer initialized successfully
+2025-08-16 03:55:28,228 - __main__ - INFO - AI analyzer successfully initialized and cached
+2025-08-16 04:26:53,416 - __main__ - INFO - AI Assistant page loaded - logging initialized
+2025-08-16 04:26:53,826 - __main__ - INFO - Loading configuration...
+2025-08-16 04:26:53,828 - __main__ - INFO - Config loaded - Keys available: ['groq_api_key', 'alpha_vantage_api_key', 'news_api_key', 'debug', 'log_level', 'virtual_money', 'commission']
+2025-08-16 04:26:53,828 - __main__ - INFO - Initializing AI analyzer...
+2025-08-16 04:26:53,829 - __main__ - ERROR - No Groq API key found in config
+2025-08-16 04:27:15,080 - __main__ - INFO - AI Assistant page loaded - logging initialized
+2025-08-16 04:27:15,082 - __main__ - INFO - Loading configuration...
+2025-08-16 04:27:15,083 - __main__ - INFO - Config loaded - Keys available: ['groq_api_key', 'alpha_vantage_api_key', 'news_api_key', 'debug', 'log_level', 'virtual_money', 'commission']
+2025-08-16 04:27:15,083 - __main__ - INFO - Initializing AI analyzer...
+2025-08-16 04:27:15,083 - __main__ - ERROR - No Groq API key found in config
+2025-08-16 04:30:21,943 - src.data.jugaad_client - INFO - NSE Live client initialized successfully
+2025-08-16 04:30:30,053 - src.data.jugaad_client - INFO - NSE Live client initialized successfully
+2025-08-16 04:30:30,470 - src.data.jugaad_client - INFO - NSE Live client initialized successfully
+2025-08-16 04:30:49,401 - src.data.jugaad_client - INFO - NSE Live client initialized successfully
+2025-08-16 04:30:49,428 - src.data.data_cleaner - ERROR - Error in safe OHLCV cleaning: cannot reindex on an axis with duplicate labels
+2025-08-16 04:30:49,429 - src.data.jugaad_client - INFO - Retrieved 250 records for RELIANCE
+2025-08-16 04:30:49,434 - src.data.data_cleaner - ERROR - Error in safe OHLCV cleaning: cannot reindex on an axis with duplicate labels
+2025-08-16 04:30:49,436 - src.data.data_cleaner - WARNING - Negative price check failed for Close: unsupported operand type(s) for +: 'int' and 'str'
+2025-08-16 04:30:49,438 - src.data.data_cleaner - WARNING - Price gap analysis failed: unsupported operand type(s) for +: 'int' and 'str'
+2025-08-16 04:30:49,439 - src.data.data_cleaner - INFO - OHLC integrity score: 100.0
+2025-08-16 04:31:03,041 - src.data.jugaad_client - INFO - NSE Live client initialized successfully
+2025-08-16 04:31:03,947 - __main__ - INFO - AI Assistant page loaded - logging initialized
+2025-08-16 04:31:03,951 - __main__ - INFO - Loading configuration...
+2025-08-16 04:31:03,953 - __main__ - INFO - Config loaded - Keys available: ['groq_api_key', 'alpha_vantage_api_key', 'news_api_key', 'debug', 'log_level', 'virtual_money', 'commission']
+2025-08-16 04:31:03,953 - __main__ - INFO - Initializing AI analyzer...
+2025-08-16 04:31:03,954 - __main__ - ERROR - No Groq API key found in config
+2025-08-16 04:39:59,684 - __main__ - INFO - AI Assistant page loaded - logging initialized
+2025-08-16 04:39:59,690 - __main__ - INFO - Loading configuration...
+2025-08-16 04:39:59,691 - __main__ - INFO - Config loaded - Keys available: ['groq_api_key', 'alpha_vantage_api_key', 'news_api_key', 'debug', 'log_level', 'virtual_money', 'commission']
+2025-08-16 04:39:59,692 - __main__ - INFO - Initializing AI analyzer...
+2025-08-16 04:39:59,692 - __main__ - INFO - Creating AI analyzer with API key...
+2025-08-16 04:39:59,693 - __main__ - INFO - Initializing AI analyzer...
+2025-08-16 04:39:59,712 - __main__ - INFO - AI analyzer initialized successfully
+2025-08-16 04:39:59,714 - __main__ - INFO - AI analyzer successfully initialized and cached
+2025-08-16 04:49:59,610 - __main__ - INFO - AI Assistant page loaded - logging initialized
+2025-08-16 04:49:59,814 - __main__ - INFO - Loading configuration...
+2025-08-16 04:49:59,816 - __main__ - INFO - Config loaded - Keys available: ['groq_api_key', 'alpha_vantage_api_key', 'news_api_key', 'debug', 'log_level', 'virtual_money', 'commission']
+2025-08-16 04:49:59,816 - __main__ - INFO - Initializing AI analyzer...
+2025-08-16 04:49:59,816 - __main__ - ERROR - No Groq API key found in config
+2025-08-16 04:58:35,489 - __main__ - INFO - AI Assistant page loaded - logging initialized
+2025-08-16 04:58:35,707 - __main__ - INFO - Loading configuration...
+2025-08-16 04:58:35,709 - __main__ - INFO - Config loaded - Keys available: ['groq_api_key', 'alpha_vantage_api_key', 'news_api_key', 'debug', 'log_level', 'virtual_money', 'commission']
+2025-08-16 04:58:35,709 - __main__ - INFO - Initializing AI analyzer...
+2025-08-16 04:58:35,709 - __main__ - INFO - Creating AI analyzer with API key...
+2025-08-16 04:58:35,710 - __main__ - INFO - Initializing AI analyzer...
+2025-08-16 04:58:35,769 - __main__ - INFO - AI analyzer initialized successfully
+2025-08-16 04:58:35,770 - __main__ - INFO - AI analyzer successfully initialized and cached
+2025-08-16 05:05:02,377 - httpx - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2025-08-16 05:12:24,066 - __main__ - INFO - AI Assistant page loaded - logging initialized
+2025-08-16 05:12:24,072 - __main__ - INFO - Loading configuration...
+2025-08-16 05:12:24,073 - __main__ - INFO - Config loaded - Keys available: ['groq_api_key', 'alpha_vantage_api_key', 'news_api_key', 'debug', 'log_level', 'virtual_money', 'commission']
+2025-08-16 05:12:24,073 - __main__ - INFO - Initializing AI analyzer...
+2025-08-16 05:12:24,073 - __main__ - INFO - Creating AI analyzer with API key...
+2025-08-16 05:12:24,075 - __main__ - INFO - Initializing AI analyzer...
+2025-08-16 05:12:24,093 - __main__ - INFO - AI analyzer initialized successfully
+2025-08-16 05:12:24,094 - __main__ - INFO - AI analyzer successfully initialized and cached
+2025-08-16 05:12:54,045 - httpx - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2025-08-16 05:13:21,458 - __main__ - INFO - AI Assistant page loaded - logging initialized
+2025-08-16 05:13:21,462 - __main__ - INFO - Loading configuration...
+2025-08-16 05:13:21,463 - __main__ - INFO - Config loaded - Keys available: ['groq_api_key', 'alpha_vantage_api_key', 'news_api_key', 'debug', 'log_level', 'virtual_money', 'commission']
+2025-08-16 05:13:21,463 - __main__ - INFO - AI analyzer found in session state - using cached version
+2025-08-16 05:13:25,734 - __main__ - INFO - AI Assistant page loaded - logging initialized
+2025-08-16 05:13:25,736 - __main__ - INFO - Loading configuration...
+2025-08-16 05:13:25,737 - __main__ - INFO - Config loaded - Keys available: ['groq_api_key', 'alpha_vantage_api_key', 'news_api_key', 'debug', 'log_level', 'virtual_money', 'commission']
+2025-08-16 05:13:25,737 - __main__ - INFO - AI analyzer found in session state - using cached version
+2025-08-16 05:13:25,744 - __main__ - INFO - 🚀 START AI OPTIMIZATION BUTTON CLICKED
+2025-08-16 05:13:25,746 - __main__ - INFO - User parameters - SMA Fast: 10, SMA Slow: 30, Risk: 0.01
+2025-08-16 05:13:25,746 - __main__ - INFO - Optimization settings - Max iterations: 5, Min gain: 10.0%, Max DD tolerance: 2.0 pp
+2025-08-16 05:13:25,746 - __main__ - INFO - Strategy config created: {'name': 'SMA Crossover Strategy', 'description': 'Long when fast SMA > slow SMA; exit when fast SMA < slow SMA or stop loss triggered', 'universe': 'NIFTY50', 'timeframe': '1D', 'objective': 'maximize_sortino', 'constraints': {'max_dd': 0.15, 'risk_per_trade': 0.015, 'turnover_pa': 2.0}, 'knobs': {'sma_fast': 10, 'sma_slow': 30, 'risk_per_trade': 0.01}, 'invariants': ['sma_fast < sma_slow', 'risk_per_trade <= 1.5%']}
+2025-08-16 05:13:25,747 - __main__ - INFO - Generating market data...
+2025-08-16 05:13:25,760 - __main__ - INFO - Market data generated - Shape: (365, 5)
+2025-08-16 05:13:25,764 - __main__ - INFO - Market data prepared for analyzer - Columns: ['Close', 'High', 'Low', 'Volume']
+2025-08-16 05:13:25,766 - __main__ - INFO - Starting optimization process...
+2025-08-16 05:13:25,767 - __main__ - INFO - AI analyzer found in session state
+2025-08-16 05:13:25,769 - __main__ - INFO - Calling iterate_optimization...
+2025-08-16 05:13:25,769 - __main__ - INFO - ============================================================
+2025-08-16 05:13:25,770 - __main__ - INFO - STARTING OPTIMIZATION
+2025-08-16 05:13:25,770 - __main__ - INFO - Max iterations: 5
+2025-08-16 05:13:25,771 - __main__ - INFO - Min gain threshold: 10.0%
+2025-08-16 05:13:25,771 - __main__ - INFO - Max drawdown tolerance: 2.0 pp
+2025-08-16 05:13:25,772 - __main__ - INFO - Initial strategy config: {'name': 'SMA Crossover Strategy', 'description': 'Long when fast SMA > slow SMA; exit when fast SMA < slow SMA or stop loss triggered', 'universe': 'NIFTY50', 'timeframe': '1D', 'objective': 'maximize_sortino', 'constraints': {'max_dd': 0.15, 'risk_per_trade': 0.015, 'turnover_pa': 2.0}, 'knobs': {'sma_fast': 10, 'sma_slow': 30, 'risk_per_trade': 0.01}, 'invariants': ['sma_fast < sma_slow', 'risk_per_trade <= 1.5%']}
+2025-08-16 05:13:25,772 - __main__ - INFO - Champion config initialized: {'name': 'SMA Crossover Strategy', 'description': 'Long when fast SMA > slow SMA; exit when fast SMA < slow SMA or stop loss triggered', 'universe': 'NIFTY50', 'timeframe': '1D', 'objective': 'maximize_sortino', 'constraints': {'max_dd': 0.15, 'risk_per_trade': 0.015, 'turnover_pa': 2.0}, 'knobs': {'sma_fast': 10, 'sma_slow': 30, 'risk_per_trade': 0.01}, 'invariants': ['sma_fast < sma_slow', 'risk_per_trade <= 1.5%']}
+2025-08-16 05:13:25,773 - __main__ - INFO - Running baseline backtest...
+2025-08-16 05:13:25,773 - __main__ - INFO - Starting mock backtest with config: {'name': 'SMA Crossover Strategy', 'description': 'Long when fast SMA > slow SMA; exit when fast SMA < slow SMA or stop loss triggered', 'universe': 'NIFTY50', 'timeframe': '1D', 'objective': 'maximize_sortino', 'constraints': {'max_dd': 0.15, 'risk_per_trade': 0.015, 'turnover_pa': 2.0}, 'knobs': {'sma_fast': 10, 'sma_slow': 30, 'risk_per_trade': 0.01}, 'invariants': ['sma_fast < sma_slow', 'risk_per_trade <= 1.5%']}
+2025-08-16 05:13:25,774 - __main__ - INFO - Extracted knobs: {'sma_fast': 10, 'sma_slow': 30, 'risk_per_trade': 0.01}
+2025-08-16 05:13:25,774 - __main__ - INFO - Parameters - SMA Fast: 10, SMA Slow: 30, Risk: 0.01
+2025-08-16 05:13:25,774 - __main__ - INFO - Calculated multipliers - Trend: 0.980, Lag: 0.975, Risk: 1.000
+2025-08-16 05:13:25,775 - __main__ - INFO - Adjusted return: 0.00096, volatility: 0.02000
+2025-08-16 05:13:25,775 - __main__ - INFO - Generated 253 portfolio values
+2025-08-16 05:13:25,776 - __main__ - INFO - Max signals allowed: 20
+2025-08-16 05:13:25,777 - __main__ - INFO - Selected signal days: [214  25 142  50 231]... (showing first 5)
+2025-08-16 05:13:25,784 - __main__ - INFO - Calculated metrics - Return: 19.12%, Sharpe: 0.72, Drawdown: 25.65%
+2025-08-16 05:13:25,785 - __main__ - INFO - Mock backtest completed successfully
+2025-08-16 05:13:25,785 - __main__ - INFO - Baseline results: {'total_return': np.float64(19.122717136423063), 'sharpe_ratio': np.float64(0.7223201448297739), 'sortino_ratio': np.float64(1.3189268904418259), 'max_drawdown': np.float64(25.65024750197555), 'profit_factor': np.float64(1.1218067707404045), 'win_rate': 53.17460317460318, 'avg_win': np.float64(0.015244914237810363), 'avg_loss': np.float64(-0.015432266683219042), 'exposure': 0.8, 'turnover': 1.5, 'total_trades': 20}
+2025-08-16 05:13:25,786 - __main__ - INFO - Baseline objective (Sortino): 1.3189
+2025-08-16 05:13:25,786 - __main__ - INFO - Baseline drawdown: 25.65%
+2025-08-16 05:13:25,787 - __main__ - INFO - Parameter bounds: {'sma_fast': [7.0, 13.0], 'sma_slow': [21.0, 39.0], 'risk_per_trade': [0.006999999999999999, 0.013000000000000001]}
+2025-08-16 05:13:25,787 - __main__ - INFO - 
+--- ITERATION 1/5 ---
+2025-08-16 05:13:25,787 - __main__ - INFO - Requesting AI suggestion...
+2025-08-16 05:13:25,787 - __main__ - INFO - Knobs formatted for analyzer: {'sma_fast': [7.0, 13.0], 'sma_slow': [21.0, 39.0], 'risk_per_trade': [0.006999999999999999, 0.013000000000000001]}
+2025-08-16 05:13:26,988 - httpx - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2025-08-16 05:13:26,989 - __main__ - INFO - AI suggestion received: {'meta': {'model': 'llama-3.3-70b-versatile', 'temperature': 0.1, 'ts': '2025-08-16T10:43:26.988967+05:30', 'prompt_version': 'v1.1'}, 'ok': True, 'issues': [], 'changes': [], 'risks': ['Overfitting to training data', 'Insufficient regime coverage'], 'test_plan': [{'name': 'Walk-forward optimization', 'desc': 'Evaluate strategy on unseen data', 'metric': 'Sortino ratio'}, {'name': 'Regime-based backtest', 'desc': 'Assess performance across different market regimes', 'metric': 'Max drawdown'}, {'name': 'Transaction cost sensitivity', 'desc': 'Analyze impact of varying transaction costs', 'metric': 'Turnover'}]}
+2025-08-16 05:13:26,989 - __main__ - INFO - Applying suggested changes...
+2025-08-16 05:13:26,989 - __main__ - INFO - Applying changes - Input knobs: {'sma_fast': 10, 'sma_slow': 30, 'risk_per_trade': 0.01}
+2025-08-16 05:13:26,989 - __main__ - INFO - Suggested changes: []
+2025-08-16 05:13:26,989 - __main__ - INFO - Parameter bounds: {'sma_fast': [7.0, 13.0], 'sma_slow': [21.0, 39.0], 'risk_per_trade': [0.006999999999999999, 0.013000000000000001]}
+2025-08-16 05:13:26,989 - __main__ - INFO - Final knobs after changes: {'sma_fast': 10, 'sma_slow': 30, 'risk_per_trade': 0.01}
+2025-08-16 05:13:26,990 - __main__ - INFO - Applied 0 changes successfully
+2025-08-16 05:13:26,990 - __main__ - INFO - New knobs after applying changes: {'sma_fast': 10, 'sma_slow': 30, 'risk_per_trade': 0.01}
+2025-08-16 05:13:26,990 - __main__ - INFO - Trial config: {'name': 'SMA Crossover Strategy', 'description': 'Long when fast SMA > slow SMA; exit when fast SMA < slow SMA or stop loss triggered', 'universe': 'NIFTY50', 'timeframe': '1D', 'objective': 'maximize_sortino', 'constraints': {'max_dd': 0.15, 'risk_per_trade': 0.015, 'turnover_pa': 2.0}, 'knobs': {'sma_fast': 10, 'sma_slow': 30, 'risk_per_trade': 0.01}, 'invariants': ['sma_fast < sma_slow', 'risk_per_trade <= 1.5%']}
+2025-08-16 05:13:26,991 - __main__ - INFO - Backtesting trial config...
+2025-08-16 05:13:26,991 - __main__ - INFO - Starting mock backtest with config: {'name': 'SMA Crossover Strategy', 'description': 'Long when fast SMA > slow SMA; exit when fast SMA < slow SMA or stop loss triggered', 'universe': 'NIFTY50', 'timeframe': '1D', 'objective': 'maximize_sortino', 'constraints': {'max_dd': 0.15, 'risk_per_trade': 0.015, 'turnover_pa': 2.0}, 'knobs': {'sma_fast': 10, 'sma_slow': 30, 'risk_per_trade': 0.01}, 'invariants': ['sma_fast < sma_slow', 'risk_per_trade <= 1.5%']}
+2025-08-16 05:13:26,991 - __main__ - INFO - Extracted knobs: {'sma_fast': 10, 'sma_slow': 30, 'risk_per_trade': 0.01}
+2025-08-16 05:13:26,991 - __main__ - INFO - Parameters - SMA Fast: 10, SMA Slow: 30, Risk: 0.01
+2025-08-16 05:13:26,992 - __main__ - INFO - Calculated multipliers - Trend: 0.980, Lag: 0.975, Risk: 1.000
+2025-08-16 05:13:26,992 - __main__ - INFO - Adjusted return: 0.00096, volatility: 0.02000
+2025-08-16 05:13:26,993 - __main__ - INFO - Generated 253 portfolio values
+2025-08-16 05:13:26,994 - __main__ - INFO - Max signals allowed: 20
+2025-08-16 05:13:26,994 - __main__ - INFO - Selected signal days: [214  25 142  50 231]... (showing first 5)
+2025-08-16 05:13:26,996 - __main__ - INFO - Calculated metrics - Return: 19.12%, Sharpe: 0.72, Drawdown: 25.65%
+2025-08-16 05:13:26,997 - __main__ - INFO - Mock backtest completed successfully
+2025-08-16 05:13:26,997 - __main__ - INFO - Trial results: {'total_return': np.float64(19.122717136423063), 'sharpe_ratio': np.float64(0.7223201448297739), 'sortino_ratio': np.float64(1.3189268904418259), 'max_drawdown': np.float64(25.65024750197555), 'profit_factor': np.float64(1.1218067707404045), 'win_rate': 53.17460317460318, 'avg_win': np.float64(0.015244914237810363), 'avg_loss': np.float64(-0.015432266683219042), 'exposure': 0.8, 'turnover': 1.5, 'total_trades': 20}
+2025-08-16 05:13:26,997 - __main__ - INFO - Trial objective: 1.3189
+2025-08-16 05:13:26,997 - __main__ - INFO - Trial drawdown: 25.65%
+2025-08-16 05:13:26,998 - __main__ - INFO - Gain percentage: 0.00%
+2025-08-16 05:13:26,998 - __main__ - INFO - Drawdown worsening: 0.00 pp
+2025-08-16 05:13:26,998 - __main__ - INFO - ❌ Trial rejected - Gain: 0.00% (need 10.0%), DD worsening: 0.00 pp (max 2.0)
+2025-08-16 05:13:26,999 - __main__ - INFO - No more changes suggested - stopping optimization
+2025-08-16 05:13:26,999 - __main__ - INFO - ============================================================
+2025-08-16 05:13:27,000 - __main__ - INFO - OPTIMIZATION COMPLETED
+2025-08-16 05:13:27,000 - __main__ - INFO - Final objective: 1.3189
+2025-08-16 05:13:27,001 - __main__ - INFO - Final drawdown: 25.65%
+2025-08-16 05:13:27,001 - __main__ - INFO - Total iterations: 1
+2025-08-16 05:13:27,001 - __main__ - INFO - ============================================================
+2025-08-16 05:13:27,002 - __main__ - INFO - Optimization completed - Result keys: dict_keys(['champion_config', 'champion_perf', 'iterations', 'total_iterations', 'final_objective', 'final_drawdown_pct'])
+2025-08-16 05:13:27,003 - __main__ - INFO - Result stored in session state
+2025-08-16 05:13:27,004 - __main__ - INFO - Optimization summary: Completed 1 iterations with 0 promotions. Final Sortino: 1.319
+2025-08-16 05:13:34,065 - httpx - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2025-08-16 05:13:34,528 - httpx - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2025-08-16 05:13:34,968 - httpx - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2025-08-16 05:13:35,432 - httpx - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2025-08-16 05:13:35,898 - httpx - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
