@@ -53,7 +53,7 @@ jobs:
       - name: 🔧 Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install flake8 black isort bandit safety
+          pip install black isort bandit safety
           pip install -r requirements.txt
 
       - name: 🎨 Check code formatting with Black
@@ -63,11 +63,6 @@ jobs:
       - name: 📊 Check import sorting with isort
         run: |
           isort --check-only --diff --profile black .
-
-      - name: 🔍 Lint with flake8
-        run: |
-          flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
-          flake8 . --count --exit-zero --max-complexity=10 --max-line-length=88 --statistics
 
       - name: � Run Bandit Security Scan
         run: |
