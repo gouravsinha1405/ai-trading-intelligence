@@ -1,27 +1,26 @@
 import logging
 import random
 import time
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, date
 from typing import Dict, List, Optional
 
 import pandas as pd
 import pytz
 
-# Graceful fallback for jugaad-data import
+# Primary data source: jugaad-data for Indian markets
 JUGAAD_AVAILABLE = False
 try:
     from jugaad_data.nse import NSELive, index_df, stock_df
     JUGAAD_AVAILABLE = True
-    print("✅ jugaad-data loaded successfully")
+    print("✅ jugaad-data loaded successfully (primary)")
 except ImportError as e:
     print(f"⚠️ jugaad-data not available: {e}")
-    print("📊 Using yfinance as primary data source")
 
-# Fallback to yfinance
+# Fallback data source: yfinance
 try:
     import yfinance as yf
     YF_AVAILABLE = True
-    print("✅ yfinance loaded successfully")
+    print("✅ yfinance loaded successfully (fallback)")
 except ImportError:
     YF_AVAILABLE = False
     print("❌ yfinance not available")
@@ -33,12 +32,13 @@ IST = pytz.timezone('Asia/Kolkata')
 class JugaadDataClient:
     """Production-ready client for fetching live market data using jugaad-data"""
 
-    def __init__(self, rate_limit: float = 1.0):
+    def __init__(self, rate_limit: float = 1.0, enable_live_data: bool = True):
         """
         Initialize JugaadDataClient
 
         Args:
             rate_limit: Rate limit between API calls in seconds
+            enable_live_data: Whether to initialize NSELive for live data (optional)
         """
         self.rate_limit = rate_limit
         self.logger = logging.getLogger(__name__)
@@ -63,18 +63,50 @@ class JugaadDataClient:
             datetime(2024, 11, 15).date(),  # Guru Nanak Jayanti
         }
 
-        # Initialize NSE Live client if jugaad-data is available
-        if JUGAAD_AVAILABLE:
+        # Initialize NSE Live client optionally for working days
+        self.nse_live = None
+        if enable_live_data and JUGAAD_AVAILABLE and self._is_working_day():
             try:
                 self.nse_live = NSELive()
                 self.logger.info("NSE Live client initialized successfully")
+                print("✅ NSE Live client initialized for real-time data")
             except Exception as e:
                 self.nse_live = None
                 self.logger.warning(f"NSE Live client initialization failed: {e}")
+                print(f"⚠️ NSE Live client initialization failed: {e}")
         else:
-            self.nse_live = None
-            self.logger.info(
-                "NSE Live client not available (jugaad-data not installed)")
+            if not enable_live_data:
+                self.logger.info("NSE Live client disabled by user")
+                print("ℹ️ NSE Live client disabled by user")
+            elif not self._is_working_day():
+                self.logger.info("NSE Live client not initialized (non-working day)")
+                print("ℹ️ NSE Live client not initialized (non-working day)")
+            else:
+                self.logger.info("NSE Live client not available (jugaad-data not installed)")
+                print("ℹ️ NSE Live client not available")
+
+    def _is_working_day(self, check_date: date = None) -> bool:
+        """
+        Check if the given date (or today) is a working day for NSE
+        
+        Args:
+            check_date: Date to check (defaults to today)
+            
+        Returns:
+            True if it's a working day, False otherwise
+        """
+        if check_date is None:
+            check_date = datetime.now().date()
+            
+        # Check if it's a weekend (Saturday=5, Sunday=6)
+        if check_date.weekday() >= 5:
+            return False
+            
+        # Check if it's a holiday
+        if check_date in self.nse_holidays:
+            return False
+            
+        return True
 
     def _to_float(self, x) -> float:
         """
@@ -101,26 +133,35 @@ class JugaadDataClient:
     def get_stock_data(self, symbol: str, from_date, to_date,
                        series: str = "EQ") -> Optional[pd.DataFrame]:
         """
-        Get historical stock data with fallback support
+        Get historical stock data using jugaad-data as primary source
 
         Args:
             symbol: Stock symbol (e.g., 'RELIANCE', 'TCS')
-            from_date: Start date (datetime or string YYYY-MM-DD)
-            to_date: End date (datetime or string YYYY-MM-DD)
+            from_date: Start date (datetime, date object, or string YYYY-MM-DD)
+            to_date: End date (datetime, date object, or string YYYY-MM-DD)
             series: Series type (EQ for equity)
 
         Returns:
             DataFrame with OHLCV data
         """
-        # Try jugaad-data first if available
+        
+        # Use jugaad-data as primary source for Indian markets
         if JUGAAD_AVAILABLE:
             try:
-                # Convert string dates to datetime if needed
+                # Convert dates to date objects as required by jugaad-data
                 if isinstance(from_date, str):
-                    from_date = datetime.strptime(from_date, '%Y-%m-%d')
+                    from_date = datetime.strptime(from_date, '%Y-%m-%d').date()
+                elif isinstance(from_date, datetime):
+                    from_date = from_date.date()
+                    
                 if isinstance(to_date, str):
-                    to_date = datetime.strptime(to_date, '%Y-%m-%d')
+                    to_date = datetime.strptime(to_date, '%Y-%m-%d').date()
+                elif isinstance(to_date, datetime):
+                    to_date = to_date.date()
 
+                self.logger.info(f"Fetching {symbol} data from {from_date} to {to_date} via jugaad-data")
+                print(f"📊 Fetching {symbol} data via jugaad-data...")
+                
                 df = stock_df(
                     symbol=symbol,
                     from_date=from_date,
@@ -128,51 +169,101 @@ class JugaadDataClient:
                     series=series)
 
                 if df is not None and not df.empty:
+                    # Rename columns to match expected format
+                    column_mapping = {
+                        'DATE': 'Date',
+                        'OPEN': 'Open', 
+                        'HIGH': 'High',
+                        'LOW': 'Low',
+                        'CLOSE': 'Close',
+                        'LTP': 'Close',  # Use LTP as Close if CLOSE not available
+                        'VOLUME': 'Volume'
+                    }
+                    
+                    # Apply column mapping
+                    for old_col, new_col in column_mapping.items():
+                        if old_col in df.columns:
+                            df = df.rename(columns={old_col: new_col})
+                    
+                    # Ensure we have the essential columns
+                    if 'Date' not in df.columns and 'DATE' in df.columns:
+                        df['Date'] = df['DATE']
+                    if 'Close' not in df.columns and 'LTP' in df.columns:
+                        df['Close'] = df['LTP']
+                    
                     df = self._clean_data(df)
                     self.logger.info(
                         f"Retrieved {len(df)} records for {symbol} via jugaad-data")
+                    print(f"✅ Retrieved {len(df)} records for {symbol} via jugaad-data")
                     return df
 
             except Exception as e:
                 self.logger.warning(
-                    f"jugaad-data failed for {symbol}: {e}, trying yfinance")
+                    f"jugaad-data failed for {symbol}: {e}, trying yfinance fallback")
+                print(f"⚠️ jugaad-data failed for {symbol}: {e}, trying yfinance fallback")
 
-        # Fallback to yfinance
+        # Fallback to yfinance for reliability
         if YF_AVAILABLE:
             try:
-                import yfinance as yf
-
                 # Convert NSE symbol to Yahoo Finance format
                 yf_symbol = symbol + ".NS"  # Add .NS for NSE stocks
+                
+                self.logger.info(f"Fetching {symbol} data via yfinance fallback")
+                print(f"� Fetching {symbol} data via yfinance fallback...")
 
                 ticker = yf.Ticker(yf_symbol)
-                df = ticker.history(start=from_date, end=to_date)
+                
+                # Convert date objects to datetime for yfinance
+                if isinstance(from_date, str):
+                    start_date = from_date
+                elif hasattr(from_date, 'date'):
+                    start_date = from_date.date() if hasattr(from_date, 'date') else from_date
+                else:
+                    start_date = from_date
+                    
+                if isinstance(to_date, str):
+                    end_date = to_date
+                elif hasattr(to_date, 'date'):
+                    end_date = to_date.date() if hasattr(to_date, 'date') else to_date
+                else:
+                    end_date = to_date
+                
+                df = ticker.history(start=start_date, end=end_date)
 
                 if not df.empty:
-                    # Rename columns to match jugaad-data format
+                    # Reset index to get Date as a column
+                    df = df.reset_index()
+                    
+                    # Ensure consistent column naming (yfinance data is already clean)
                     df.rename(columns={
-                        'Open': 'OPEN',
-                        'High': 'HIGH',
-                        'Low': 'LOW',
-                        'Close': 'CLOSE',
-                        'Volume': 'VOLUME'
+                        'Date': 'Date',
+                        'Open': 'Open',
+                        'High': 'High', 
+                        'Low': 'Low',
+                        'Close': 'Close',
+                        'Volume': 'Volume'
                     }, inplace=True)
 
-                    df = self._clean_data(df)
+                    # No need to call _clean_data for yfinance - it's already clean
                     self.logger.info(
                         f"Retrieved {len(df)} records for {symbol} via yfinance")
+                    print(f"✅ Retrieved {len(df)} records for {symbol} via yfinance")
                     return df
+                else:
+                    print(f"⚠️ No data found for {symbol} via yfinance")
 
             except Exception as e:
-                self.logger.error(f"yfinance also failed for {symbol}: {e}")
+                self.logger.error(f"yfinance failed for {symbol}: {e}")
+                print(f"❌ yfinance failed for {symbol}: {e}")
 
         self.logger.error(f"All data sources failed for {symbol}")
+        print(f"❌ All data sources failed for {symbol}")
         return None
 
     def get_index_data(self, index: str, from_date: datetime,
                        to_date: datetime) -> Optional[pd.DataFrame]:
         """
-        Get historical index data
+        Get historical index data using yfinance as primary source
 
         Args:
             index: Index name (e.g., 'NIFTY 50', 'NIFTY BANK')
@@ -182,21 +273,67 @@ class JugaadDataClient:
         Returns:
             DataFrame with index OHLC data
         """
-        try:
-            df = index_df(symbol=index, from_date=from_date, to_date=to_date)
+        
+        # Use yfinance as primary source for reliability
+        if YF_AVAILABLE:
+            try:
+                # Map common Indian indices to yfinance symbols
+                index_mapping = {
+                    'NIFTY 50': '^NSEI',
+                    'NIFTY': '^NSEI',
+                    'NIFTY BANK': '^NSEBANK',
+                    'SENSEX': '^BSESN',
+                    'BSE': '^BSESN'
+                }
+                
+                yf_symbol = index_mapping.get(index.upper(), index)
+                self.logger.info(f"Fetching {index} data via yfinance as {yf_symbol}")
+                print(f"📊 Fetching {index} data via yfinance...")
 
-            if df is not None and not df.empty:
-                df = self._clean_data_robust(df)
-                self.logger.info(f"Retrieved {len(df)} records for {index}")
-                return df
-            else:
-                self.logger.warning(
-                    f"No data found for {index} from {from_date} to {to_date}")
+                ticker = yf.Ticker(yf_symbol)
+                df = ticker.history(start=from_date, end=to_date)
+
+                if not df.empty:
+                    # Reset index to get Date as a column
+                    df = df.reset_index()
+                    
+                    df = self._clean_data_robust(df)
+                    self.logger.info(f"Retrieved {len(df)} records for {index} via yfinance")
+                    print(f"✅ Retrieved {len(df)} records for {index} via yfinance")
+                    return df
+                else:
+                    print(f"⚠️ No data found for {index} via yfinance")
+
+            except Exception as e:
+                self.logger.error(f"yfinance failed for {index}: {e}")
+                print(f"❌ yfinance failed for {index}: {e}")
+
+        # Try jugaad-data as fallback
+        if JUGAAD_AVAILABLE:
+            try:
+                self.logger.info(f"Trying jugaad-data as fallback for {index}")
+                print(f"🔄 Trying jugaad-data as fallback for {index}...")
+                
+                df = index_df(symbol=index, from_date=from_date, to_date=to_date)
+
+                if df is not None and not df.empty:
+                    df = self._clean_data_robust(df)
+                    self.logger.info(f"Retrieved {len(df)} records for {index} via jugaad-data fallback")
+                    print(f"✅ Retrieved {len(df)} records for {index} via jugaad-data fallback")
+                    return df
+                else:
+                    self.logger.warning(
+                        f"No data found for {index} from {from_date} to {to_date}")
+                    return None
+
+            except Exception as e:
+                self.logger.error(f"Error fetching index data for {index}: {e}")
+                print(f"❌ jugaad-data fallback also failed for {index}: {e}")
                 return None
 
-        except Exception as e:
-            self.logger.error(f"Error fetching index data for {index}: {e}")
-            return None
+        self.logger.error(f"All data sources failed for {index}")
+        print(f"❌ All data sources failed for {index}")
+        return None
 
     def get_live_price(self, symbol: str) -> Optional[Dict]:
         """
@@ -359,13 +496,13 @@ class JugaadDataClient:
 
     def _clean_data(self, df: pd.DataFrame) -> pd.DataFrame:
         """
-        Clean and standardize the data using production-ready methods
+        Clean and standardize the data keeping Date as a column
 
         Args:
-            df: Raw DataFrame from jugaad-data
+            df: Raw DataFrame from data source
 
         Returns:
-            Cleaned and standardized DataFrame
+            Cleaned and standardized DataFrame with Date as column
         """
         try:
             if df is None or df.empty:
@@ -373,8 +510,8 @@ class JugaadDataClient:
 
             cleaned_df = df.copy()
 
-            # Ensure datetime index
-            date_cols = ['DATE', 'CH_TIMESTAMP']
+            # Ensure Date column exists and is properly formatted
+            date_cols = ['DATE', 'CH_TIMESTAMP', 'Date']
             date_col = None
             for col in date_cols:
                 if col in cleaned_df.columns:
@@ -382,10 +519,20 @@ class JugaadDataClient:
                     break
 
             if date_col:
-                cleaned_df[date_col] = pd.to_datetime(cleaned_df[date_col])
-                cleaned_df.set_index(date_col, inplace=True)
+                if date_col != 'Date':
+                    # Rename to standard 'Date' column
+                    cleaned_df['Date'] = pd.to_datetime(cleaned_df[date_col])
+                    cleaned_df.drop(columns=[date_col], inplace=True)
+                else:
+                    # Ensure Date column is datetime
+                    cleaned_df['Date'] = pd.to_datetime(cleaned_df['Date'])
+            elif cleaned_df.index.name == 'Date' or 'Date' in str(type(cleaned_df.index)):
+                # Date is in index, move to column
+                cleaned_df = cleaned_df.reset_index()
+                if 'Date' in cleaned_df.columns:
+                    cleaned_df['Date'] = pd.to_datetime(cleaned_df['Date'])
 
-            # Standardize column names - handle different jugaad-data formats
+            # Standardize column names - handle different data formats
             column_mapping = {
                 # Standard format
                 'OPEN': 'Open',

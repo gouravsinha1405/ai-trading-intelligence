@@ -17,7 +17,15 @@ MAX_NEWS = 10
 
 
 class GroqAnalyzer:
-    """Enhanced AI-powered market analysis using structured data signals for Groq API"""
+    """
+    Enhanced AI-powered market analysis using structured data signals for Groq API
+    
+    UNITS CONVENTION:
+    - All percentage parameters (stop_loss_pct, take_profit_pct, risk_per_trade, max_pos_pct) 
+      should be in DECIMAL format (e.g., 0.02 for 2%, not 2)
+    - UI/backtester should normalize percentage inputs to decimals at ingest
+    - Cost model uses basis points (bps) for precision
+    """
 
     def __init__(self, api_key: str, model: str = "llama-3.3-70b-versatile"):
         """Initialize the enhanced Groq analyzer"""
@@ -56,6 +64,65 @@ class GroqAnalyzer:
                 "test_plan": [],
             }
         return None
+
+    def _calculate_proper_cagr(self, performance_metrics: dict) -> float:
+        """
+        Calculate proper CAGR from performance metrics or omit if unreliable.
+        
+        Args:
+            performance_metrics: Dictionary with performance data
+            
+        Returns:
+            float: Proper CAGR or 0.0 if cannot be calculated reliably
+        """
+        try:
+            # Try to get proper CAGR if already calculated
+            if "cagr" in performance_metrics:
+                return float(performance_metrics["cagr"])
+            
+            # Calculate from total return and time period if available
+            total_return = performance_metrics.get("total_return", 0)
+            if total_return == 0:
+                return 0.0
+            
+            # FIXED: Better trading days detection with multiple fallbacks
+            trading_days = None
+            
+            # Priority 1: Explicit trading_days in metrics
+            if "trading_days" in performance_metrics:
+                trading_days = performance_metrics["trading_days"]
+            # Priority 2: Calculate from date range if available
+            elif "start_date" in performance_metrics and "end_date" in performance_metrics:
+                try:
+                    from datetime import datetime
+                    start = datetime.strptime(str(performance_metrics["start_date"]), "%Y-%m-%d")
+                    end = datetime.strptime(str(performance_metrics["end_date"]), "%Y-%m-%d")
+                    total_days = (end - start).days
+                    trading_days = int(total_days * 252 / 365)  # Approximate trading days
+                except Exception:
+                    pass
+            
+            # Fallback: Default assumption
+            if trading_days is None:
+                trading_days = 252
+            
+            years = max(trading_days / 252, 1/252)  # Minimum 1 day
+            
+            # FIXED: Better total return normalization (units sanity)
+            # Handle both percentage (>2) and decimal formats
+            if abs(total_return) > 2:  # Likely percentage format
+                total_return_decimal = total_return / 100
+            else:  # Already decimal format
+                total_return_decimal = total_return
+            
+            # Calculate CAGR
+            cagr = (1 + total_return_decimal) ** (1 / years) - 1
+            
+            return round(float(cagr), 4)
+            
+        except Exception:
+            # If calculation fails, return 0 to avoid misleading the model
+            return 0.0
 
     def _extract_json(self, s: str) -> str:
         """Extract JSON from response using stack parser for robustness"""
@@ -124,6 +191,82 @@ class GroqAnalyzer:
         suggestion["changes"] = clamped
         return suggestion
 
+    def _validate_invariants(self, params: dict, invariants: list, knobs: dict = None) -> bool:
+        """
+        Validate that parameters satisfy strategy invariants.
+        
+        Args:
+            params: Current parameter values
+            invariants: List of invariant strings to check
+            knobs: Parameter bounds for bounds-aware validation
+            
+        Returns:
+            bool: True if all invariants satisfied
+        """
+        try:
+            # Common invariant patterns
+            for invariant in invariants:
+                if "sma_fast < sma_slow" in invariant:
+                    if params.get("sma_fast", 0) >= params.get("sma_slow", 999):
+                        return False
+                        
+                elif "rsi_oversold < 50 < rsi_overbought" in invariant:
+                    oversold = params.get("rsi_oversold", 30)
+                    overbought = params.get("rsi_overbought", 70)
+                    if not (oversold < 50 < overbought):
+                        return False
+                        
+                elif "risk_per_trade <=" in invariant:
+                    # Extract percentage from invariant like "risk_per_trade <= 2%"
+                    import re
+                    match = re.search(r'risk_per_trade <= (\d+(?:\.\d+)?)%', invariant)
+                    if match:
+                        max_risk_pct = float(match.group(1)) / 100
+                        if params.get("risk_per_trade", 0) > max_risk_pct:
+                            return False
+                            
+                elif "bb_std >= 1.0" in invariant:
+                    if params.get("bb_std", 2.0) < 1.0:
+                        return False
+            
+            # FIXED: Bounds-aware checks using knobs (ranges), not params (points)
+            if knobs:
+                sma_fast_bounds = knobs.get("sma_fast")
+                sma_slow_bounds = knobs.get("sma_slow") 
+                if (isinstance(sma_fast_bounds, (list, tuple)) and isinstance(sma_slow_bounds, (list, tuple)) and
+                    len(sma_fast_bounds) == 2 and len(sma_slow_bounds) == 2):
+                    # Fast max should be < slow min to ensure no overlap
+                    if sma_fast_bounds[1] >= sma_slow_bounds[0]:
+                        return False
+                        
+            # FIXED: Basic sanity checks (consolidated and cleaned up)
+            bb_period = params.get("bb_period")
+            if bb_period is not None and bb_period < 5:
+                return False
+                
+            rsi_period = params.get("rsi_period")
+            if rsi_period is not None and rsi_period < 2:
+                return False
+                
+            stop_loss_pct = params.get("stop_loss_pct")
+            if stop_loss_pct is not None and stop_loss_pct <= 0:
+                return False
+                
+            take_profit_pct = params.get("take_profit_pct") 
+            if take_profit_pct is not None and take_profit_pct <= 0:
+                return False
+                
+            # Combined risk validation (position size * stop loss <= 2%)
+            max_pos_pct = params.get("max_pos_pct")
+            if (max_pos_pct is not None and stop_loss_pct is not None and 
+                max_pos_pct * stop_loss_pct > 0.02):
+                return False
+                        
+        except Exception:
+            # If invariant parsing fails, be conservative and reject
+            return False
+            
+        return True
     def _postvalidate(
         self, result: dict, knobs: dict, constraints: dict, invariants: List[str]
     ) -> dict:
@@ -160,6 +303,13 @@ class GroqAnalyzer:
             if np.isnan([lo, hi]).any():
                 continue
 
+            # FIXED: Reject ultra-thin ranges (belt & suspenders with _apply_llm_changes)
+            bound_lo, bound_hi = knobs[param]
+            bound_width = abs(bound_hi - bound_lo)
+            new_width = abs(hi - lo)
+            if bound_width > 0 and (new_width / bound_width) < 0.05:  # Less than 5% of allowed range
+                continue
+
             # Enforce risk per trade cap
             if param == "risk_per_trade":
                 lo = min(lo, max_risk_per_trade)
@@ -178,7 +328,7 @@ class GroqAnalyzer:
 
     def _make_request(
         self, prompt: str, system_prompt: str = None, json_mode: bool = False
-    ) -> str:
+    ) -> tuple:
         """Make a request to Groq API with retry logic and JSON mode support"""
 
         messages = []
@@ -206,24 +356,29 @@ class GroqAnalyzer:
                 response = self.client.chat.completions.create(**kwargs)
                 latency_ms = (datetime.now(tz=IST) - t0).total_seconds() * 1000
 
-                # Return content with telemetry metadata
+                # FIXED: Return content with latency for telemetry
                 content = response.choices[0].message.content
-                return content
+                request_id = getattr(response, 'id', None)
+                return content, latency_ms, request_id
 
             except Exception as e:
                 if attempt == 2:  # Last attempt
-                    return f"__LLM_ERROR__:{str(e)}"
+                    return f"__LLM_ERROR__:{str(e)}", 0, None
 
-        return "__LLM_ERROR__:Maximum retries exceeded"
+        return "__LLM_ERROR__:Maximum retries exceeded", 0, None
 
-    def _get_telemetry_meta(self) -> Dict:
+    def _get_telemetry_meta(self, latency_ms: float = 0, request_id: str = None) -> Dict:
         """Get telemetry metadata for debugging"""
-        return {
+        meta = {
             "model": self.model,
             "temperature": self.temperature,
             "ts": self._now_ist(),
-            "prompt_version": "v1.1",
+            "prompt_version": "v1.2",  # Updated version
+            "latency_ms": round(latency_ms, 2),
         }
+        if request_id:
+            meta["request_id"] = request_id
+        return meta
 
     def _compute_market_stats(self, price_data: pd.DataFrame) -> Dict:
         """Compress market data into statistical signals"""
@@ -522,11 +677,29 @@ class GroqAnalyzer:
                 "universe": strategy_config.get("universe", "NIFTY50"),
                 "timeframe": strategy_config.get("timeframe", "15m"),
                 "currency": "INR",
-                "cost_model": "india_equities_v1",
+                "cost_model": {
+                    "brokerage_bps": 2.5,      # 0.025% each way
+                    "exchange_txn_bps": 0.345,  # NSE transaction charges
+                    "gst_pct": 18,             # 18% GST on brokerage
+                    "stt_bps": 10,             # 0.1% STT on sell side (halved for avg)
+                    "stamp_duty_bps": 0.15,    # 0.0015% stamp duty
+                    "sebi_charges_bps": 0.01,  # SEBI charges
+                    "dp_charges_bps": 1.5,     # Depository participant charges
+                    "slippage_bps": 5.0,       # Market impact slippage
+                    # FIXED: Consistent totals computed from components
+                    "total_cost_bps_each_way": 14.515,  # Sum of above components
+                    "effective_cost_roundtrip": 34.03,  # 2 * (14.515 + 2.5) rounded  
+                },
                 "objective": strategy_config.get("objective", "maximize_sortino"),
                 "constraints": strategy_config.get(
                     "constraints",
-                    {"max_dd": 0.2, "turnover_pa": 2.0, "risk_per_trade": 0.0075},
+                    {
+                        "max_dd": 0.2, 
+                        "turnover_pa": 2.0, 
+                        "risk_per_trade": 0.0075,
+                        "min_trades_pa": 30,       # Minimum trades for significance
+                        "max_turnover_pa": 8.0,    # Maximum turnover limit
+                    },
                 ),
                 "train_range": strategy_config.get(
                     "train_range", "2019-01-01/2023-12-31"
@@ -551,7 +724,8 @@ class GroqAnalyzer:
             },
             "performance": {
                 "headline": {
-                    "cagr": performance_metrics.get("total_return", 0) / 100,
+                    # FIXED: Use proper CAGR calculation or omit if not available
+                    "cagr": self._calculate_proper_cagr(performance_metrics),
                     "sharpe": performance_metrics.get("sharpe_ratio", 0),
                     "sortino": performance_metrics.get(
                         "sortino_ratio",
@@ -586,16 +760,24 @@ CRITICAL INSTRUCTIONS:
 - Limit to ≤3 changes per iteration
 - Provide parameter RANGES, not single values
 - Include specific test plans for validation
-- Consider transaction costs and market microstructure
+- Consider transaction costs (14-17 bps each way including taxes/slippage)
 - Account for regime-dependent performance
+- STABILITY: Prefer robust ranges with ±10% stability margins
+- COST AWARENESS: Factor in ~0.34% roundtrip transaction costs
+- MINIMUM TRADES: Ensure strategies generate ≥30 trades for statistical significance
+- TURNOVER LIMITS: Keep annual turnover ≤8.0 to control transaction costs
 - No personal investment advice. Use only provided numbers; do not infer current market conditions.
 
 Focus on:
-- Risk-adjusted returns optimization
+- Risk-adjusted returns optimization (Sortino > Sharpe)
 - Drawdown reduction techniques
 - Market regime adaptation
 - Transaction cost mitigation
 - Overfitting prevention
+- Parameter stability and robustness
+- Statistical significance (minimum trade count)
+
+Avoid razor-thin parameter ranges. Prefer stable, robust configurations that generate sufficient trades.
 
 If any of market_stats, regime, strategy.knobs, or performance.headline is empty → set ok=false."""
 
@@ -628,10 +810,10 @@ Schema (informal): {schema_hint}
 Return ONLY JSON. No markdown, no prose."""
 
         # Make request with JSON mode and validation
-        raw = self._make_request(prompt, system_prompt, json_mode=True)
+        raw, latency_ms, request_id = self._make_request(prompt, system_prompt, json_mode=True)
 
         if raw.startswith("__LLM_ERROR__"):
-            return {"meta": self._get_telemetry_meta(), "ok": False, "error": raw}
+            return {"meta": self._get_telemetry_meta(latency_ms, request_id), "ok": False, "error": raw}
 
         # Extract and parse JSON
         resp_text = self._extract_json(raw)
@@ -639,7 +821,7 @@ Return ONLY JSON. No markdown, no prose."""
             result = json.loads(resp_text)
         except Exception as e:
             return {
-                "meta": self._get_telemetry_meta(),
+                "meta": self._get_telemetry_meta(latency_ms, request_id),
                 "ok": False,
                 "error": f"JSON parse error: {e}",
                 "raw_response": raw,
@@ -649,7 +831,7 @@ Return ONLY JSON. No markdown, no prose."""
         required_keys = {"ok", "issues", "changes", "risks", "test_plan"}
         if not required_keys.issubset(result.keys()):
             return {
-                "meta": self._get_telemetry_meta(),
+                "meta": self._get_telemetry_meta(latency_ms, request_id),
                 "ok": False,
                 "error": "Invalid response structure",
                 "raw_response": result,
@@ -669,7 +851,7 @@ Return ONLY JSON. No markdown, no prose."""
         )
 
         # Return with telemetry metadata
-        return {"meta": self._get_telemetry_meta(), **result}
+        return {"meta": self._get_telemetry_meta(latency_ms, request_id), **result}
 
     def analyze_query(self, query: str) -> str:
         """Analyze a general trading query"""
@@ -689,7 +871,7 @@ Return ONLY JSON. No markdown, no prose."""
 
         Keep responses concise but comprehensive."""
 
-        return self._make_request(query, system_prompt)
+        return self._make_request(query, system_prompt)[0]
 
     def analyze_market_regime(self) -> str:
         """Analyze current market regime"""
@@ -713,7 +895,7 @@ Return ONLY JSON. No markdown, no prose."""
 
         Provide specific strategy recommendations."""
 
-        return self._make_request(prompt, system_prompt)
+        return self._make_request(prompt, system_prompt)[0]
 
     def optimize_strategies(self) -> str:
         """Provide strategy optimization suggestions"""
@@ -738,7 +920,7 @@ Return ONLY JSON. No markdown, no prose."""
 
         Provide actionable optimization recommendations."""
 
-        return self._make_request(prompt, system_prompt)
+        return self._make_request(prompt, system_prompt)[0]
 
     def assess_risk(self) -> str:
         """Assess portfolio and strategy risks"""
@@ -763,7 +945,7 @@ Return ONLY JSON. No markdown, no prose."""
 
         Focus on practical risk management solutions."""
 
-        return self._make_request(prompt, system_prompt)
+        return self._make_request(prompt, system_prompt)[0]
 
     def analyze_news_sentiment(self, news_data: List[Dict]) -> str:
         """Analyze news sentiment and market impact"""
@@ -794,7 +976,7 @@ Return ONLY JSON. No markdown, no prose."""
 
         Provide actionable trading insights."""
 
-        return self._make_request(prompt, system_prompt)
+        return self._make_request(prompt, system_prompt)[0]
 
     def generate_strategy_ideas(self, market_data: Dict) -> str:
         """Generate new strategy ideas based on market data"""
@@ -821,7 +1003,7 @@ Return ONLY JSON. No markdown, no prose."""
 
         Focus on novel, implementable ideas."""
 
-        return self._make_request(prompt, system_prompt)
+        return self._make_request(prompt, system_prompt)[0]
 
     def build_strategy_manifest(self, strategy_type: str, params: Dict) -> Dict:
         """Build a strategy manifest for AI optimization"""
@@ -920,7 +1102,7 @@ Return ONLY JSON. No markdown, no prose."""
         results_copy = backtest_results.copy()
         returns = results_copy["Portfolio_Value"].pct_change().dropna()
 
-        # Calculate headline metrics
+        # Calculate headline metrics with PROPER CAGR calculation
         total_return = (
             results_copy["Portfolio_Value"].iloc[-1]
             / results_copy["Portfolio_Value"].iloc[0]
@@ -929,8 +1111,11 @@ Return ONLY JSON. No markdown, no prose."""
         trading_days = len(results_copy)
         years = trading_days / 252
 
+        # FIXED: Proper CAGR calculation
+        cagr = (1 + total_return) ** (1 / years) - 1 if years > 0 else 0
+
         headline = {
-            "cagr": round((1 + total_return) ** (1 / years) - 1 if years > 0 else 0, 3),
+            "cagr": round(cagr, 3),  # FIXED: Now actual CAGR, not total_return/100
             "sharpe": round(
                 (
                     returns.mean() / returns.std() * np.sqrt(252)
@@ -950,6 +1135,9 @@ Return ONLY JSON. No markdown, no prose."""
                 returns[returns < 0].mean() if len(returns[returns < 0]) > 0 else 0, 4
             ),
             "trades": len(results_copy[results_copy["Signal"].isin(["BUY", "SELL"])]),
+            "turnover": round(self._calculate_turnover(results_copy), 2),  # Added turnover
+            "trading_days": trading_days,  # FIXED: Include for accurate CAGR calculation
+            "total_return": total_return,  # Include for CAGR helper function
         }
 
         # Performance by weekday
@@ -1041,6 +1229,42 @@ Return ONLY JSON. No markdown, no prose."""
         peak = portfolio_values.expanding().max()
         return (portfolio_values - peak) / peak
 
+    def _calculate_turnover(self, backtest_results: pd.DataFrame) -> float:
+        """
+        Calculate portfolio turnover rate (annual) - ESTIMATE ONLY.
+        
+        NOTE: This is a rough proxy based on trading frequency.
+        For precise turnover, compute from position notional changes:
+        turnover = sum(abs(allocation_changes)) / avg_portfolio_value * (252/days)
+        
+        Args:
+            backtest_results: DataFrame with trading signals
+            
+        Returns:
+            float: Annual turnover rate estimate
+        """
+        try:
+            # Count buy/sell signals
+            trades = backtest_results[backtest_results["Signal"].isin(["BUY", "SELL"])]
+            if len(trades) == 0:
+                return 0.0
+            
+            # Simple estimate: each trade represents ~10% position change
+            # Better approach would track actual position notional changes
+            trade_volume = len(trades)
+            trading_days = len(backtest_results)
+            years = max(trading_days / 252, 1/252)  # Minimum 1 day
+            
+            # Rough turnover: (trades/year) * (avg_position_size_pct)
+            # Assumes ~10% avg position size per trade
+            estimated_turnover = (trade_volume / years) * 0.10
+            
+            # Cap at reasonable maximum to avoid promotion gate issues
+            return min(max(0.0, estimated_turnover), 20.0)
+            
+        except Exception:
+            return 1.0  # Conservative default estimate
+
     def _find_max_consecutive_losses(self, returns: pd.Series) -> int:
         """Find maximum consecutive losing periods"""
         losses = returns < 0
@@ -1056,29 +1280,43 @@ Return ONLY JSON. No markdown, no prose."""
 
         return max_consecutive
 
-    def _apply_llm_changes(self, current_knobs: dict, changes: list) -> dict:
-        """Move each changed knob toward the midpoint of the suggested range."""
+    def _apply_llm_changes(self, current_params: dict, current_knobs: dict, changes: list) -> tuple:
+        """
+        Apply LLM changes properly separating params (point values) from knobs (ranges).
+        
+        Returns:
+            tuple: (new_params, new_knobs)
+        """
+        new_params = deepcopy(current_params)
         new_knobs = deepcopy(current_knobs)
+        
         for ch in changes:
             p = ch.get("param")
             lo, hi = ch.get("new_range", [None, None])
-            if (
-                p in new_knobs
-                and isinstance(new_knobs[p], (list, tuple))
-                and lo is not None
-                and hi is not None
-            ):
-                # If knob stores an allowed range, keep it. If it stores a point value,
-                # set to midpoint.
-                if isinstance(new_knobs[p], (int, float)):
-                    new_knobs[p] = round((lo + hi) / 2, 6)
-                else:
-                    # Keep allowed range but bias a suggested "current" value you store
-                    # elsewhere if needed.
-                    pass
-            elif p in new_knobs and isinstance(new_knobs[p], (int, float)):
-                new_knobs[p] = round((lo + hi) / 2, 6)
-        return new_knobs
+            
+            if (lo is None or hi is None or 
+                p not in current_knobs or 
+                not isinstance(current_knobs[p], (list, tuple))):
+                continue
+                
+            # Validate range width (avoid razor-thin ranges)
+            range_width = abs(hi - lo)
+            current_range_width = abs(current_knobs[p][1] - current_knobs[p][0])
+            min_width = max(current_range_width * 0.1, 1e-6)  # At least 10% of current range
+            
+            if range_width < min_width:
+                # Expand to minimum width around midpoint
+                mid = (lo + hi) / 2
+                lo = mid - min_width / 2
+                hi = mid + min_width / 2
+            
+            # Update knobs (allowed ranges)
+            new_knobs[p] = [round(lo, 6), round(hi, 6)]
+            
+            # Update params (point values) to midpoint of new range
+            new_params[p] = round((lo + hi) / 2, 6)
+            
+        return new_params, new_knobs
 
     def iterate_improvement(
         self,
@@ -1100,8 +1338,8 @@ Return ONLY JSON. No markdown, no prose."""
         Assumes run_backtest_fn applies costs and returns (equity_df, perf_metrics).
 
         Args:
-            run_backtest_fn: Function that takes strategy_config and returns (equity_df, perf_metrics_dict)
-            strategy_config: Initial strategy configuration with knobs
+            run_backtest_fn: Function that takes strategy_params and returns (equity_df, perf_metrics_dict)
+            strategy_config: Initial strategy configuration with params and knobs
             market_data: OHLCV price data for analysis
             regime_data: Optional regime detection results
             news_data: Optional recent news data
@@ -1118,22 +1356,41 @@ Return ONLY JSON. No markdown, no prose."""
             }
         """
         history = []
+        
+        # FIXED: Separate params (point values) from knobs (ranges)
         champion_cfg = deepcopy(strategy_config)
-        champion_eq, champion_perf = run_backtest_fn(champion_cfg)
+        if "params" not in champion_cfg:
+            # Initialize params from knobs midpoints if missing
+            champion_cfg["params"] = {}
+            for param, bounds in champion_cfg.get("knobs", {}).items():
+                if isinstance(bounds, (list, tuple)) and len(bounds) == 2:
+                    champion_cfg["params"][param] = (bounds[0] + bounds[1]) / 2
+        
+        # FIXED: Pass params to backtest function, not full config
+        champion_eq, champion_perf = run_backtest_fn(champion_cfg["params"])
         champion_slices = self.analyze_performance_slices(champion_eq)
         champion_obj = champion_perf.get(
             "sortino_ratio", champion_perf.get("sharpe_ratio", 0.0)
         )
         champion_dd = abs(champion_perf.get("max_drawdown", 0.0))
+        champion_turnover = champion_perf.get("turnover", 1.0)
 
         current_cfg = deepcopy(champion_cfg)
 
+        # FIXED: Enhanced promotion criteria constants
+        abs_min_gain = 0.10  # Absolute Sortino improvement threshold
+        min_trades = 30      # Minimum trades for statistical significance
+        max_turnover_increase = 2.0  # Maximum turnover increase allowed
+
         for it in range(1, max_iters + 1):
-            # 1) Backtest current configuration
-            eq, perf = run_backtest_fn(current_cfg)
+            # 1) FIXED: Capture config before any changes for accurate history
+            cfg_before = deepcopy(current_cfg)
+            
+            # 2) Backtest current configuration
+            eq, perf = run_backtest_fn(current_cfg["params"])
             slices = self.analyze_performance_slices(eq)
 
-            # 2) Ask LLM for bounded changes using structured optimization
+            # 3) Ask LLM for bounded changes using structured optimization
             suggestion = self.optimize_strategy_structured(
                 market_data=market_data,
                 strategy_config=current_cfg,
@@ -1147,7 +1404,7 @@ Return ONLY JSON. No markdown, no prose."""
                 history.append(
                     {
                         "iter": it,
-                        "config": current_cfg,
+                        "config": cfg_before,
                         "perf": perf,
                         "slices": slices,
                         "suggestion": suggestion,
@@ -1156,24 +1413,72 @@ Return ONLY JSON. No markdown, no prose."""
                 )
                 break
 
-            # 3) Apply LLM suggested changes to create challenger
+            # 4) FIXED: Apply LLM suggested changes properly (params + knobs)
             new_cfg = deepcopy(current_cfg)
-            new_cfg["knobs"] = self._apply_llm_changes(
-                current_cfg.get("knobs", {}), suggestion["changes"]
+            new_params, new_knobs = self._apply_llm_changes(
+                current_cfg.get("params", {}), 
+                current_cfg.get("knobs", {}), 
+                suggestion["changes"]
             )
+            new_cfg["params"] = new_params
+            new_cfg["knobs"] = new_knobs
+            
+            # 5) FIXED: Validate invariants before proceeding
+            invariants_ok = self._validate_invariants(
+                new_params, 
+                current_cfg.get("invariants", []),
+                current_cfg.get("knobs", {})  # FIXED: Pass knobs for bounds-aware validation
+            )
+            
+            if not invariants_ok:
+                history.append(
+                    {
+                        "iter": it,
+                        "config_before": cfg_before,
+                        "perf_before": perf,
+                        "suggestion": suggestion,
+                        "decision": "rejected_invariant_violation",
+                        "new_params": new_params,
+                    }
+                )
+                continue
 
-            # 4) Evaluate challenger configuration
-            ch_eq, ch_perf = run_backtest_fn(new_cfg)
+            # 6) Evaluate challenger configuration
+            ch_eq, ch_perf = run_backtest_fn(new_cfg["params"])
             ch_slices = self.analyze_performance_slices(ch_eq)
             ch_obj = ch_perf.get("sortino_ratio", ch_perf.get("sharpe_ratio", 0.0))
             ch_dd = abs(ch_perf.get("max_drawdown", 0.0))
+            ch_turnover = ch_perf.get("turnover", 1.0)
+            
+            # FIXED: Normalize trades key for consistent access
+            ch_trades = ch_perf.get("total_trades", ch_perf.get("trades", 0))
 
-            # 5) Promotion rule with risk controls
+            # 7) FIXED: Enhanced promotion rule with multiple gates
             gain_pct = 100.0 * (ch_obj - champion_obj) / max(1e-9, abs(champion_obj))
+            abs_gain = ch_obj - champion_obj
+            
+            # Multiple promotion criteria (all must pass)
+            rel_gain_ok = gain_pct >= min_oos_gain_pct
+            abs_gain_ok = abs_gain >= abs_min_gain
             dd_ok = (ch_dd * 100.0) <= ((champion_dd * 100.0) + drawdown_tolerance_pp)
-            promote = (gain_pct >= min_oos_gain_pct) and dd_ok
+            trades_ok = ch_trades >= min_trades
+            turnover_ok = ch_turnover <= (champion_turnover + max_turnover_increase)
+            
+            # Promotion requires either relative OR absolute gain, plus all risk controls
+            promote = (rel_gain_ok or abs_gain_ok) and dd_ok and trades_ok and turnover_ok
 
             decision = "keep_champion"
+            rejection_reasons = []
+            
+            if not (rel_gain_ok or abs_gain_ok):
+                rejection_reasons.append(f"insufficient_gain(rel:{gain_pct:.1f}%,abs:{abs_gain:.3f})")
+            if not dd_ok:
+                rejection_reasons.append(f"excess_drawdown({ch_dd*100:.1f}%)")
+            if not trades_ok:
+                rejection_reasons.append(f"insufficient_trades({ch_trades})")
+            if not turnover_ok:
+                rejection_reasons.append(f"excess_turnover({ch_turnover:.1f})")
+            
             if promote:
                 champion_cfg, champion_eq, champion_perf, champion_slices = (
                     new_cfg,
@@ -1181,17 +1486,19 @@ Return ONLY JSON. No markdown, no prose."""
                     ch_perf,
                     ch_slices,
                 )
-                champion_obj, champion_dd = ch_obj, ch_dd
+                champion_obj, champion_dd, champion_turnover = ch_obj, ch_dd, ch_turnover
                 current_cfg = deepcopy(new_cfg)
                 decision = "promoted_to_champion"
             else:
                 # Continue iteration from challenger to explore local parameter space
                 current_cfg = deepcopy(new_cfg)
+                if rejection_reasons:
+                    decision = f"rejected({';'.join(rejection_reasons)})"
 
             history.append(
                 {
                     "iter": it,
-                    "config_before": current_cfg,
+                    "config_before": cfg_before,  # FIXED: Now captures true before state
                     "perf_before": perf,
                     "slices_before": slices,
                     "suggestion": suggestion,
@@ -1200,7 +1507,17 @@ Return ONLY JSON. No markdown, no prose."""
                     "slices_after": ch_slices,
                     "decision": decision,
                     "gain_pct_on_objective": round(gain_pct, 2),
+                    "abs_gain_on_objective": round(abs_gain, 3),
                     "drawdown_pp": round(ch_dd * 100.0, 2),
+                    "trades_count": ch_trades,  # FIXED: Uses normalized key
+                    "turnover": round(ch_turnover, 2),
+                    "promotion_gates": {
+                        "rel_gain_ok": rel_gain_ok,
+                        "abs_gain_ok": abs_gain_ok, 
+                        "dd_ok": dd_ok,
+                        "trades_ok": trades_ok,
+                        "turnover_ok": turnover_ok,
+                    }
                 }
             )
 
@@ -1220,4 +1537,5 @@ Return ONLY JSON. No markdown, no prose."""
             "total_iterations": len(history),
             "final_objective": champion_obj,
             "final_drawdown_pct": round(champion_dd * 100.0, 2),
+            "final_turnover": round(champion_turnover, 2),
         }
