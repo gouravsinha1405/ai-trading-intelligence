@@ -39,9 +39,5 @@ ENV RAILWAY_ENVIRONMENT="production"
 # Expose port (Railway will set PORT dynamically)
 EXPOSE ${PORT:-8501}
 
-# Health check
-HEALTHCHECK --interval=30s --timeout=10s --start-period=40s --retries=3 \
-    CMD curl --fail http://localhost:${PORT:-8501}/_stcore/health || exit 1
-
 # Run the application with Railway-compatible port binding
 CMD streamlit run main.py --server.port=${PORT:-8501} --server.address=0.0.0.0 --server.enableCORS=false --server.enableXsrfProtection=false
