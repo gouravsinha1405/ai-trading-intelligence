@@ -845,6 +845,16 @@ def run_actual_backtest(params, market_data):
         }
 
 
+# ===================== Initialize Session State =====================
+
+# Initialize optimization results in session state
+if "optimization_result" not in st.session_state:
+    st.session_state.optimization_result = None
+if "optimization_suggestions" not in st.session_state:
+    st.session_state.optimization_suggestions = None
+if "optimization_champion_params" not in st.session_state:
+    st.session_state.optimization_champion_params = None
+
 # ===================== UI: sidebar =====================
 
 with st.sidebar:
@@ -1084,6 +1094,116 @@ with col2:
         use_container_width=True,
     )
 
+    # ===================== PERSISTENT AI SUGGESTIONS DISPLAY =====================
+    # Display AI optimization suggestions that persist even after slider changes
+    if st.session_state.optimization_result and st.session_state.optimization_result.get("improvement_found"):
+        st.success("🎉 **AI Optimization Results Available**")
+        
+        with st.expander("🤖 **AI Suggested Parameters** (Persistent)", expanded=True):
+            champion_params = st.session_state.optimization_result.get("champion_params", {})
+            
+            st.markdown("**🎯 AI Recommended Settings:**")
+            st.markdown("*Apply these values to the sliders in the sidebar*")
+            
+            # Helper function to show if current value matches recommendation
+            def show_param_with_status(label, current_val, recommended_val, unit=""):
+                if abs(current_val - recommended_val) < 0.01:  # Close enough
+                    st.success(f"**{label}**: {recommended_val}{unit} ✅ *Applied*")
+                else:
+                    st.info(f"**{label}**: {recommended_val}{unit} ⬅️ *Recommended*")
+            
+            if strategy_type == "Momentum" and champion_params:
+                col1, col2, col3 = st.columns(3)
+                with col1:
+                    rec_period = champion_params.get("momentum_period", momentum_period)
+                    show_param_with_status("Momentum Period", momentum_period, rec_period, " days")
+                with col2:
+                    rec_threshold = champion_params.get("momentum_threshold", momentum_threshold)
+                    show_param_with_status("Threshold", momentum_threshold, rec_threshold, "%")
+                with col3:
+                    rec_vol = champion_params.get("vol_mult", vol_mult)
+                    show_param_with_status("Volume Filter", vol_mult, rec_vol, "x")
+                    
+            elif strategy_type == "Mean Reversion" and champion_params:
+                col1, col2, col3 = st.columns(3)
+                with col1:
+                    rec_rsi = champion_params.get("rsi_period", rsi_period)
+                    show_param_with_status("RSI Period", rsi_period, rec_rsi)
+                with col2:
+                    rec_oversold = champion_params.get("rsi_lo", rsi_lo)
+                    show_param_with_status("RSI Oversold", rsi_lo, rec_oversold)
+                with col3:
+                    rec_overbought = champion_params.get("rsi_hi", rsi_hi)
+                    show_param_with_status("RSI Overbought", rsi_hi, rec_overbought)
+                    
+            elif strategy_type == "Breakout" and champion_params:
+                col1, col2 = st.columns(2)
+                with col1:
+                    rec_period = champion_params.get("brk_period", brk_period)
+                    show_param_with_status("Lookback Period", brk_period, rec_period, " days")
+                with col2:
+                    rec_vol = champion_params.get("vol_mult", vol_mult)
+                    show_param_with_status("Volume Filter", vol_mult, rec_vol, "x")
+            
+            # Risk management
+            st.markdown("**⚠️ Risk Management:**")
+            col1, col2, col3 = st.columns(3)
+            with col1:
+                rec_pos = champion_params.get("max_pos_pct", max_pos_pct)
+                show_param_with_status("Position Size", max_pos_pct, rec_pos, "%")
+            with col2:
+                rec_sl = champion_params.get("stop_loss", stop_loss)
+                show_param_with_status("Stop Loss", stop_loss, rec_sl, "%")
+            with col3:
+                rec_tp = champion_params.get("take_profit", take_profit)
+                show_param_with_status("Take Profit", take_profit, rec_tp, "%")
+                
+            # Performance comparison
+            final_perf = st.session_state.optimization_result.get("champion_perf", {})
+            st.markdown("**📈 Expected Performance with AI Settings:**")
+            col1, col2, col3, col4 = st.columns(4)
+            with col1:
+                st.metric("Sortino", f"{final_perf.get('sortino_ratio', 0):.3f}")
+            with col2:
+                st.metric("Return", f"{final_perf.get('total_return', 0):.2f}%")
+            with col3:
+                st.metric("Drawdown", f"{final_perf.get('max_drawdown', 0):.2f}%")
+            with col4:
+                st.metric("Win Rate", f"{final_perf.get('win_rate', 0):.1f}%")
+                
+            if st.button("🗑️ Clear AI Suggestions", use_container_width=True):
+                st.session_state.optimization_result = None
+                st.session_state.optimization_suggestions = None
+                st.session_state.optimization_champion_params = None
+                st.rerun()
+
+    # ===================== AI OPTIMIZATION CONTROLS =====================
+    # Persistent optimization controls (outside button to avoid refresh)
+    st.subheader("🎚️ AI Optimization Settings")
+    st.markdown("*These settings persist and won't reset when you adjust strategy parameters*")
+    
+    col_opt1, col_opt2 = st.columns(2)
+    with col_opt1:
+        min_gain = st.selectbox(
+            "Min Improvement Required (%)",
+            [2.0, 5.0, 10.0, 15.0],
+            index=1,
+            key="min_gain_persistent",
+            help="Lower = more experimental changes accepted",
+        )
+    with col_opt2:
+        max_dd_tolerance = st.selectbox(
+            "Max Drawdown Tolerance (pp)",
+            [2.0, 3.0, 5.0, 8.0],
+            index=1,
+            key="max_dd_persistent", 
+            help="Higher = riskier improvements allowed",
+        )
+
+    st.info(
+        f"🎯 **Current Settings:** Requiring **{min_gain}%** Sortino improvement with max **{max_dd_tolerance}** percentage points drawdown increase"
+    )
+
     # Universal AI Optimization System - Works with any strategy type
     if st.button("🤖 AI Optimize (Universal)", use_container_width=True):
         try:
@@ -1149,28 +1269,7 @@ with col2:
                         f"🎯 **Optimizing {strategy_type} Strategy** with parameters: {current_params}"
                     )
 
-                    # Optimization controls
-                    col_opt1, col_opt2 = st.columns(2)
-                    with col_opt1:
-                        min_gain = st.selectbox(
-                            "Min Improvement Required",
-                            [2.0, 5.0, 10.0, 15.0],
-                            index=1,
-                            help="Lower = more experimental changes",
-                        )
-                    with col_opt2:
-                        max_dd_tolerance = st.selectbox(
-                            "Max Drawdown Tolerance",
-                            [2.0, 3.0, 5.0, 8.0],
-                            index=1,
-                            help="Higher = riskier improvements allowed",
-                        )
-
-                    st.markdown(
-                        f"**🎚️ Optimization Settings:** Requiring **{min_gain}%** improvement with max **{max_dd_tolerance}pp** drawdown increase"
-                    )
-
-                    # Run universal optimization
+                    # Run universal optimization with persistent settings
                     optimization_result = universal_iterate_optimization(
                         ai_analyzer=st.session_state.ai_analyzer,
                         strategy_config=strategy_config,
@@ -1180,6 +1279,12 @@ with col2:
                         min_gain_threshold=min_gain,
                         max_dd_tolerance=max_dd_tolerance,
                     )
+
+                    # Store results in session state for persistence
+                    st.session_state.optimization_result = optimization_result
+                    if optimization_result and optimization_result.get("improvement_found"):
+                        st.session_state.optimization_champion_params = optimization_result.get("champion_params", {})
+                        st.session_state.optimization_suggestions = optimization_result.get("iterations", [])
 
                     if optimization_result and optimization_result.get(
                         "improvement_found"
@@ -1480,6 +1585,10 @@ with col2:
                                         st.markdown(
                                             f"**Iteration {i+1}:** {iter_data.get('ai_reasoning', 'No reasoning')}"
                                         )
+
+                        # Trigger rerun to show persistent suggestions
+                        st.success("✅ **Optimization Complete!** Scroll down to see persistent AI suggestions.")
+                        st.rerun()
 
         except Exception as e:
             st.error(f"❌ Universal AI optimization error: {str(e)}")

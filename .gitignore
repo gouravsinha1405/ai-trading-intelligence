@@ -77,6 +77,7 @@ test_*.py
 # Documentation clutter
 *.md
 !README.md
+!COMPREHENSIVE_DOCUMENTATION.md
 !LICENSE
 
 # Development containers
